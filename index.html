@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio | PolloAsado</title>
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Iconos -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .card {
+      transition: transform 0.2s;
+    }
+    .card:hover {
+      transform: scale(1.03);
+    }
+  </style>
+</head>
+<body class="bg-light d-flex flex-column min-vh-100">
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid"> 
+      <!-- Logo + Nombre -->
+      <a class="navbar-brand d-flex align-items-center" href="Personalización.html">
+        <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="45" height="40" class="me-2">
+        <h3 class="mb-0">PolloAsado</h3>
+      </a>
+      <!-- Íconos -->
+      <div class="d-flex">
+        <a href="registroUsuario.html" class="nav-link text-white me-3"><i class="bi bi-person-circle" style="font-size:1.5rem;"></i></a>
+        <a href="Pedidos.html" class="nav-link text-white"><i class="bi bi-cart3" style="font-size:1.5rem;"></i></a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="container mt-5 mb-5">
+    <h2 class="text-center mb-3">¡Bienvenido a PolloAsado!</h2>
+    <p class="text-center text-muted mb-5">Disfruta las mejores promociones, personaliza tu pedido y vive la mejor experiencia en delivery.</p>
+
+    <div class="row justify-content-center g-4">
+      <!-- Card 1 -->
+      <div class="col-md-3">
+        <div class="card shadow-sm">
+          <img src="https://easyways.cl/storage/20200731162901pollo-asado.jpg" class="card-img-top" alt="Pedido">
+          <div class="card-body">
+            <h5 class="card-title">Realizar Pedido</h5>
+            <p class="card-text">Elige tus productos favoritos y confirma tu orden en línea.</p>
+            <a href="Personalización.html" class="btn btn-primary w-100">Ir al menú</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="col-md-3">
+        <div class="card shadow-sm">
+          <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" class="card-img-top p-3" alt="Cuenta">
+          <div class="card-body">
+            <h5 class="card-title">Crear Cuenta</h5>
+            <p class="card-text">Regístrate para acceder a tus pedidos, promociones y recompensas.</p>
+            <a href="registroUsuario.html" class="btn btn-primary w-100">Registrarme</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="col-md-3">
+        <div class="card shadow-sm">
+          <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" class="card-img-top p-3" alt="Promociones">
+          <div class="card-body">
+            <h5 class="card-title">Promociones</h5>
+            <p class="card-text">Consulta nuestras ofertas personalizadas según tus compras.</p>
+            <a href="promociones.html" class="btn btn-primary w-100">Ver promociones</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-black text-white mt-auto">
+    <div class="container py-4">
+      <div class="row">
+        <!-- Logo -->
+        <div class="col-md-3 mb-3">
+          <h4>PolloFast</h4>
+          <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" alt="logo" width="50" height="45" class="me-2">
+        </div>
+
+        <!-- Conócenos -->
+        <div class="col-md-3 mb-3">
+          <h6>Conócenos</h6>
+          <p class="mb-1">Teléfono</p>
+          <p class="mb-1">Mail de contacto</p>
+          <p class="mb-1">Términos y condiciones</p>
+          <p class="mb-0">Política de privacidad</p>
+        </div>
+
+        <!-- Redes sociales -->
+        <div class="col-md-3 mb-3">
+          <h6>Redes sociales</h6>
+          <p class="mb-1"><i class="bi bi-instagram"></i> Instagram</p>
+          <p class="mb-1"><i class="bi bi-facebook"></i> Facebook</p>
+          <p class="mb-0"><i class="bi bi-twitter-x"></i> X</p>
+        </div>
+
+        <!-- Mi cuenta -->
+        <div class="col-md-3 mb-3">
+          <h6>Mi cuenta</h6>
+          <p class="mb-1">Pedir</p>
+          <p class="mb-0">Iniciar sesión</p>
+        </div>
+      </div>
+      <div class="text-center mt-3">
+        <small><i class="bi bi-circle"></i></small>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

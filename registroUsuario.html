@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cuenta de Usuario - PolloAsado</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+    }
+
+    .card {
+      transition: all 0.3s ease;
+    }
+
+    .link-toggle {
+      cursor: pointer;
+      color: #0d6efd;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
+        <h2 class="mb-0">PolloAsado</h2>
+      </a>
+      <div class="d-flex">
+        <a href="registroUsuario.html" class="nav-link text-white me-3"><i class="bi bi-person-circle" style="font-size:1.5rem;"></i></a>
+        <a href="Pedidos.html" class="nav-link text-white"><i class="bi bi-cart3" style="font-size:1.5rem;"></i></a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTENIDO -->
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+
+        <!-- Tarjeta -->
+        <div class="card shadow-sm">
+          <div class="card-header text-center bg-primary text-white">
+            <h4 id="form-title">Iniciar Sesión</h4>
+          </div>
+          <div class="card-body">
+
+            <!-- Formulario LOGIN -->
+            <form id="login-form">
+              <div class="mb-3">
+                <label for="emailLogin" class="form-label">Correo electrónico</label>
+                <input type="email" class="form-control" id="emailLogin" placeholder="Ej: usuario@gmail.com" required>
+              </div>
+              <div class="mb-3">
+                <label for="passwordLogin" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="passwordLogin" placeholder="Tu contraseña" required>
+              </div>
+
+              <!-- Rol -->
+              <div class="mb-3 text-center">
+                <label class="form-label d-block">Selecciona tu rol:</label>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="rol" id="cliente" value="cliente" checked>
+                  <label class="form-check-label" for="cliente">Cliente</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="rol" id="cocinero" value="cocinero">
+                  <label class="form-check-label" for="cocinero">Cocinero</label>
+                </div>
+              </div>
+
+              <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" id="remember">
+                <label class="form-check-label" for="remember">Recordarme</label>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+              <div class="text-center mt-3">
+                <small>¿No tienes una cuenta? <span class="link-toggle" id="show-register">Crear nueva cuenta</span></small>
+              </div>
+            </form>
+
+            <!-- Formulario REGISTRO -->
+            <form id="register-form" style="display:none;">
+              <div class="mb-3">
+                <label for="emailRegister" class="form-label">Correo electrónico</label>
+                <input type="email" class="form-control" id="emailRegister" placeholder="Ej: usuario@gmail.com" required>
+              </div>
+              <div class="mb-3">
+                <label for="passwordRegister" class="form-label">Contraseña</label>
+                <input type="password" class="form-control" id="passwordRegister" placeholder="Crea una contraseña" required>
+              </div>
+              <div class="mb-3">
+                <label for="passwordConfirm" class="form-label">Confirmar contraseña</label>
+                <input type="password" class="form-control" id="passwordConfirm" placeholder="Repite tu contraseña" required>
+              </div>
+              <button type="submit" class="btn btn-success w-100">Crear Cuenta</button>
+              <div class="text-center mt-3">
+                <small>¿Ya tienes cuenta? <span class="link-toggle" id="show-login">Volver a iniciar sesión</span></small>
+              </div>
+            </form>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-black text-white mt-auto">
+    <div class="container py-4">
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <h4>PolloFast</h4>
+          <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
+        </div>
+        <div class="col-md-3 mb-3">
+          <h6>Conócenos</h6>
+          <p>Teléfono</p>
+          <p>Mail de contacto</p>
+          <p>Términos y condiciones</p>
+        </div>
+        <div class="col-md-3 mb-3">
+          <h6>Redes sociales</h6>
+          <p><i class="bi bi-instagram"></i> Instagram</p>
+          <p><i class="bi bi-facebook"></i> Facebook</p>
+          <p><i class="bi bi-twitter-x"></i> X</p>
+        </div>
+        <div class="col-md-3 mb-3">
+          <h6>Mi cuenta</h6>
+          <p>Pedir</p>
+          <p>Iniciar sesión</p>
+        </div>
+      </div>
+      <div class="text-center mt-3">
+        <small><i class="bi bi-circle"></i></small>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const showRegister = document.getElementById('show-register');
+    const showLogin = document.getElementById('show-login');
+    const title = document.getElementById('form-title');
+
+    // Alternar entre login y registro
+    showRegister.addEventListener('click', () => {
+      loginForm.style.display = 'none';
+      registerForm.style.display = 'block';
+      title.textContent = 'Crear Cuenta';
+    });
+
+    showLogin.addEventListener('click', () => {
+      registerForm.style.display = 'none';
+      loginForm.style.display = 'block';
+      title.textContent = 'Iniciar Sesión';
+    });
+
+    // Redirección hipotética según rol
+    loginForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const rol = document.querySelector('input[name="rol"]:checked').value;
+      if (rol === 'cocinero') {
+        window.location.href = 'panelControl.html';
+      } else {
+        window.location.href = 'index.html';
+      }
+    });
+
+    // Al crear cuenta, ir a validación hipotética
+    registerForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      window.location.href = 'validacionCorreo.html';
+    });
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

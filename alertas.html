@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alertas de Tiempos</title>
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Iconos -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <!-- Logo + Nombre -->
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
+        <h2 class="mb-0">PolloAsado</h2>
+      </a>
+
+      <!-- Botón hamburguesa en móviles -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Íconos -->
+      <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
+        <div class="d-flex">
+          <a href="registroUsuario.html" class="nav-link text-white me-3">
+            <i class="bi bi-person-circle" style="font-size: 1.5rem;"></i>
+          </a>
+          <a href="index.html" class="nav-link text-white">
+            <i class="bi bi-house" style="font-size: 1.5rem;"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTENIDO -->
+  <div class="container mt-4">
+    <h2 class="text-center">Alertas de Tiempos de Cocción</h2>
+    <p class="text-center text-muted">Control en tiempo real de pedidos en preparación</p>
+
+    <!-- Tabla de pedidos con tiempos -->
+    <table class="table table-hover align-middle text-center">
+      <thead class="table-dark">
+        <tr>
+          <th>ID Pedido</th>
+          <th>Cliente</th>
+          <th>Detalle</th>
+          <th>Tiempo en preparación</th>
+          <th>Estado</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Pedido en tiempo correcto -->
+        <tr>
+          <td>#101</td>
+          <td>Nombre</td>
+          <td>Pollo Asado + Papas</td>
+          <td>15 min</td>
+          <td><span class="badge bg-success">Dentro del tiempo</span></td>
+        </tr>
+        <!-- Pedido con alerta -->
+        <tr class="table-warning">
+          <td>#102</td>
+          <td>Nombre</td>
+          <td>Combo Familiar</td>
+          <td>22 min</td>
+          <td><span class="badge bg-danger">¡Alerta! Retrasado</span></td>
+        </tr>
+        <!-- Pedido listo -->
+        <tr>
+          <td>#103</td>
+          <td>Nombre</td>
+          <td>Combo XL</td>
+          <td>18 min</td>
+          <td><span class="badge bg-primary">Listo</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Sección de configuración -->
+    <div class="card mt-4">
+      <div class="card-header bg-dark text-white">
+        Configuración de Alertas
+      </div>
+      <div class="card-body text-center">
+        <label for="tiempoMax" class="form-label">Tiempo máximo permitido (minutos):</label>
+        <input type="number" id="tiempoMax" class="form-control w-25 mx-auto" value="20">
+        <button class="btn btn-primary mt-3">Guardar Configuración</button>
+
+        <!-- Botón Volver -->
+        <div class="mt-4">
+          <a href="panelControl.html" class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left-circle"></i> Volver al Panel de Control
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <!-- FOOTER -->
+  <footer class="bg-black text-white mt-auto">
+    <div class="container py-4">
+      <div class="row">
+        <!-- Logo -->
+        <div class="col-md-3 mb-3">
+          <h4>PolloFast</h4>
+          <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" alt="logo" width="50" height="45" class="me-2">
+        </div>
+
+        <!-- Conócenos -->
+        <div class="col-md-3 mb-3">
+          <h6>Conócenos</h6>
+          <p class="mb-1">Teléfono</p>
+          <p class="mb-1">Mail de contacto</p>
+          <p class="mb-1">Términos y condiciones</p>
+          <p class="mb-0">Política de privacidad</p>
+        </div>
+
+        <!-- Redes sociales -->
+        <div class="col-md-3 mb-3">
+          <h6>Redes sociales</h6>
+          <p class="mb-1"><i class="bi bi-instagram"></i> Instagram</p>
+          <p class="mb-1"><i class="bi bi-facebook"></i> Facebook</p>
+          <p class="mb-0"><i class="bi bi-twitter-x"></i> X</p>
+        </div>
+
+        <!-- Mi cuenta -->
+        <div class="col-md-3 mb-3">
+          <h6>Mi cuenta</h6>
+          <p class="mb-1">Pedir</p>
+          <p class="mb-0">Iniciar sesión</p>
+        </div>
+      </div>
+      <div class="text-center mt-3">
+        <small><i class="bi bi-circle"></i></small>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

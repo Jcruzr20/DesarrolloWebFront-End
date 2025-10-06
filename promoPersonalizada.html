@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Promociones</title>
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Iconos -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <style>
+    .card-img-top {
+      height: 200px;          /* Altura fija */
+      object-fit: cover;      /* Ajusta sin deformar */
+    }
+  </style>
+</head>
+<body class="bg-light">
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="#">
+        <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
+        <h2 class="mb-0">PolloAsado</h2>
+      </a>
+      <div class="d-flex">
+        <a href="#" class="nav-link text-white me-3"><i class="bi bi-person-circle" style="font-size:1.5rem;"></i></a>
+        <a href="#" class="nav-link text-white"><i class="bi bi-cart3" style="font-size:1.5rem;"></i></a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTENIDO -->
+  <div class="container mt-5">
+    <h2 class="text-center">Promociones Personalizadas</h2>
+    <p class="text-center text-muted">Activa las notificaciones y recibe ofertas basadas en tu historial de compras</p>
+
+    <!-- Switch activar/desactivar -->
+    <div class="d-flex justify-content-center mb-4">
+      <div class="form-check form-switch">
+        <input class="form-check-input" type="checkbox" id="switchPromos" checked>
+        <label class="form-check-label" for="switchPromos">Recibir promociones personalizadas</label>
+      </div>
+    </div>
+
+    <!-- Promociones -->
+    <div class="row">
+      <!-- Promo 1 -->
+      <div class="col-md-4">
+        <div class="card shadow-sm">
+          <img src="https://www.recetasnestle.cl/sites/default/files/srh_recipes/2697466733430a74f46eeb5698a79662.jpg" class="card-img-top" alt="Promo Pollo">
+          <div class="card-body text-center">
+            <h5 class="card-title">Promo Pollo 20% OFF</h5>
+            <p class="card-text">Oferta especial para clientes frecuentes de pollo.</p>
+            <button class="btn btn-primary">Aprovechar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Promo 2 -->
+      <div class="col-md-4">
+        <div class="card shadow-sm">
+          <img src="https://media.istockphoto.com/id/477567550/es/foto/bebidas-helada.jpg?s=612x612&w=0&k=20&c=utvO5blVI8Ti37mn4vHsxxDo5ZvWlQO1RV6mh5e_Uvs=" class="card-img-top" alt="Promo Bebidas">
+          <div class="card-body text-center">
+            <h5 class="card-title">2x1 en Bebidas</h5>
+            <p class="card-text">Lleva dos bebidas al precio de una.</p>
+            <button class="btn btn-primary">Aprovechar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Promo 3 -->
+      <div class="col-md-4">
+        <div class="card shadow-sm">
+          <img src="https://cdn-icons-png.flaticon.com/512/4586/4586518.png" class="card-img-top" alt="Descuento">
+          <div class="card-body text-center">
+            <h5 class="card-title">Cupón $3.000</h5>
+            <p class="card-text">Canjea este cupón en tu próximo pedido.</p>
+            <button class="btn btn-primary">Canjear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <!-- FOOTER -->
+  <footer class="bg-black text-white mt-5">
+    <div class="container py-4">
+      <div class="row">
+        <!-- Logo -->
+        <div class="col-md-3 mb-3">
+          <h4>PolloFast</h4>
+          <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" alt="logo" width="50" height="45" class="me-2">
+        </div>
+
+        <!-- Conócenos -->
+        <div class="col-md-3 mb-3">
+          <h6>Conócenos</h6>
+          <p class="mb-1">Teléfono</p>
+          <p class="mb-1">Mail de contacto</p>
+          <p class="mb-1">Términos y condiciones</p>
+          <p class="mb-0">Política de privacidad</p>
+        </div>
+
+        <!-- Redes sociales -->
+        <div class="col-md-3 mb-3">
+          <h6>Redes sociales</h6>
+          <p class="mb-1"><i class="bi bi-instagram"></i> Instagram</p>
+          <p class="mb-1"><i class="bi bi-facebook"></i> Facebook</p>
+          <p class="mb-0"><i class="bi bi-twitter-x"></i> X</p>
+        </div>
+
+        <!-- Mi cuenta -->
+        <div class="col-md-3 mb-3">
+          <h6>Mi cuenta</h6>
+          <p class="mb-1">Pedir</p>
+          <p class="mb-0">Iniciar sesión</p>
+        </div>
+      </div>
+      <div class="text-center mt-3">
+        <small><i class="bi bi-circle"></i></small>
+      </div>
+    </div>
+  </footer>
+  
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
