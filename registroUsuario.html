@@ -13,11 +13,9 @@
     body {
       background-color: #f8f9fa;
     }
-
     .card {
       transition: all 0.3s ease;
     }
-
     .link-toggle {
       cursor: pointer;
       color: #0d6efd;
@@ -28,17 +26,32 @@
 <body class="d-flex flex-column min-vh-100">
 
   <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <a class="navbar-brand d-flex align-items-center" href="index.html">
-        <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
-        <h2 class="mb-0">PolloAsado</h2>
+  <nav class="navbar navbar-dark bg-dark">
+  <div class="container-fluid">
+    <!-- Logo (vuelve al Home principal) -->
+    <a class="navbar-brand d-flex align-items-center" href="index.html">
+      <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
+      <h2 class="mb-0">PolloAsado</h2>
+    </a>
+
+    <!-- Menú de navegación -->
+    <div class="d-flex align-items-center">
+      <!-- Enlace Promociones -->
+      <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
+        <i class="bi bi-megaphone-fill me-1"></i> Promociones
       </a>
-      <div class="d-flex">
-        <a href="registroUsuario.html" class="nav-link text-white me-3"><i class="bi bi-person-circle" style="font-size:1.5rem;"></i></a>
-        <a href="Pedidos.html" class="nav-link text-white"><i class="bi bi-cart3" style="font-size:1.5rem;"></i></a>
-      </div>
+
+      <!-- Usuario -->
+      <a href="registroUsuario.html" class="nav-link text-white me-3">
+        <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
+      </a>
+
+      <!-- Carrito -->
+      <a href="Pedidos.html" class="nav-link text-white">
+        <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
+      </a>
     </div>
+  </div>
   </nav>
 
   <!-- CONTENIDO -->
@@ -83,8 +96,11 @@
               </div>
 
               <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+
               <div class="text-center mt-3">
-                <small>¿No tienes una cuenta? <span class="link-toggle" id="show-register">Crear nueva cuenta</span></small>
+                <small>¿No tienes una cuenta? 
+                  <span class="link-toggle" id="show-register">Crear nueva cuenta</span>
+                </small>
               </div>
             </form>
 
@@ -102,15 +118,31 @@
                 <label for="passwordConfirm" class="form-label">Confirmar contraseña</label>
                 <input type="password" class="form-control" id="passwordConfirm" placeholder="Repite tu contraseña" required>
               </div>
+
+              <!-- Rol también en registro -->
+              <div class="mb-3 text-center">
+                <label class="form-label d-block">Selecciona tu rol:</label>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="rolRegistro" id="clienteRegistro" value="cliente" checked>
+                  <label class="form-check-label" for="clienteRegistro">Cliente</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input class="form-check-input" type="radio" name="rolRegistro" id="cocineroRegistro" value="cocinero">
+                  <label class="form-check-label" for="cocineroRegistro">Cocinero</label>
+                </div>
+              </div>
+
               <button type="submit" class="btn btn-success w-100">Crear Cuenta</button>
+
               <div class="text-center mt-3">
-                <small>¿Ya tienes cuenta? <span class="link-toggle" id="show-login">Volver a iniciar sesión</span></small>
+                <small>¿Ya tienes cuenta? 
+                  <span class="link-toggle" id="show-login">Volver a iniciar sesión</span>
+                </small>
               </div>
             </form>
 
           </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -168,21 +200,21 @@
       title.textContent = 'Iniciar Sesión';
     });
 
-    // Redirección hipotética según rol
+    // Redirección según rol al iniciar sesión
     loginForm.addEventListener('submit', (e) => {
       e.preventDefault();
       const rol = document.querySelector('input[name="rol"]:checked').value;
       if (rol === 'cocinero') {
         window.location.href = 'panelControl.html';
       } else {
-        window.location.href = 'index.html';
+        window.location.href = 'miCuenta.html';
       }
     });
 
     // Al crear cuenta, ir a validación hipotética
     registerForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      window.location.href = 'validacionCorreo.html';
+      window.location.href = 'validarCorreo.html';
     });
   </script>
 

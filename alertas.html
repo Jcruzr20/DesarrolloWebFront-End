@@ -15,7 +15,7 @@
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
       <!-- Logo + Nombre -->
-      <a class="navbar-brand d-flex align-items-center" href="#">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
         <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
         <h2 class="mb-0">PolloAsado</h2>
       </a>
@@ -32,8 +32,8 @@
           <a href="registroUsuario.html" class="nav-link text-white me-3">
             <i class="bi bi-person-circle" style="font-size: 1.5rem;"></i>
           </a>
-          <a href="index.html" class="nav-link text-white">
-            <i class="bi bi-house" style="font-size: 1.5rem;"></i>
+          <a href="Pedidos.html" class="nav-link text-white">
+            <i class="bi bi-cart3" style="font-size: 1.5rem;"></i>
           </a>
         </div>
       </div>
@@ -84,22 +84,24 @@
       </tbody>
     </table>
 
+    <!-- 🔹 Botón para asignar repartidor -->
+    <div class="text-center mt-3">
+      <a href="asignacion.html" class="btn btn-warning">
+        <i class="bi bi-person-gear me-2"></i> Asignar repartidor
+      </a>
+    </div>
+
     <!-- Sección de configuración -->
     <div class="card mt-4">
       <div class="card-header bg-dark text-white">
         Configuración de Alertas
       </div>
-      <div class="card-body text-center">
+      <div class="card-body">
         <label for="tiempoMax" class="form-label">Tiempo máximo permitido (minutos):</label>
-        <input type="number" id="tiempoMax" class="form-control w-25 mx-auto" value="20">
+        <input type="number" id="tiempoMax" class="form-control w-25" value="20">
         <button class="btn btn-primary mt-3">Guardar Configuración</button>
-
-        <!-- Botón Volver -->
-        <div class="mt-4">
-          <a href="panelControl.html" class="btn btn-outline-secondary">
-            <i class="bi bi-arrow-left-circle"></i> Volver al Panel de Control
-          </a>
-        </div>
+        <!-- 🔹 Botón volver al panel principal -->
+        <a href="panelControl.html" class="btn btn-outline-secondary mt-3 ms-2">Volver al Panel de Control</a>
       </div>
     </div>
   </div>
@@ -122,7 +124,7 @@
   <br>
 
   <!-- FOOTER -->
-  <footer class="bg-black text-white mt-auto">
+  <footer class="bg-black text-white mt-auto mt-5">
     <div class="container py-4">
       <div class="row">
         <!-- Logo -->

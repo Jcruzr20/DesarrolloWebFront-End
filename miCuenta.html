@@ -25,14 +25,25 @@
   <!-- NAVBAR -->
   <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
-      <a class="navbar-brand d-flex align-items-center" href="Personalización.html">
+      <!-- Logo (vuelve al Home principal) -->
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
         <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
         <h2 class="mb-0">PolloAsado</h2>
       </a>
-      <div class="d-flex">
-        <a href="miCuenta.html" class="nav-link text-white me-3">
+
+      <!-- Menú de navegación -->
+      <div class="d-flex align-items-center">
+        <!-- Enlace Promociones -->
+        <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
+          <i class="bi bi-megaphone-fill me-1"></i> Promociones
+        </a>
+
+        <!-- Usuario -->
+        <a href="registroUsuario.html" class="nav-link text-white me-3">
           <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
         </a>
+
+        <!-- Carrito -->
         <a href="Pedidos.html" class="nav-link text-white">
           <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
         </a>
@@ -59,15 +70,25 @@
         <div class="info-box mb-4 shadow-sm">
           <h5>Puntos acumulados</h5>
           <p class="points">245 pts</p>
-          <a href="canjearCupon.html" class="btn btn-success w-100">Canjear puntos</a>
+          <a href="canjearCupon.html" class="btn btn-success w-100 mb-2">
+            <i class="bi bi-gift-fill me-2"></i> Canjear puntos
+          </a>
+          <!-- 🔹 Nuevo botón: Acumular puntos -->
+          <a href="acumularPunto.html" class="btn btn-outline-success w-100">
+            <i class="bi bi-plus-circle-fill me-2"></i> Acumular puntos
+          </a>
         </div>
 
         <!-- Promociones y notificaciones -->
         <div class="info-box mb-4 shadow-sm">
           <h5>Promociones y Recompensas</h5>
           <div class="d-grid gap-2">
-            <a href="promoPersonalizada.html" class="btn btn-primary">Ver promociones personalizadas</a>
-            <a href="notificacion.html" class="btn btn-outline-primary">Ver notificaciones</a>
+            <a href="promoPersonalizada.html" class="btn btn-primary">
+              <i class="bi bi-stars me-2"></i> Ver promociones personalizadas
+            </a>
+            <a href="notificacion.html" class="btn btn-outline-primary">
+              <i class="bi bi-bell-fill me-2"></i> Ver notificaciones
+            </a>
           </div>
         </div>
 

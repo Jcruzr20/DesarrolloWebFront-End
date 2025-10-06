@@ -12,34 +12,32 @@
 <body class="bg-light">
 
   <!-- HEADER -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-      <!-- Logo + Nombre -->
-      <a class="navbar-brand d-flex align-items-center" href="Personalización.html">
-        <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
-        <h2 class="mb-0">PolloAsado</h2>
+  <nav class="navbar navbar-dark bg-dark">
+  <div class="container-fluid">
+    <!-- Logo (vuelve al Home principal) -->
+    <a class="navbar-brand d-flex align-items-center" href="index.html">
+      <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
+      <h2 class="mb-0">PolloAsado</h2>
+    </a>
+
+    <!-- Menú de navegación -->
+    <div class="d-flex align-items-center">
+      <!-- Enlace Promociones -->
+      <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
+        <i class="bi bi-megaphone-fill me-1"></i> Promociones
       </a>
 
-      <!-- Botón hamburguesa en móviles -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-        <span class="navbar-toggler-icon"></span>
-      </button>
+      <!-- Usuario -->
+      <a href="registroUsuario.html" class="nav-link text-white me-3">
+        <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
+      </a>
 
-      <!-- Íconos a la derecha -->
-      <div class="collapse navbar-collapse" id="navbarContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
-        <div class="d-flex">
-          <!-- Ícono usuario -->
-          <a href="registroUsuario.html" class="nav-link text-white me-3">
-            <i class="bi bi-person-circle" style="font-size: 1.5rem;"></i>
-          </a>
-          <!-- Ícono carrito -->
-          <a href="Pedidos.html" class="nav-link text-white">
-            <i class="bi bi-cart3" style="font-size: 1.5rem;"></i>
-          </a>
-        </div>
-      </div>
+      <!-- Carrito -->
+      <a href="Pedidos.html" class="nav-link text-white">
+        <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
+      </a>
     </div>
+  </div>
   </nav>
 
   <!-- CONTENIDO PRINCIPAL -->
@@ -104,6 +102,21 @@
               <li class="list-group-item">Pollo Asado x1</li>
               <li class="list-group-item">Papas Fritas x2</li>
             </ul>
+
+            <!-- 🔹 Sección de Cupones -->
+            <div class="mb-3">
+              <label for="cupon" class="form-label"><strong>Canjear cupón</strong></label>
+              <div class="input-group">
+                <input type="text" class="form-control" id="cupon" placeholder="Ingresa tu código de cupón">
+                <button class="btn btn-outline-primary" type="button" onclick="aplicarCupon()">Aplicar</button>
+              </div>
+              <div class="text-center mt-2">
+                <a href="canjearCupon.html" class="small text-decoration-none text-success">
+                  <i class="bi bi-ticket-detailed"></i> Ver cupones disponibles
+                </a>
+              </div>
+            </div>
+
             <p><strong>Total:</strong> $15.000</p>
 
             <!-- Redirige al archivo de pago -->
@@ -170,6 +183,20 @@
       </div>
     </div>
   </footer>
+
+  <!-- Script para simular cupón -->
+  <script>
+    function aplicarCupon() {
+      const cupon = document.getElementById('cupon').value.trim();
+      if (cupon === '') {
+        alert('Por favor, ingresa un código de cupón.');
+      } else if (cupon === 'POLLO10') {
+        alert('¡Cupón válido! Se aplicó un 10% de descuento.');
+      } else {
+        alert('Cupón no válido o expirado.');
+      }
+    }
+  </script>
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
