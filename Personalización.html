@@ -9,56 +9,92 @@
   <!-- Iconos Bootstrap -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <style>
-  .producto-img {
-    width: 100%;        /* que ocupe todo el ancho del contenedor */
-    height: 250px;      /* mismo alto fijo para todas */
-    object-fit: cover;  /* recorta sin deformar */
-    border-radius: 8px; /* bordes suaves */
-  }
-    </style>
+    .producto-img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+    .categoria {
+      display: none;
+    }
+
+    /* Mantiene proporciones y uniformidad */
+    .producto-img {
+      width: 100%;
+      height: 250px;         /* igual altura para todas las imágenes */
+      object-fit: cover;     /* recorta sin deformar */
+      border-radius: 8px;
+    }
+
+    /* Ajuste de la tarjeta completa */
+    .card {
+      height: 100%;          /* igual altura en todas */
+      display: flex;
+      flex-direction: column;
+      justify-content: stretch;
+    }
+
+    /* Asegura que el contenido interno use todo el espacio disponible */
+    .card .row.g-0 {
+      height: 100%;
+    }
+
+    /* Mantiene el equilibrio entre imagen y contenido */
+    .card .col-md-6 {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Ajuste del cuerpo del card para uniformar alturas visuales */
+    .card-body {
+      flex-grow: 1;
+    }
+
+    /* Pequeño margen interno para evitar cortes visuales */
+    .card-body h5 {
+      min-height: 50px; /* reserva espacio uniforme para los títulos */
+    }
+
+    .card-body p {
+      min-height: 60px; /* reserva espacio para descripción */
+    }
+
+
+  </style>
 </head>
 <body class="bg-light">
 
-
   <!-- NAVBAR -->
-<nav class="navbar navbar-dark bg-dark">
-  <div class="container-fluid">
-    <!-- Logo (vuelve al Home principal) -->
-    <a class="navbar-brand d-flex align-items-center" href="index.html">
-      <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
-      <h2 class="mb-0">PolloAsado</h2>
-    </a>
-
-    <!-- Menú de navegación -->
-    <div class="d-flex align-items-center">
-      <!-- Enlace Promociones -->
-      <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
-        <i class="bi bi-megaphone-fill me-1"></i> Promociones
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
+        <h2 class="mb-0">PolloAsado</h2>
       </a>
 
-      <!-- Usuario -->
-      <a href="registroUsuario.html" class="nav-link text-white me-3">
-        <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
-      </a>
-
-      <!-- Carrito -->
-      <a href="Pedidos.html" class="nav-link text-white">
-        <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
-      </a>
+      <div class="d-flex align-items-center">
+        <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
+          <i class="bi bi-megaphone-fill me-1"></i> Promociones
+        </a>
+        <a href="registroUsuario.html" class="nav-link text-white me-3">
+          <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
+        </a>
+        <a href="Pedidos.html" class="nav-link text-white">
+          <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
+        </a>
+      </div>
     </div>
-  </div>
   </nav>
-    <!-- Carousel -->
-  <div id="demo" class="carousel slide" data-bs-ride="carousel">
 
-    <!-- Indicators/dots -->
+  <!-- CARRUSEL -->
+  <div id="demo" class="carousel slide" data-bs-ride="carousel">
     <div class="carousel-indicators">
       <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
       <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
       <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
     </div>
-    
-    <!-- The slideshow/carousel -->
     <div class="carousel-inner">
       <div class="carousel-item active">
         <img src="img/Pollo.jpg" alt="Los Angeles" class="d-block w-50 mx-auto">
@@ -82,8 +118,6 @@
         </div>  
       </div>
     </div>
-    
-    <!-- Left and right controls/icons -->
     <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
       <span class="carousel-control-prev-icon"></span>
     </button>
@@ -91,18 +125,19 @@
       <span class="carousel-control-next-icon"></span>
     </button>
   </div>
-  <br>
-  <br>
 
+  <br><br>
 
   <!-- CONTENIDO PRINCIPAL -->
   <div class="container mt-4">
-    <h2 class="text-center mb-4">Menú</h2>
-    <br>
-    <br>
 
-    <div class="row g-4">
-      <!-- Producto 1 -->
+    <h2 class="text-center mb-4">Menú</h2>
+    <br><br>
+
+    <!-- CATEGORÍA 1: COMIDA GENERAL -->
+    <div class="categoria" id="categoria-general">
+      <div class="row g-4">
+       <!-- Producto 1 -->
       <div class="col-md-6">
         <div class="card shadow-sm">
           <div class="row g-0">
@@ -117,19 +152,19 @@
                 <h5 class="card-title text-center">Personalizar el pedido</h5>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Papas Fritas</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0" max="10">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Ensalada</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0"max="10">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Salsa BBQ</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0"max="10">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <span>Bebida 2L</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0"max="10">
                 </div>
                 <button class="btn btn-success w-100">Confirmar Pedido</button>
               </div>
@@ -152,19 +187,19 @@
                 <h5 class="card-title text-center">Personalizar el pedido</h5>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Papas Fritas</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0"max="10">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Ensalada</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0"max="10">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Salsa BBQ</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0"max="10">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <span>Bebida 2L</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0"max="10">
                 </div>
                 <button class="btn btn-success w-100">Confirmar Pedido</button>
               </div>
@@ -187,19 +222,19 @@
                 <h5 class="card-title text-center">Personalizar el pedido</h5>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Papas Fritas</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0" max="10">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Ensalada</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0" max="10">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Salsa BBQ</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0" max="10">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <span>Bebida 2L</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0" max="10">
                 </div>
                 <button class="btn btn-success w-100">Confirmar Pedido</button>
               </div>
@@ -221,19 +256,19 @@
                 <h5 class="card-title text-center">Personalizar el pedido</h5>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Papas Fritas</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0" max="10">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Ensalada</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0" max="10">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Salsa BBQ</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0" max="10">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <span>Bebida 2L</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0" max="10">
                 </div>
                 <button class="btn btn-success w-100">Confirmar Pedido</button>
               </div>
@@ -256,19 +291,19 @@
                 <h5 class="card-title text-center">Personalizar el pedido</h5>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Papas Fritas</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0" max="10">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Ensalada</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0" max="10">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Salsa BBQ</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0" max="10">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <span>Bebida 2L</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0" max="10">
                 </div>
                 <button class="btn btn-success w-100">Confirmar Pedido</button>
               </div>
@@ -290,19 +325,19 @@
                 <h5 class="card-title text-center">Personalizar el pedido</h5>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Papas Fritas</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0" max="10">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Ensalada</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0" max="10">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Salsa BBQ</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0" max="10">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-3">
                   <span>Bebida 2L</span>
-                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0" max="10">
                 </div>
                 <button class="btn btn-success w-100">Confirmar Pedido</button>
               </div>
@@ -312,29 +347,233 @@
       </div>
     </div>
   </div>
-      <br>
-      <br>
-      <br>
-      <br>
-      <div class="container mt-3">
-      <h2>Puedes seleccionar el menú según tu preferencia</h2>
-      <p>En las siguientes opciones encontraras directamente lo que buscas</p>
-      <form action="/action_page.php">
-        <label for="sel1" class="form-label">Selecciona:</label>
-        <select class="form-select" id="sel1" name="sellist1">
-          <option>Comida general</option>
-          <option>Colaciones</option>
-          <option>Burger Pollo</option>
-          <option>4</option>
-        </select>
-      </form>
+
+    <div class="categoria" id="categoria-colaciones">
+  <div class="row g-4">
+    
+    <!-- CATEGORÍA 2: COLACIONES -->
+
+    <!-- Tarjeta 1 -->
+    <div class="col-md-6">
+
+      <div class="card shadow-sm">
+        <div class="row g-0">
+            <!-- Imagen -->
+            <div class="col-md-6 d-flex align-items-center">
+              <img src="https://content-cocina.lecturas.com/medio/2018/07/19/muslitos-y-verduras-al-horno_6d0f298f_800x800.jpg" 
+              class="producto-img" alt="Muslitos y Verduras">
+            </div>
+
+            <!-- Personalización -->
+            <div class="col-md-6">
+              <div class="card-body">
+                <h5 class="card-title text-center">Colación + Verduras</h5>
+                <p class="text-muted text-center">Muslitos de pollo asados con mix de verduras y arroz blanco. Incluye bebida individual</p>
+
+                <h6 class="text-center mb-2">Personalizar el pedido</h6>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span>Papas Fritas</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span>Ensalada</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span>Salsa BBQ</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span>Bebida 2L</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
+                </div>
+                <button class="btn btn-success w-100">Confirmar Pedido</button>
+              </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <br>
-    <br>
-    <br>
-    <br>
-    <!-- FOOTER -->
-  <footer class="bg-black text-white mt-auto">
+
+    <!-- Tarjeta 2 -->
+    <div class="col-md-6">
+
+      <div class="card shadow-sm">
+        <div class="row g-0">
+            <!-- Imagen -->
+            <div class="col-md-6 d-flex align-items-center">
+              <img src="https://media.falabella.com/tottusCL/21276614_1/w=1500,h=1500,fit=pad" 
+              class="producto-img" alt="Muslitos y Verduras">
+            </div>
+
+            <!-- Personalización -->
+            <div class="col-md-6">
+              <div class="card-body">
+                <h5 class="card-title text-center">Pollo Frito + Papas y Bebida</h5>
+                <p class="text-muted text-center">Clásico pollo crujiente con papas fritas doradas y bebida fría</p>
+
+                <h6 class="text-center mb-2">Personalizar el pedido</h6>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span>Papas Fritas</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span>Ensalada</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span>Salsa BBQ</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span>Bebida 2L</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
+                </div>
+                <button class="btn btn-success w-100">Confirmar Pedido</button>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tarjeta 3 -->
+    <div class="col-md-6">
+
+      <div class="card shadow-sm">
+        <div class="row g-0">
+            <!-- Imagen -->
+            <div class="col-md-6 d-flex align-items-center">
+              <img src="https://cuisinart.com.co/cdn/shop/articles/Pollo_Asado_con_Papas_al_Aire_y_Pan_de_Ajo_Casero_1024x.jpg?v=1712777289" 
+              class="producto-img" alt="Muslitos y Verduras">
+            </div>
+
+            <!-- Personalización -->
+            <div class="col-md-6">
+              <div class="card-body">
+                <h5 class="card-title text-center">Pollo al Horno + Papas Doradas</h5>
+                <p class="text-muted text-center">Muslo de pollo horneado con papas al romero y ensalada fresca</p>
+
+                <h6 class="text-center mb-2">Personalizar el pedido</h6>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span>Papas Fritas</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span>Ensalada</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span>Salsa BBQ</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span>Bebida 2L</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
+                </div>
+                <button class="btn btn-success w-100">Confirmar Pedido</button>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tarjeta 4 -->
+    <div class="col-md-6">
+
+      <div class="card shadow-sm">
+        <div class="row g-0">
+            <!-- Imagen -->
+            <div class="col-md-6 d-flex align-items-center">
+              <img src="https://images.cookforyourlife.org/wp-content/uploads/2021/12/Roasted-Chicken.jpg" 
+              class="producto-img" alt="Muslitos y Verduras">
+            </div>
+
+            <!-- Personalización -->
+            <div class="col-md-6">
+              <div class="card-body">
+                <h5 class="card-title text-center">Pechuga Grillada + Ensalada Verde</h5>
+                <p class="text-muted text-center">Pechuga de pollo a la plancha acompañada de ensalada y arroz integral</p>
+
+                <h6 class="text-center mb-2">Personalizar el pedido</h6>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span>Papas Fritas</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span>Ensalada</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span>Salsa BBQ</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span>Bebida 2L</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
+                </div>
+                <button class="btn btn-success w-100">Confirmar Pedido</button>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    </div>
+  </div>
+
+    <!-- CATEGORÍA 3: BURGER POLLO -->
+    <div class="categoria" id="categoria-burger">
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="card shadow-sm">
+            <img src="https://img.freepik.com/fotos-premium/hamburguesa-pollo-asado-salsa-placa-blanca_1339-149451.jpg" 
+            class="producto-img" alt="Burger">
+            <div class="card-body text-center">
+              <h5>Burger Crispy Pollo + Papas</h5>
+              <button class="btn btn-success w-100">Confirmar Pedido</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <br><br><br>
+
+  <!-- SELECTOR -->
+  <div class="container mt-3 text-center">
+    <h2>Puedes seleccionar el menú según tu preferencia</h2>
+    <p>En las siguientes opciones encontrarás directamente lo que buscas</p>
+    <label for="sel1" class="form-label">Selecciona:</label>
+    <select class="form-select w-50 mx-auto" id="sel1" name="sellist1">
+      <option value="general">Comida general</option>
+      <option value="colaciones">Colaciones</option>
+      <option value="burger">Burger Pollo</option>
+    </select>
+  </div>
+
+  <br><br><br>
+
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+  <!-- FOOTER -->
+  <footer class="bg-black text-white mt-5">
     <div class="container py-4">
       <div class="row">
         <!-- Logo -->
@@ -372,11 +611,28 @@
       </div>
     </div>
   </footer>
-
-
-
+  
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+  <!-- SCRIPT: Mostrar categoría -->
+  <script>
+    const selector = document.getElementById("sel1");
+    const categorias = document.querySelectorAll(".categoria");
+
+    function mostrarCategoria() {
+      categorias.forEach(cat => cat.style.display = "none");
+      const valor = selector.value;
+      document.getElementById(`categoria-${valor}`).style.display = "block";
+    }
+
+    selector.addEventListener("change", mostrarCategoria);
+    mostrarCategoria(); // Mostrar por defecto
+  </script>
+
 </body>
 </html>
