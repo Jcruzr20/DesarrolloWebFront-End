@@ -3,62 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Envío de Boletas</title>
-  <!-- Bootstrap -->
+  <title>Enviar Boleta por Correo | PolloAsado</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Iconos -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 </head>
+
 <body class="bg-light">
 
   <!-- NAVBAR -->
-<nav class="navbar navbar-dark bg-dark">
-  <div class="container-fluid">
-    <!-- Logo (vuelve al Home principal) -->
-    <a class="navbar-brand d-flex align-items-center" href="index.html">
-      <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
-      <h2 class="mb-0">PolloAsado</h2>
-    </a>
-
-    <!-- Menú de navegación -->
-    <div class="d-flex align-items-center">
-      <!-- Enlace Promociones -->
-      <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
-        <i class="bi bi-megaphone-fill me-1"></i> Promociones
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
+        <h2 class="mb-0">PolloAsado</h2>
       </a>
-
-      <!-- Usuario -->
-      <a href="registroUsuario.html" class="nav-link text-white me-3">
-        <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
-      </a>
-
-      <!-- Carrito -->
-      <a href="Pedidos.html" class="nav-link text-white">
-        <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
-      </a>
+      <div class="d-flex align-items-center">
+        <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
+          <i class="bi bi-megaphone-fill me-1"></i> Promociones
+        </a>
+        <a href="registroUsuario.html" class="nav-link text-white me-3">
+          <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
+        </a>
+        <a href="Pedidos.html" class="nav-link text-white">
+          <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
+        </a>
+      </div>
     </div>
-  </div>
   </nav>
 
   <!-- CONTENIDO -->
-  <div class="container mt-5 text-center">
-    <h2>Envío de Boleta Digital</h2>
-    <p class="text-muted">Tu boleta será enviada automáticamente a tu correo registrado.</p>
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">📧 Enviar Boleta por Correo</h2>
 
-    <!-- Caso exitoso -->
-    <div id="correoExitoso" class="alert alert-success p-4">
-      <i class="bi bi-envelope-check-fill" style="font-size:2rem;"></i>
-      <h4 class="mt-2">Boleta enviada correctamente</h4>
-      <p>Hemos enviado tu boleta en PDF al correo <strong>cliente@ejemplo.com</strong>.</p>
-      <a href="#" class="btn btn-danger"><i class="bi bi-file-earmark-pdf"></i> Descargar Copia</a>
+    <!-- Formulario -->
+    <div class="card shadow-sm mx-auto" style="max-width:600px;">
+      <div class="card-body">
+        <form id="formCorreo">
+          <div class="mb-3">
+            <label for="correo" class="form-label fw-semibold">Correo electrónico</label>
+            <input type="email" class="form-control" id="correo" placeholder="ejemplo@correo.com" required>
+          </div>
+
+          <div id="resumenBoleta" class="mb-3 text-muted small"></div>
+
+          <button type="submit" class="btn btn-success w-100">
+            <i class="bi bi-send-fill"></i> Enviar Boleta
+          </button>
+        </form>
+
+        <!-- Mensaje visual -->
+        <div id="mensajeExito" class="alert alert-success mt-4 d-none">
+          <i class="bi bi-check-circle-fill"></i> ¡Boleta enviada correctamente!
+        </div>
+      </div>
     </div>
 
-    <!-- Caso error -->
-    <div id="correoError" class="alert alert-danger p-4 d-none">
-      <i class="bi bi-envelope-exclamation-fill" style="font-size:2rem;"></i>
-      <h4 class="mt-2">No recibiste tu boleta</h4>
-      <p>Parece que hubo un problema con el envío automático.</p>
-      <button class="btn btn-warning"><i class="bi bi-arrow-repeat"></i> Reenviar boleta</button>
+    <!-- Volver -->
+    <div class="text-center mt-4">
+      <a href="confirmacionPago.html" class="btn btn-outline-dark">
+        <i class="bi bi-arrow-left"></i> Volver
+      </a>
     </div>
   </div>
   <br>
@@ -78,38 +82,24 @@
   <br>
   <br>
   <br>
+
   <!-- FOOTER -->
-  <footer class="bg-black text-white mt-auto">
+  <footer class="bg-black text-white mt-5">
     <div class="container py-4">
       <div class="row">
-        <!-- Logo -->
         <div class="col-md-3 mb-3">
           <h4>PolloFast</h4>
           <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" alt="logo" width="50" height="45" class="me-2">
         </div>
-
-        <!-- Conócenos -->
         <div class="col-md-3 mb-3">
           <h6>Conócenos</h6>
-          <p class="mb-1">Teléfono</p>
-          <p class="mb-1">Mail de contacto</p>
-          <p class="mb-1">Términos y condiciones</p>
-          <p class="mb-0">Política de privacidad</p>
+          <p>Teléfono</p><p>Mail de contacto</p><p>Términos y condiciones</p>
         </div>
-
-        <!-- Redes sociales -->
         <div class="col-md-3 mb-3">
           <h6>Redes sociales</h6>
-          <p class="mb-1"><i class="bi bi-instagram"></i> Instagram</p>
-          <p class="mb-1"><i class="bi bi-facebook"></i> Facebook</p>
-          <p class="mb-0"><i class="bi bi-twitter-x"></i> X</p>
-        </div>
-
-        <!-- Mi cuenta -->
-        <div class="col-md-3 mb-3">
-          <h6>Mi cuenta</h6>
-          <p class="mb-1">Pedir</p>
-          <p class="mb-0">Iniciar sesión</p>
+          <p><i class="bi bi-instagram"></i> Instagram</p>
+          <p><i class="bi bi-facebook"></i> Facebook</p>
+          <p><i class="bi bi-twitter-x"></i> X</p>
         </div>
       </div>
       <div class="text-center mt-3">
@@ -118,20 +108,51 @@
     </div>
   </footer>
 
-
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-  <!-- Script simulación -->
+  <!-- SCRIPT -->
   <script>
-    // Cambiar a false para probar el escenario de error
-    const envioOk = true;
+    const resumen = document.getElementById("resumenBoleta");
+    const form = document.getElementById("formCorreo");
+    const exito = document.getElementById("mensajeExito");
 
-    if (!envioOk) {
-      document.getElementById("correoExitoso").classList.add("d-none");
-      document.getElementById("correoError").classList.remove("d-none");
+    // Cargar resumen breve de la boleta
+    const datosPago = JSON.parse(localStorage.getItem("ultimoPago"));
+    if (datosPago && datosPago.carrito) {
+      let total = 0;
+      let resumenHTML = "<strong>Resumen de tu boleta:</strong><ul>";
+      datosPago.carrito.forEach(pedido => {
+        pedido.items.forEach(item => {
+          const precio = parseInt(item.nombre.match(/\$(\d+)/)?.[1] || 0);
+          total += precio * item.cantidad;
+        });
+      });
+      resumenHTML += `<li>Total pagado: <strong>$${total.toLocaleString("es-CL")}</strong></li>`;
+      resumenHTML += `<li>Método de pago: <strong>${datosPago.metodo}</strong></li>`;
+      resumenHTML += "</ul>";
+      resumen.innerHTML = resumenHTML;
+    } else {
+      resumen.innerHTML = "<p class='text-danger'>No se encontró información del pago.</p>";
     }
-  </script>
 
+    // Envío simulado
+    form.addEventListener("submit", e => {
+      e.preventDefault();
+      const correo = document.getElementById("correo").value.trim();
+
+      if (correo === "") {
+        alert("Por favor, ingresa un correo válido.");
+        return;
+      }
+
+      // Simulación de envío
+      exito.classList.remove("d-none");
+      exito.innerHTML = `<i class="bi bi-check-circle-fill"></i> Boleta enviada correctamente a <strong>${correo}</strong>`;
+
+      // Limpieza del formulario
+      form.reset();
+    });
+  </script>
 </body>
 </html>

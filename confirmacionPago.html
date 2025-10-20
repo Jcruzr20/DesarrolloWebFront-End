@@ -14,25 +14,17 @@
   <!-- HEADER -->
  <nav class="navbar navbar-dark bg-dark">
   <div class="container-fluid">
-    <!-- Logo (vuelve al Home principal) -->
     <a class="navbar-brand d-flex align-items-center" href="index.html">
       <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
       <h2 class="mb-0">PolloAsado</h2>
     </a>
-
-    <!-- Menú de navegación -->
     <div class="d-flex align-items-center">
-      <!-- Enlace Promociones -->
       <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
         <i class="bi bi-megaphone-fill me-1"></i> Promociones
       </a>
-
-      <!-- Usuario -->
       <a href="registroUsuario.html" class="nav-link text-white me-3">
         <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
       </a>
-
-      <!-- Carrito -->
       <a href="Pedidos.html" class="nav-link text-white">
         <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
       </a>
@@ -49,6 +41,9 @@
       <h4 class="mt-2">¡Pago confirmado!</h4>
       <p>Tu transacción fue procesada correctamente.</p>
       <p><strong>ID de transacción:</strong> #ABC12345</p>
+
+      <!-- 🔹 Mostrar resumen del pedido -->
+      <div id="resumenConfirmacion" class="text-start mt-3 border-top pt-3"></div>
 
       <!-- Botones -->
       <div class="d-flex justify-content-center flex-wrap gap-3 mt-4">
@@ -70,41 +65,23 @@
       <h4 class="mt-2">Error en la confirmación</h4>
       <p>Hubo un problema al validar tu pago.</p>
       <p><strong>Mensaje:</strong> Inténtalo de nuevo en unos minutos.</p>
-      <a href="pago.html" class="btn btn-warning mt-3">
+      <a href="pagos.html" class="btn btn-warning mt-3">
         <i class="bi bi-arrow-repeat"></i> Reintentar pago
       </a>
     </div>
 
   </div>
-   <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+
+  <br><br><br>
 
   <!-- FOOTER -->
   <footer class="bg-black text-white mt-5">
     <div class="container py-4">
       <div class="row">
-        <!-- Logo -->
         <div class="col-md-3 mb-3">
           <h4>PolloFast</h4>
           <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" alt="logo" width="50" height="45" class="me-2">
         </div>
-
-        <!-- Conócenos -->
         <div class="col-md-3 mb-3">
           <h6>Conócenos</h6>
           <p class="mb-1">Teléfono</p>
@@ -112,20 +89,11 @@
           <p class="mb-1">Términos y condiciones</p>
           <p class="mb-0">Política de privacidad</p>
         </div>
-
-        <!-- Redes sociales -->
         <div class="col-md-3 mb-3">
           <h6>Redes sociales</h6>
           <p class="mb-1"><i class="bi bi-instagram"></i> Instagram</p>
           <p class="mb-1"><i class="bi bi-facebook"></i> Facebook</p>
           <p class="mb-0"><i class="bi bi-twitter-x"></i> X</p>
-        </div>
-
-        <!-- Mi cuenta -->
-        <div class="col-md-3 mb-3">
-          <h6>Mi cuenta</h6>
-          <p class="mb-1">Pedir</p>
-          <p class="mb-0">Iniciar sesión</p>
         </div>
       </div>
       <div class="text-center mt-3">
@@ -139,11 +107,43 @@
 
   <!-- Script para simular resultado -->
   <script>
-    const exito = true; // simula si el pago fue exitoso
-    if (!exito) {
+    // Simula resultado del pago
+    const exito = true; // cambia a false para probar el mensaje de error
+
+    const resumenDiv = document.getElementById("resumenConfirmacion");
+
+    if (exito) {
+      // Leer datos desde localStorage
+      const datos = JSON.parse(localStorage.getItem("boletaDatos")) || JSON.parse(localStorage.getItem("ultimoPago"));
+
+      if (datos && datos.carrito) {
+        let total = 0;
+        let html = `
+          <p><strong>Método de pago:</strong> ${datos.metodo}</p>
+          <ul class="list-group mb-2">`;
+
+        datos.carrito.forEach(pedido => {
+          pedido.items.forEach(item => {
+            const precio = parseInt(item.nombre.match(/\$(\d+)/)?.[1] || 0);
+            total += precio * item.cantidad;
+            html += `
+              <li class="list-group-item d-flex justify-content-between align-items-center">
+                ${item.nombre}
+                <span class="badge bg-primary">x${item.cantidad}</span>
+              </li>`;
+          });
+        });
+
+        html += `</ul><p class="text-end fw-bold">Total pagado: $${total.toLocaleString("es-CL")}</p>`;
+        resumenDiv.innerHTML = html;
+      }
+    } else {
       document.getElementById("pagoExitoso").classList.add("d-none");
       document.getElementById("pagoFallido").classList.remove("d-none");
     }
+
+    // Limpieza final opcional
+    // localStorage.removeItem("ultimoPago");
   </script>
 
 </body>

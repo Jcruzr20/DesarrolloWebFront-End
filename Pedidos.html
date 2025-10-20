@@ -29,7 +29,9 @@
         </a>
         <a href="Pedidos.html" class="nav-link text-white position-relative">
           <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
-          <span id="contadorCarrito" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"></span>
+          <span id="contadorCarrito" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+            0
+          </span>
         </a>
       </div>
     </div>
@@ -67,8 +69,9 @@
                 <button class="btn btn-outline-primary" type="button" onclick="aplicarCupon()">Aplicar</button>
               </div>
               <div class="text-center mt-2">
-                <a href="canjearCupon.html" class="small text-decoration-none text-success">
-                  <i class="bi bi-ticket-detailed"></i> Ver cupones disponibles
+                <a href="registroUsuario.html" class="small text-decoration-none text-success">
+                  <i class="bi bi-ticket-detailed"></i> Ingresa a tu cuenta para ver o canjear cupones 
+                  <!--Cupon de prueba POLLO10-->
                 </a>
               </div>
             </div>
@@ -77,30 +80,14 @@
             <p class="text-end"><strong>Total:</strong> <span id="total">$0</span></p>
 
             <!-- Botones -->
-            <a href="pagos.html" class="btn btn-success w-100 mb-2">Confirmar Pedido</a>
+            <a href="pagos.html" class="btn btn-success w-100 mb-2">Ir a Pago</a>
             <button class="btn btn-danger w-100" id="btnVaciar">Vaciar Carrito</button>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+  <br><br><br><br><br><br><br><br><br><br><br>
 
   <!-- FOOTER -->
   <footer class="bg-black text-white mt-5">
@@ -135,20 +122,21 @@
     </div>
   </footer>
 
-  <!-- SCRIPTS -->
+  <!-- SCRIPT PRINCIPAL -->
   <script>
     const contenedor = document.getElementById("contenedorPedidos");
     const totalSpan = document.getElementById("total");
     const contador = document.getElementById("contadorCarrito");
-    let total = 0;
 
+    // 🧮 Cargar pedidos desde localStorage
     function cargarPedidos() {
       const pedidos = JSON.parse(localStorage.getItem("carrito")) || [];
       contenedor.innerHTML = "";
+      let total = 0;
 
       if (pedidos.length === 0) {
         contenedor.innerHTML = "<p class='text-center text-muted'>No hay pedidos en el carrito.</p>";
-        contador.textContent = "";
+        contador.textContent = "0";
         totalSpan.textContent = "$0";
         return;
       }
@@ -161,12 +149,12 @@
         let itemsHTML = "";
 
         pedido.items.forEach(item => {
-          itemsHTML += `<li class='list-group-item d-flex justify-content-between align-items-center'>
-                          ${item.nombre}
-                          <span class='badge bg-secondary'>x${item.cantidad}</span>
-                        </li>`;
+          itemsHTML += `
+            <li class='list-group-item d-flex justify-content-between align-items-center'>
+              ${item.nombre}
+              <span class='badge bg-secondary'>x${item.cantidad}</span>
+            </li>`;
 
-          // Intento estimar precios a partir del texto (simple simulación)
           const precioTexto = item.nombre.match(/\$(\d+)/);
           if (precioTexto) total += parseInt(precioTexto[1]) * item.cantidad;
         });
@@ -188,34 +176,41 @@
       totalSpan.textContent = `$${total.toLocaleString("es-CL")}`;
     }
 
+    // 🗑️ Eliminar pedido individual
     function eliminarPedido(index) {
       const pedidos = JSON.parse(localStorage.getItem("carrito")) || [];
       pedidos.splice(index, 1);
       localStorage.setItem("carrito", JSON.stringify(pedidos));
-      total = 0;
       cargarPedidos();
     }
 
+    // 🧹 Vaciar todo el carrito
     document.getElementById("btnVaciar").addEventListener("click", () => {
       localStorage.removeItem("carrito");
-      total = 0;
       cargarPedidos();
-      alert("🧹 Carrito vaciado.");
+      alert("🧹 Carrito vaciado correctamente.");
     });
 
+    // 🎟️ Aplicar cupón
     function aplicarCupon() {
       const cupon = document.getElementById('cupon').value.trim();
+      let totalActual = parseInt(totalSpan.textContent.replace(/[^\d]/g, '')) || 0;
+
       if (cupon === '') {
         alert('Por favor, ingresa un código de cupón.');
-      } else if (cupon === 'POLLO10') {
-        total *= 0.9;
-        totalSpan.textContent = `$${total.toLocaleString("es-CL")} (10% off)`;
+      } else if (cupon === 'POLLO10' && totalActual > 0) {
+        const descuento = totalActual * 0.9;
+        totalSpan.textContent = `$${descuento.toLocaleString("es-CL")} (10% off)`;
         alert('¡Cupón válido! Se aplicó un 10% de descuento.');
       } else {
         alert('Cupón no válido o expirado.');
       }
     }
 
+    // 🔁 Actualizar contador en tiempo real
+    window.addEventListener("storage", cargarPedidos);
+
+    // Inicializar
     cargarPedidos();
   </script>
 

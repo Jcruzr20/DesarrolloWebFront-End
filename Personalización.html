@@ -81,8 +81,11 @@
         <a href="registroUsuario.html" class="nav-link text-white me-3">
           <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
         </a>
-        <a href="Pedidos.html" class="nav-link text-white">
-          <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
+        <a href="Pedidos.html" class="nav-link text-white position-relative">
+        <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
+        <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+          0
+        </span>
         </a>
       </div>
     </div>
@@ -744,6 +747,31 @@
         toast.show();
       });
     });
+  });
+</script>
+<!-- SCRIPT: Contador dinámico del carrito -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const cartCount = document.getElementById("cart-count");
+
+    function actualizarContador() {
+      const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+      cartCount.textContent = carrito.length;
+      cartCount.style.display = carrito.length > 0 ? "inline-block" : "none";
+    }
+
+    // Actualiza al cargar
+    actualizarContador();
+
+    // Escucha cambios en otras pestañas
+    window.addEventListener("storage", actualizarContador);
+
+    // Sobrescribe localStorage.setItem para actualizar el contador en tiempo real
+    const originalSetItem = localStorage.setItem;
+    localStorage.setItem = function (key, value) {
+      originalSetItem.apply(this, arguments);
+      if (key === "carrito") actualizarContador();
+    };
   });
 </script>
 </body>
