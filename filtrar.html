@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pollos Asados</title>
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Iconos Bootstrap -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+  .producto-img {
+    width: 100%;        /* que ocupe todo el ancho del contenedor */
+    height: 250px;      /* mismo alto fijo para todas */
+    object-fit: cover;  /* recorta sin deformar */
+    border-radius: 8px; /* bordes suaves */
+  }
+    </style>
+</head>
+<body class="bg-light">
+
+
+  <!-- NAVBAR -->
+ <nav class="navbar navbar-dark bg-dark">
+
+  <div class="container-fluid">
+    <!-- Logo (vuelve al Home principal) -->
+    <a class="navbar-brand d-flex align-items-center" href="index.html">
+      <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
+      <h2 class="mb-0">PolloAsado</h2>
+    </a>
+
+    <!-- Íconos a la derecha -->
+    <div class="d-flex">
+      <!-- Usuario -->
+      <a href="registroUsuario.html" class="nav-link text-white me-3">
+        <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
+      </a>
+
+      <!-- Carrito -->
+      <a href="Pedidos.html" class="nav-link text-white">
+        <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
+      </a>
+    </div>
+  </div>
+
+  </nav>
+    <!-- Carousel -->
+  <div id="demo" class="carousel slide" data-bs-ride="carousel">
+
+    <!-- Indicators/dots -->
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#demo" data-bs-slide-to="0" class="active"></button>
+      <button type="button" data-bs-target="#demo" data-bs-slide-to="1"></button>
+      <button type="button" data-bs-target="#demo" data-bs-slide-to="2"></button>
+    </div>
+    
+    <!-- The slideshow/carousel -->
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="img/Pollo.jpg" alt="Los Angeles" class="d-block w-50 mx-auto">
+        <div class="carousel-caption">
+          <h3><i>1</i></h3>
+          <p><i>Platos Especiales</i></p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="img/PolloGrillado.png" alt="Chicago"  class="d-block w-50 mx-auto">
+        <div class="carousel-caption">
+          <h3><i>2</i></h3>
+          <p><i>Platos Especiales</i></p>
+        </div> 
+      </div>
+      <div class="carousel-item">
+        <img src="img/PolloPapas.png" alt="New York"  class="d-block w-50 mx-auto">
+        <div class="carousel-caption">
+          <h3><i>3</i></h3>
+          <p><i>Platos Especiales</i></p>
+        </div>  
+      </div>
+    </div>
+    
+    <!-- Left and right controls/icons -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#demo" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#demo" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+  <br>
+  <br>
+
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <div class="container mt-4">
+    <h2 class="text-center mb-4">Menú</h2>
+    <br>
+    <br>
+
+    <div class="row g-4">
+      <!-- Producto 1 -->
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="row g-0">
+            <!-- Imagen -->
+            <div class="col-md-6 d-flex align-items-center">
+              <img src="https://s-api.qcart.app/images/comoquiero-uploads/images/recipes/originals/3437.jpg?s=716x600&fit=cover&ext=webp" 
+                class="img-fluid rounded-start producto-img" alt="Producto">
+            </div>
+            <!-- Personalización -->
+            <div class="col-md-6">
+              <div class="card-body">
+                <h5 class="card-title text-center">Personalizar el pedido</h5>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span>Papas Fritas</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span>Ensalada</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span>Salsa BBQ</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span>Bebida 2L</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                </div>
+                <button class="btn btn-success w-100">Confirmar Pedido</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Producto 2 -->
+      <div class="col-md-6">
+        <div class="card shadow-sm">
+          <div class="row g-0">
+            <!-- Imagen -->
+            <div class="col-md-6 d-flex align-items-center">
+              <img src="https://easyways.cl/storage/20200731162901pollo-asado.jpg" class="img-fluid rounded-start producto-img" alt="Producto">
+            </div>
+            <!-- Personalización -->
+            <div class="col-md-6">
+              <div class="card-body">
+                <h5 class="card-title text-center">Personalizar el pedido</h5>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span>Papas Fritas</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span>Ensalada</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                  <span>Salsa BBQ</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                </div>
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                  <span>Bebida 2L</span>
+                  <input type="number" class="form-control form-control-sm w-25" min="0" value="0">
+                </div>
+                <button class="btn btn-success w-100">Confirmar Pedido</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <div class="container mt-3">
+      <h2>Puedes seleccionar el menú según tu preferencia</h2>
+      <p>En las siguientes opciones encontraras directamente lo que buscas</p>
+      <form action="/action_page.php">
+        <label for="sel1" class="form-label">Selecciona:</label>
+        <select class="form-select" id="sel1" name="sellist1">
+          <option>Comida general</option>
+          <option>Colaciones</option>
+          <option>Burger Pollo</option>
+        </select>
+      </form>
+    </div>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br>
+    <!-- FOOTER -->
+  <footer class="bg-black text-white mt-auto">
+    <div class="container py-4">
+      <div class="row">
+        <!-- Logo -->
+        <div class="col-md-3 mb-3">
+          <h4>PolloFast</h4>
+          <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" alt="logo" width="50" height="45" class="me-2">
+        </div>
+
+        <!-- Conócenos -->
+        <div class="col-md-3 mb-3">
+          <h6>Conócenos</h6>
+          <p class="mb-1">Teléfono</p>
+          <p class="mb-1">Mail de contacto</p>
+          <p class="mb-1">Términos y condiciones</p>
+          <p class="mb-0">Política de privacidad</p>
+        </div>
+
+        <!-- Redes sociales -->
+        <div class="col-md-3 mb-3">
+          <h6>Redes sociales</h6>
+          <p class="mb-1"><i class="bi bi-instagram"></i> Instagram</p>
+          <p class="mb-1"><i class="bi bi-facebook"></i> Facebook</p>
+          <p class="mb-0"><i class="bi bi-twitter-x"></i> X</p>
+        </div>
+
+        <!-- Mi cuenta -->
+        <div class="col-md-3 mb-3">
+          <h6>Mi cuenta</h6>
+          <p class="mb-1">Pedir</p>
+          <p class="mb-0">Iniciar sesión</p>
+        </div>
+      </div>
+      <div class="text-center mt-3">
+        <small><i class="bi bi-circle"></i></small>
+      </div>
+    </div>
+  </footer>
+
+
+
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

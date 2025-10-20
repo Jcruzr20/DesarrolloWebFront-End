@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel Repartidor - PolloAsado</title>
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Iconos -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <style>
+    body { background:#f8f9fa; }
+    .pedido-card { border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,.05); transition:transform .15s; }
+    .pedido-card:hover { transform:translateY(-4px); }
+    .pedido-header { font-weight:600; }
+    .estado-badge { min-width:100px; }
+  </style>
+</head>
+<body class="bg-light">
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="45" height="40" class="me-2">
+        <h2 class="mb-0">PolloAsado</h2>
+      </a>
+
+      <div class="d-flex">
+        <a href="registroUsuario.html" class="nav-link text-white me-3">
+          <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
+        </a>
+        <a href="Pedidos.html" class="nav-link text-white">
+          <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTENIDO -->
+  <div class="container my-4">
+    <h3 class="text-center mb-4">📦 Panel del Repartidor</h3>
+    <p class="text-center text-muted mb-5">Aquí el repartidor podrá visualizar los pedidos asignados y actualizar su estado.</p>
+
+    <!-- Filtros y búsqueda (mock visual) -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <select class="form-select">
+          <option>Todos los estados</option>
+          <option>Asignado</option>
+          <option>En camino</option>
+          <option>Entregado</option>
+        </select>
+      </div>
+      <div class="col-md-6 mt-2 mt-md-0">
+        <input type="text" class="form-control" placeholder="Buscar por ID o dirección...">
+      </div>
+    </div>
+
+    <!-- Pedidos -->
+    <div class="row g-4">
+      <!-- Pedido 1 -->
+      <div class="col-md-6">
+        <div class="card pedido-card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h5 class="pedido-header mb-1">Pedido #R-1001</h5>
+                <span class="badge bg-secondary estado-badge">Asignado</span>
+              </div>
+              <div class="text-end">
+                <p class="mb-1 text-muted small">Av. Libertador 123, Santiago</p>
+                <p class="mb-1"><strong>$12.000</strong></p>
+                <p class="mb-0 text-muted small">ETA: 20 min</p>
+              </div>
+            </div>
+            <hr>
+            <p><i class="bi bi-list-ul me-2"></i>Pollo Asado + Papas + Bebida 1.5L</p>
+            <div class="d-flex gap-2 flex-wrap">
+              <button class="btn btn-sm btn-primary"><i class="bi bi-check2-circle me-1"></i>Aceptar</button>
+              <button class="btn btn-sm btn-warning text-dark"><i class="bi bi-truck me-1"></i>En camino</button>
+              <button class="btn btn-sm btn-success"><i class="bi bi-flag-checkered me-1"></i>Entregado</button>
+              <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-geo-alt me-1"></i>Ver mapa</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pedido 2 -->
+      <div class="col-md-6">
+        <div class="card pedido-card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h5 class="pedido-header mb-1">Pedido #R-1002</h5>
+                <span class="badge bg-warning text-dark estado-badge">En camino</span>
+              </div>
+              <div class="text-end">
+                <p class="mb-1 text-muted small">Calle Los Robles 456</p>
+                <p class="mb-1"><strong>$23.000</strong></p>
+                <p class="mb-0 text-muted small">ETA: 10 min</p>
+              </div>
+            </div>
+            <hr>
+            <p><i class="bi bi-list-ul me-2"></i>Combo Familiar</p>
+            <div class="d-flex gap-2 flex-wrap">
+              <button class="btn btn-sm btn-success"><i class="bi bi-flag-checkered me-1"></i>Entregado</button>
+              <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-geo-alt me-1"></i>Ver mapa</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pedido 3 -->
+      <div class="col-md-6">
+        <div class="card pedido-card">
+          <div class="card-body">
+            <div class="d-flex justify-content-between align-items-start">
+              <div>
+                <h5 class="pedido-header mb-1">Pedido #R-1003</h5>
+                <span class="badge bg-success estado-badge">Entregado</span>
+              </div>
+              <div class="text-end">
+                <p class="mb-1 text-muted small">Pasaje Luna 55</p>
+                <p class="mb-1"><strong>$8.000</strong></p>
+                <p class="mb-0 text-muted small">ETA: —</p>
+              </div>
+            </div>
+            <hr>
+            <p><i class="bi bi-list-ul me-2"></i>Burger Crispy x2</p>
+            <div class="d-flex gap-2 flex-wrap">
+              <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-geo-alt me-1"></i>Ver mapa</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botones inferiores -->
+    <div class="text-center mt-5">
+      <a href="asignacionRepartidor.html" class="btn btn-warning"><i class="bi bi-person-gear me-2"></i>Ir a asigna

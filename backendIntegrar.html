@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Integración Backend (Skeleton) - PolloAsado</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <style>
+    body { background-color: #f8f9fa; }
+    .info-box {
+      background: #fff;
+      border-radius: 10px;
+      padding: 20px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .1);
+    }
+    .card:hover { transform: translateY(-2px); transition: all 0.2s; }
+  </style>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="45" height="40" class="me-2">
+        <h2 class="mb-0">PolloAsado</h2>
+      </a>
+      <div class="d-flex align-items-center">
+        <a href="registroUsuario.html" class="nav-link text-white me-3">
+          <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
+        </a>
+        <a href="Pedidos.html" class="nav-link text-white">
+          <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTENIDO -->
+  <div class="container mt-5 mb-5">
+    <h2 class="text-center mb-4">Integración con Backend (Skeleton)</h2>
+    <p class="text-center text-muted mb-5">
+      Simulación visual de conexión entre Frontend y Backend mediante APIs REST.
+    </p>
+
+    <div class="row justify-content-center">
+      <div class="col-md-10">
+        <div id="ordersContainer" class="row g-3">
+          <!-- Aquí se mostrarán los pedidos simulados o los mensajes de estado -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="bg-black text-white mt-auto">
+    <div class="container py-4">
+      <div class="row">
+        <div class="col-md-3 mb-3">
+          <h4>PolloFast</h4>
+          <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
+        </div>
+        <div class="col-md-3 mb-3">
+          <h6>Conócenos</h6>
+          <p class="mb-1">Teléfono</p>
+          <p class="mb-1">Mail de contacto</p>
+          <p class="mb-1">Términos y condiciones</p>
+          <p class="mb-0">Política de privacidad</p>
+        </div>
+        <div class="col-md-3 mb-3">
+          <h6>Redes sociales</h6>
+          <p class="mb-1"><i class="bi bi-instagram"></i> Instagram</p>
+          <p class="mb-1"><i class="bi bi-facebook"></i> Facebook</p>
+          <p class="mb-0"><i class="bi bi-twitter-x"></i> X</p>
+        </div>
+        <div class="col-md-3 mb-3">
+          <h6>Mi cuenta</h6>
+          <p class="mb-1">Pedir</p>
+          <p class="mb-0">Iniciar sesión</p>
+        </div>
+      </div>
+      <div class="text-center mt-3">
+        <small><i class="bi bi-circle"></i></small>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT DE SIMULACIÓN -->
+  <script>
+    const API_SIMULADA = "/api/pedidos (simulada)";
+
+    // Mostrar estado de carga
+    function showLoading() {
+      document.getElementById("ordersContainer").innerHTML = `
+        <div class="col-12 text-center text-muted mt-4">
+          <div class="spinner-border text-warning" role="status"></div>
+          <p class="mt-2">Conectando con el servidor (simulado)...</p>
+        </div>`;
+    }
+
+    // Mostrar error de conexión
+    function showError() {
+      document.getElementById("ordersContainer").innerHTML = `
+        <div class="col-12">
+          <div class="alert alert-danger text-center">
+            <i class="bi bi-exclamation-triangle-fill me-2"></i>
+            Error al conectar con el servidor (simulado)
+          </div>
+        </div>`;
+    }
+
+    // Simular carga de pedidos
+    function loadOrders() {
+      showLoading();
+
+      // Simular retardo de respuesta del backend (2 segundos)
+      setTimeout(() => {
+        const success = Math.random() > 0.3; // 70% éxito, 30% error
+
+        if (success) {
+          const pedidos = [
+            { id: "P-1001", cliente: "María Pérez", estado: "En camino", total: 12000 },
+            { id: "P-1002", cliente: "Juan Soto", estado: "Entregado", total: 23000 },
+            { id: "P-1003", cliente: "Ana Ruiz", estado: "En preparación", total: 9500 }
+          ];
+          renderOrders(pedidos);
+        } else {
+          showError();
+        }
+      }, 2000);
+    }
+
+    // Mostrar pedidos simulados
+    function renderOrders(pedidos) {
+      const container = document.getElementById("ordersContainer");
+      container.innerHTML = "";
+
+      pedidos.forEach(p => {
+        container.innerHTML += `
+          <div class="col-md-4">
+            <div class="card shadow-sm">
+              <div class="card-body">
+                <h5 class="card-title">${p.id}</h5>
+                <p class="mb-1"><strong>Cliente:</strong> ${p.cliente}</p>
+                <p class="mb-1"><strong>Estado:</strong> ${p.estado}</p>
+                <p class="mb-0 text-success"><strong>Total:</strong> $${p.total.toLocaleString('es-CL')}</p>
+              </div>
+            </div>
+          </div>`;
+      });
+    }
+
+    // Cargar simulación al iniciar
+    loadOrders();
+  </script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
