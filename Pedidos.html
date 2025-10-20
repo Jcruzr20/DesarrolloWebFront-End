@@ -13,97 +13,53 @@
 
   <!-- HEADER -->
   <nav class="navbar navbar-dark bg-dark">
-  <div class="container-fluid">
-    <!-- Logo (vuelve al Home principal) -->
-    <a class="navbar-brand d-flex align-items-center" href="index.html">
-      <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
-      <h2 class="mb-0">PolloAsado</h2>
-    </a>
-
-    <!-- Menú de navegación -->
-    <div class="d-flex align-items-center">
-      <!-- Enlace Promociones -->
-      <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
-        <i class="bi bi-megaphone-fill me-1"></i> Promociones
+    <div class="container-fluid">
+      <!-- Logo -->
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
+        <h2 class="mb-0">PolloAsado</h2>
       </a>
 
-      <!-- Usuario -->
-      <a href="registroUsuario.html" class="nav-link text-white me-3">
-        <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
-      </a>
-
-      <!-- Carrito -->
-      <a href="Pedidos.html" class="nav-link text-white">
-        <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
-      </a>
+      <div class="d-flex align-items-center">
+        <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
+          <i class="bi bi-megaphone-fill me-1"></i> Promociones
+        </a>
+        <a href="registroUsuario.html" class="nav-link text-white me-3">
+          <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
+        </a>
+        <a href="Pedidos.html" class="nav-link text-white position-relative">
+          <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
+          <span id="contadorCarrito" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"></span>
+        </a>
+      </div>
     </div>
-  </div>
   </nav>
 
   <!-- CONTENIDO PRINCIPAL -->
   <div class="container mt-4">
-    <!-- Título -->
-    <div class="row mb-3">
-      <div class="col text-center">
-        <h2>Registro de Pedido en Línea</h2>
-      </div>
-    </div>
+    <h2 class="text-center mb-4">🛒 Registro de Pedido en Línea</h2>
 
-    <!-- Sección Menú de Productos -->
     <div class="row">
+      <!-- LISTA DE PEDIDOS -->
       <div class="col-md-8">
         <div class="card">
-          <div class="card-header text-center">
-            <h5>Selecciona tus productos</h5>
+          <div class="card-header text-center bg-primary text-white">
+            <h5>Resumen de tu pedido</h5>
           </div>
-          <div class="card-body">
-            <div class="row g-3">
-              <!-- Producto 1 -->
-              <div class="col-md-6">
-                <div class="border p-3 d-flex flex-column align-items-center">
-                  <p>Pollo Asado</p>
-                  <button class="btn btn-sm btn-primary">Agregar</button>
-                </div>
-              </div>
-              <!-- Producto 2 -->
-              <div class="col-md-6">
-                <div class="border p-3 d-flex flex-column align-items-center">
-                  <p>Papas Fritas</p>
-                  <button class="btn btn-sm btn-primary">Agregar</button>
-                </div>
-              </div>
-              <!-- Producto 3 -->
-              <div class="col-md-6">
-                <div class="border p-3 d-flex flex-column align-items-center">
-                  <p>Bebida 2L</p>
-                  <button class="btn btn-sm btn-primary">Agregar</button>
-                </div>
-              </div>
-              <!-- Producto 4 -->
-              <div class="col-md-6">
-                <div class="border p-3 d-flex flex-column align-items-center">
-                  <p>Ensalada</p>
-                  <button class="btn btn-sm btn-primary">Agregar</button>
-                </div>
-              </div>
-            </div>
+          <div class="card-body" id="contenedorPedidos">
+            <p class="text-center text-muted">Cargando tus pedidos...</p>
           </div>
         </div>
       </div>
 
-      <!-- Sección Resumen Pedido -->
+      <!-- COLUMNA DERECHA: CUPONES Y TOTAL -->
       <div class="col-md-4">
         <div class="card">
           <div class="card-header text-center">
-            <h5>Resumen del Pedido</h5>
+            <h5>Finalizar compra</h5>
           </div>
           <div class="card-body">
-            <ul class="list-group mb-3">
-              <li class="list-group-item">Pollo Asado x1</li>
-              <li class="list-group-item">Papas Fritas x2</li>
-            </ul>
-
-            <!-- 🔹 Sección de Cupones -->
+            <!-- Cupones -->
             <div class="mb-3">
               <label for="cupon" class="form-label"><strong>Canjear cupón</strong></label>
               <div class="input-group">
@@ -117,16 +73,18 @@
               </div>
             </div>
 
-            <p><strong>Total:</strong> $15.000</p>
+            <!-- Total -->
+            <p class="text-end"><strong>Total:</strong> <span id="total">$0</span></p>
 
-            <!-- Redirige al archivo de pago -->
-            <a href="pagos.html" class="btn btn-success w-100">Confirmar Pedido</a>
+            <!-- Botones -->
+            <a href="pagos.html" class="btn btn-success w-100 mb-2">Confirmar Pedido</a>
+            <button class="btn btn-danger w-100" id="btnVaciar">Vaciar Carrito</button>
           </div>
         </div>
       </div>
     </div>
   </div>
-    <br>
+  <br>
   <br>
   <br>
   <br>
@@ -145,16 +103,13 @@
   <br>
 
   <!-- FOOTER -->
-  <footer class="bg-black text-white mt-auto mt-5">
+  <footer class="bg-black text-white mt-5">
     <div class="container py-4">
       <div class="row">
-        <!-- Logo -->
         <div class="col-md-3 mb-3">
           <h4>PolloFast</h4>
           <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" alt="logo" width="50" height="45" class="me-2">
         </div>
-
-        <!-- Conócenos -->
         <div class="col-md-3 mb-3">
           <h6>Conócenos</h6>
           <p class="mb-1">Teléfono</p>
@@ -162,16 +117,12 @@
           <p class="mb-1">Términos y condiciones</p>
           <p class="mb-0">Política de privacidad</p>
         </div>
-
-        <!-- Redes sociales -->
         <div class="col-md-3 mb-3">
           <h6>Redes sociales</h6>
           <p class="mb-1"><i class="bi bi-instagram"></i> Instagram</p>
           <p class="mb-1"><i class="bi bi-facebook"></i> Facebook</p>
           <p class="mb-0"><i class="bi bi-twitter-x"></i> X</p>
         </div>
-
-        <!-- Mi cuenta -->
         <div class="col-md-3 mb-3">
           <h6>Mi cuenta</h6>
           <p class="mb-1">Pedir</p>
@@ -184,21 +135,90 @@
     </div>
   </footer>
 
-  <!-- Script para simular cupón -->
+  <!-- SCRIPTS -->
   <script>
+    const contenedor = document.getElementById("contenedorPedidos");
+    const totalSpan = document.getElementById("total");
+    const contador = document.getElementById("contadorCarrito");
+    let total = 0;
+
+    function cargarPedidos() {
+      const pedidos = JSON.parse(localStorage.getItem("carrito")) || [];
+      contenedor.innerHTML = "";
+
+      if (pedidos.length === 0) {
+        contenedor.innerHTML = "<p class='text-center text-muted'>No hay pedidos en el carrito.</p>";
+        contador.textContent = "";
+        totalSpan.textContent = "$0";
+        return;
+      }
+
+      contador.textContent = pedidos.length;
+
+      pedidos.forEach((pedido, index) => {
+        const card = document.createElement("div");
+        card.className = "card mb-3 shadow-sm";
+        let itemsHTML = "";
+
+        pedido.items.forEach(item => {
+          itemsHTML += `<li class='list-group-item d-flex justify-content-between align-items-center'>
+                          ${item.nombre}
+                          <span class='badge bg-secondary'>x${item.cantidad}</span>
+                        </li>`;
+
+          // Intento estimar precios a partir del texto (simple simulación)
+          const precioTexto = item.nombre.match(/\$(\d+)/);
+          if (precioTexto) total += parseInt(precioTexto[1]) * item.cantidad;
+        });
+
+        card.innerHTML = `
+          <div class="card-body">
+            <h5 class="card-title text-center">${pedido.plato}</h5>
+            <ul class="list-group mb-2">${itemsHTML}</ul>
+            <p class="text-end text-muted"><small>${pedido.fecha}</small></p>
+            <div class="text-end">
+              <button class="btn btn-sm btn-outline-danger" onclick="eliminarPedido(${index})">
+                <i class="bi bi-trash"></i> Eliminar
+              </button>
+            </div>
+          </div>`;
+        contenedor.appendChild(card);
+      });
+
+      totalSpan.textContent = `$${total.toLocaleString("es-CL")}`;
+    }
+
+    function eliminarPedido(index) {
+      const pedidos = JSON.parse(localStorage.getItem("carrito")) || [];
+      pedidos.splice(index, 1);
+      localStorage.setItem("carrito", JSON.stringify(pedidos));
+      total = 0;
+      cargarPedidos();
+    }
+
+    document.getElementById("btnVaciar").addEventListener("click", () => {
+      localStorage.removeItem("carrito");
+      total = 0;
+      cargarPedidos();
+      alert("🧹 Carrito vaciado.");
+    });
+
     function aplicarCupon() {
       const cupon = document.getElementById('cupon').value.trim();
       if (cupon === '') {
         alert('Por favor, ingresa un código de cupón.');
       } else if (cupon === 'POLLO10') {
+        total *= 0.9;
+        totalSpan.textContent = `$${total.toLocaleString("es-CL")} (10% off)`;
         alert('¡Cupón válido! Se aplicó un 10% de descuento.');
       } else {
         alert('Cupón no válido o expirado.');
       }
     }
+
+    cargarPedidos();
   </script>
 
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
