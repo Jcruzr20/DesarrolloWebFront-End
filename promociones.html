@@ -8,113 +8,207 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <!-- Iconos -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
   <style>
+    body {
+      background-color: #f8f9fa;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
     .promo-img {
       width: 100%;
       height: 250px;
       object-fit: cover;
       border-radius: 8px;
     }
+
+    footer {
+      background-color: #000;
+      color: white;
+      margin-top: auto;
+      padding-top: 50px;
+      padding-bottom: 30px;
+    }
+
+    footer h4 {
+      color: #ffc107;
+      font-weight: 700;
+    }
+
+    footer small {
+      color: #bbb;
+    }
   </style>
 </head>
-<body class="bg-light">
+<body>
 
   <!-- NAVBAR -->
- <nav class="navbar navbar-dark bg-dark">
-  <div class="container-fluid">
-    <!-- Logo (vuelve al Home principal) -->
-    <a class="navbar-brand d-flex align-items-center" href="index.html">
-      <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
-      <h2 class="mb-0">PolloAsado</h2>
-    </a>
-
-    <!-- Menú de navegación -->
-    <div class="d-flex align-items-center">
-      <!-- Enlace Promociones -->
-      <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
-        <i class="bi bi-megaphone-fill me-1"></i> Promociones
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
+        <h2 class="mb-0">PolloAsado</h2>
       </a>
 
-      <!-- Usuario -->
-      <a href="registroUsuario.html" class="nav-link text-white me-3">
-        <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
-      </a>
-
-      <!-- Carrito -->
-      <a href="Pedidos.html" class="nav-link text-white">
-        <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
-      </a>
+      <div class="d-flex align-items-center">
+        <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
+          <i class="bi bi-megaphone-fill me-1"></i> Promociones
+        </a>
+        <a href="registroUsuario.html" class="nav-link text-white me-3">
+          <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
+        </a>
+        <a href="Pedidos.html" class="nav-link text-white">
+          <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
+        </a>
+      </div>
     </div>
-  </div>
   </nav>
 
   <!-- CONTENIDO -->
-  <div class="container mt-4">
+    <!-- CONTENIDO -->
+  <div class="container mt-4 mb-5">
     <h2 class="text-center">Recordatorio de Promociones</h2>
     <p class="text-center text-muted">Mira las promociones activas para esta semana</p>
 
     <div class="row g-4">
       <!-- Promo 1 -->
       <div class="col-md-6">
-        <div class="card text-center shadow-sm">
-          <img src="https://tb-static.uber.com/prod/image-proc/processed_images/d64986a727b37bc0a65ae7bc8910fa6d/fb86662148be855d931b37d6c1e5fcbe.jpeg" class="promo-img" alt="Promo 1">
+        <div class="card text-center shadow-sm promo-card">
+          <img src="https://tb-static.uber.com/prod/image-proc/processed_images/d64986a727b37bc0a65ae7bc8910fa6d/fb86662148be855d931b37d6c1e5fcbe.jpeg" 
+               class="promo-img" alt="Promo 1">
           <div class="card-body">
             <h5 class="card-title">Promoción de la Semana</h5>
             <p class="card-text">Box completo: Pollo Asado para 4 personas</p>
-            <button class="btn btn-outline-success">Ver Detalles</button>
+            <button class="btn btn-outline-success ver-detalles"
+              data-titulo="Promoción de la Semana"
+              data-descripcion="Disfruta un banquete familiar con pollo asado, papas, ensalada y bebida de 1.5L incluida."
+              data-fecha="Válido hasta el 30 de Octubre"
+              data-img="https://tb-static.uber.com/prod/image-proc/processed_images/d64986a727b37bc0a65ae7bc8910fa6d/fb86662148be855d931b37d6c1e5fcbe.jpeg">
+              Ver Detalles
+            </button>
           </div>
         </div>
       </div>
 
       <!-- Promo 2 -->
       <div class="col-md-6">
-        <div class="card text-center shadow-sm">
-          <img src="https://images2.mega.cl/meganoticias/2024/09/16/beneficios-bancoestado-fiestas-patrias_459108_3_66e84e84dcd08.jpg" class="promo-img" alt="Promo 2">
+        <div class="card text-center shadow-sm promo-card">
+          <img src="https://images2.mega.cl/meganoticias/2024/09/16/beneficios-bancoestado-fiestas-patrias_459108_3_66e84e84dcd08.jpg"
+               class="promo-img" alt="Promo 2">
           <div class="card-body">
             <h5 class="card-title">Descuento Martes y Jueves</h5>
             <p class="card-text">35% de descuento pagando con tarjeta débito.</p>
-            <button class="btn btn-outline-success">Ver Detalles</button>
+            <button class="btn btn-outline-success ver-detalles"
+              data-titulo="Descuento Martes y Jueves"
+              data-descripcion="Obtén un 35% de descuento en todos los combos de pollo los días martes y jueves, pagando con tarjeta débito."
+              data-fecha="Promoción válida todo Octubre"
+              data-img="https://images2.mega.cl/meganoticias/2024/09/16/beneficios-bancoestado-fiestas-patrias_459108_3_66e84e84dcd08.jpg">
+              Ver Detalles
+            </button>
           </div>
         </div>
       </div>
 
       <!-- Promo 3 -->
       <div class="col-md-6">
-        <div class="card text-center shadow-sm">
-          <img src="https://www.checkersandrallys.com/wp-content/uploads/2024/02/20230891_Chicken-Bites-Fries-Box-Combo.jpg" class="promo-img" alt="Promo 3">
+
+        <div class="card text-center shadow-sm promo-card">
+          <img src="img/combox6.png" class="promo-img" alt="Promo 3">
           <div class="card-body">
             <h5 class="card-title">Combo 6</h5>
             <p class="card-text">Chicken Bites + Bebida</p>
-            <button class="btn btn-outline-success">Ver Detalles</button>
+            <button class="btn btn-outline-success ver-detalles"
+              data-titulo="Combo 6"
+              data-descripcion="Una opción rápida y deliciosa: Chicken Bites crujientes con papas y bebida a elección."
+              data-fecha="Disponible todo el mes"
+              data-img="img/combox6.png">
+              Ver Detalles
+            </button>
           </div>
         </div>
       </div>
 
       <!-- Promo 4 -->
       <div class="col-md-6">
-        <div class="card text-center shadow-sm">
-          <img src="https://realplaza.vtexassets.com/arquivos/ids/20623126-800-auto?v=637799495453200000&width=800&height=auto&aspect=true" class="promo-img" alt="Promo 4">
+        <div class="card text-center shadow-sm promo-card">
+          <img src="https://realplaza.vtexassets.com/arquivos/ids/20623126-800-auto?v=637799495453200000&width=800&height=auto&aspect=true"
+               class="promo-img" alt="Promo 4">
           <div class="card-body">
             <h5 class="card-title">Colaciones</h5>
             <p class="card-text">Colación con papas fritas y bebida incluida.</p>
-            <button class="btn btn-outline-success">Ver Detalles</button>
+            <button class="btn btn-outline-success ver-detalles"
+              data-titulo="Colaciones"
+              data-descripcion="Ideal para la hora de almuerzo: Pollo asado, papas fritas y bebida pequeña. ¡Listo para llevar!"
+              data-fecha="De lunes a viernes"
+              data-img="https://realplaza.vtexassets.com/arquivos/ids/20623126-800-auto?v=637799495453200000&width=800&height=auto&aspect=true">
+              Ver Detalles
+            </button>
           </div>
         </div>
       </div>
     </div>
 
+    <br><br>
+
     <!-- Control de recordatorios -->
-    <div class="mt-4 text-center">
+    <div class="mt-5 text-center">
+      <h5><i class="bi bi-megaphone-fill me-2"></i> Notificaciones de Promociones</h5>
+      <p class="text-muted">Activa los recordatorios por correo para recibir las mejores ofertas.</p>
+
       <div class="form-check form-switch d-inline-block">
-        <input class="form-check-input" type="checkbox" id="switchPromo" checked>
-        <label class="form-check-label" for="switchPromo">Recibir recordatorios de promociones</label>
+        <input class="form-check-input" type="checkbox" id="switchPromo">
+        <label class="form-check-label" for="switchPromo">Recibir recordatorios</label>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Suscripción -->
+  <div class="modal fade" id="modalPromo" tabindex="-1" aria-labelledby="modalPromoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title" id="modalPromoLabel">
+            <i class="bi bi-envelope-heart me-2"></i>Suscribirse a Promociones
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body">
+          <p>Ingresa tu correo para recibir notificaciones de promociones, descuentos y combos especiales.</p>
+          <form id="formSuscripcion">
+            <div class="mb-3">
+              <label for="correoPromo" class="form-label">Correo electrónico</label>
+              <input type="email" id="correoPromo" class="form-control" placeholder="nombre@ejemplo.com" required>
+            </div>
+            <button type="submit" class="btn btn-success w-100">Activar Promociones</button>
+          </form>
+          <div id="mensajePromo" class="text-center mt-3 fw-semibold"></div>
+        </div>
       </div>
     </div>
   </div>
 
+  <!-- Modal de detalles -->
+  <div class="modal fade" id="modalDetalles" tabindex="-1" aria-labelledby="modalDetallesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header bg-warning text-dark">
+          <h5 class="modal-title" id="modalDetallesLabel"></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+        </div>
+        <div class="modal-body text-center">
+          <img id="detalleImg" src="" class="img-fluid rounded mb-3" style="max-height: 300px; object-fit: cover;">
+          <p id="detalleDescripcion" class="mb-2"></p>
+          <p id="detalleFecha" class="text-muted small"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <!-- FOOTER -->
-  <footer class="bg-black text-white mt-5">
-    <div class="container py-4">
+  <footer>
+    <div class="container">
       <div class="row">
         <!-- Logo -->
         <div class="col-md-3 mb-3">
@@ -154,5 +248,78 @@
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Script funcional -->
+  <script>
+    const switchPromo = document.getElementById('switchPromo');
+    const formSuscripcion = document.getElementById('formSuscripcion');
+    const mensajePromo = document.getElementById('mensajePromo');
+    const correoInput = document.getElementById('correoPromo');
+
+    // Cargar estado guardado
+    const promoActiva = localStorage.getItem('promoActiva');
+    if (promoActiva === 'true') {
+      switchPromo.checked = true;
+    }
+
+    // Detectar cambio en el switch
+    switchPromo.addEventListener('change', () => {
+      if (switchPromo.checked) {
+        const modal = new bootstrap.Modal(document.getElementById('modalPromo'));
+        modal.show();
+      } else {
+        localStorage.removeItem('correoPromo');
+        localStorage.setItem('promoActiva', 'false');
+        alert('❌ Has desactivado los recordatorios de promociones.');
+      }
+    });
+
+    // Manejar formulario
+    formSuscripcion.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const correo = correoInput.value.trim();
+      if (!correo) return;
+
+      localStorage.setItem('correoPromo', correo);
+      localStorage.setItem('promoActiva', 'true');
+
+      mensajePromo.innerHTML = `
+        <div class="alert alert-success">
+          ✅ ¡Suscripción completada! Recibirás nuestras promociones en <strong>${correo}</strong>.
+        </div>
+      `;
+      setTimeout(() => {
+        const modal = bootstrap.Modal.getInstance(document.getElementById('modalPromo'));
+        modal.hide();
+      }, 1800);
+    });
+    
+  </script>
+    <script>
+    // Modal de detalles
+    const botonesDetalles = document.querySelectorAll(".ver-detalles");
+    const modalDetalles = new bootstrap.Modal(document.getElementById("modalDetalles"));
+    const modalTitulo = document.getElementById("modalDetallesLabel");
+    const modalImg = document.getElementById("detalleImg");
+    const modalDesc = document.getElementById("detalleDescripcion");
+    const modalFecha = document.getElementById("detalleFecha");
+
+    botonesDetalles.forEach(boton => {
+      boton.addEventListener("click", () => {
+        const titulo = boton.getAttribute("data-titulo");
+        const descripcion = boton.getAttribute("data-descripcion");
+        const fecha = boton.getAttribute("data-fecha");
+        const img = boton.getAttribute("data-img");
+
+        modalTitulo.textContent = titulo;
+        modalImg.src = img;
+        modalDesc.textContent = descripcion;
+        modalFecha.textContent = fecha;
+
+        modalDetalles.show();
+      });
+    });
+  </script>
+
 </body>
 </html>

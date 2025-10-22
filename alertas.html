@@ -3,129 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alertas de Tiempos</title>
-  <!-- Bootstrap -->
+  <title>Alertas de Tiempos - PolloAsado</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Iconos -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+    body { background-color: #f8f9fa; min-height: 100vh; display: flex; flex-direction: column; }
+    footer { margin-top: auto; background: #000; color: #fff; padding: 40px 0; }
+    .table-warning td { font-weight: 600; }
+  </style>
 </head>
-<body class="bg-light">
+<body>
 
   <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
-      <!-- Logo + Nombre -->
       <a class="navbar-brand d-flex align-items-center" href="index.html">
         <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
         <h2 class="mb-0">PolloAsado</h2>
       </a>
 
-      <!-- Botón hamburguesa en móviles -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <!-- Íconos -->
-      <div class="collapse navbar-collapse" id="navbarContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0"></ul>
-        <div class="d-flex">
-          <a href="registroUsuario.html" class="nav-link text-white me-3">
-            <i class="bi bi-person-circle" style="font-size: 1.5rem;"></i>
-          </a>
-          <a href="Pedidos.html" class="nav-link text-white">
-            <i class="bi bi-cart3" style="font-size: 1.5rem;"></i>
-          </a>
-        </div>
+      <div class="d-flex align-items-center">
+        <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
+          <i class="bi bi-megaphone-fill me-1"></i> Promociones
+        </a>
+        <a href="registroUsuario.html" class="nav-link text-white me-3">
+          <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
+        </a>
+        <a href="Pedidos.html" class="nav-link text-white">
+          <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
+        </a>
       </div>
     </div>
   </nav>
 
   <!-- CONTENIDO -->
   <div class="container mt-4">
-    <h2 class="text-center">Alertas de Tiempos de Cocción</h2>
-    <p class="text-center text-muted">Control en tiempo real de pedidos en preparación</p>
+    <h2 class="text-center mb-3">Alertas de Tiempos de Cocción</h2>
+    <p class="text-center text-muted">Monitoreo en tiempo real de los pedidos en preparación</p>
 
-    <!-- Tabla de pedidos con tiempos -->
-    <table class="table table-hover align-middle text-center">
+    <table class="table table-hover align-middle text-center shadow-sm">
       <thead class="table-dark">
         <tr>
           <th>ID Pedido</th>
           <th>Cliente</th>
           <th>Detalle</th>
-          <th>Tiempo en preparación</th>
+          <th>Tiempo</th>
           <th>Estado</th>
         </tr>
       </thead>
-      <tbody>
-        <!-- Pedido en tiempo correcto -->
-        <tr>
-          <td>#101</td>
-          <td>Nombre</td>
-          <td>Pollo Asado + Papas</td>
-          <td>15 min</td>
-          <td><span class="badge bg-success">Dentro del tiempo</span></td>
-        </tr>
-        <!-- Pedido con alerta -->
-        <tr class="table-warning">
-          <td>#102</td>
-          <td>Nombre</td>
-          <td>Combo Familiar</td>
-          <td>22 min</td>
-          <td><span class="badge bg-danger">¡Alerta! Retrasado</span></td>
-        </tr>
-        <!-- Pedido listo -->
-        <tr>
-          <td>#103</td>
-          <td>Nombre</td>
-          <td>Combo XL</td>
-          <td>18 min</td>
-          <td><span class="badge bg-primary">Listo</span></td>
-        </tr>
+      <tbody id="tablaAlertas">
+        <tr><td colspan="5" class="text-muted">Cargando pedidos...</td></tr>
       </tbody>
     </table>
 
-    <!-- 🔹 Botón para asignar repartidor -->
     <div class="text-center mt-3">
+      <a href="panelControl.html" class="btn btn-outline-secondary me-2">
+        <i class="bi bi-arrow-left-circle"></i> Volver al Panel de Cocina
+      </a>
       <a href="asignacion.html" class="btn btn-warning">
-        <i class="bi bi-person-gear me-2"></i> Asignar repartidor
+        <i class="bi bi-person-gear me-2"></i> Asignar Repartidor
       </a>
     </div>
 
-    <!-- Sección de configuración -->
-    <div class="card mt-4">
-      <div class="card-header bg-dark text-white">
-        Configuración de Alertas
-      </div>
+    <div class="card mt-4 shadow-sm">
+      <div class="card-header bg-dark text-white">Configuración de Alertas</div>
       <div class="card-body">
         <label for="tiempoMax" class="form-label">Tiempo máximo permitido (minutos):</label>
-        <input type="number" id="tiempoMax" class="form-control w-25" value="20">
-        <button class="btn btn-primary mt-3">Guardar Configuración</button>
-        <!-- 🔹 Botón volver al panel principal -->
-        <a href="panelControl.html" class="btn btn-outline-secondary mt-3 ms-2">Volver al Panel de Control</a>
+        <input type="number" id="tiempoMax" class="form-control w-25 d-inline-block" value="20">
+        <button class="btn btn-primary ms-2" id="guardarConfig"><i class="bi bi-save"></i> Guardar</button>
+        <span id="mensajeConfig" class="ms-3 text-success fw-semibold"></span>
       </div>
     </div>
   </div>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
 
-  <!-- FOOTER -->
-  <footer class="bg-black text-white mt-auto mt-5">
-    <div class="container py-4">
+  <footer>
+    <div class="container">
       <div class="row">
         <!-- Logo -->
         <div class="col-md-3 mb-3">
@@ -163,7 +115,83 @@
     </div>
   </footer>
 
-  <!-- Bootstrap JS -->
+  <!-- SCRIPT -->
+  <script>
+    const tabla = document.getElementById("tablaAlertas");
+    const inputTiempo = document.getElementById("tiempoMax");
+    const btnGuardar = document.getElementById("guardarConfig");
+    const mensajeConfig = document.getElementById("mensajeConfig");
+
+    const tiempoMax = parseInt(localStorage.getItem("tiempoMax")) || 20;
+    inputTiempo.value = tiempoMax;
+
+    btnGuardar.addEventListener("click", () => {
+      localStorage.setItem("tiempoMax", inputTiempo.value);
+      mensajeConfig.textContent = "✅ Guardado correctamente";
+      setTimeout(() => mensajeConfig.textContent = "", 2000);
+    });
+
+    let alertasSonadas = new Set();
+
+    function reproducirAlerta(pedido) {
+      if (alertasSonadas.has(pedido.id)) return;
+      alertasSonadas.add(pedido.id);
+
+      const alerta = new Audio("https://cdn.pixabay.com/audio/2022/03/15/audio_68c5b1b7e8.mp3");
+      alerta.play();
+
+      if (Notification.permission === "granted") {
+        new Notification(`Pedido #${pedido.id} retrasado`, {
+          body: `${pedido.plato} lleva ${pedido.tiempo} min.`,
+          icon: "https://cdn-icons-png.flaticon.com/512/1206/1206237.png"
+        });
+      }
+    }
+
+    if (Notification.permission !== "granted") {
+      Notification.requestPermission();
+    }
+
+    function actualizarTabla() {
+      const pedidos = JSON.parse(localStorage.getItem("pedidosCocina")) || [];
+      tabla.innerHTML = "";
+
+      if (pedidos.length === 0) {
+        tabla.innerHTML = `<tr><td colspan="5" class="text-muted">No hay pedidos activos.</td></tr>`;
+        return;
+      }
+
+      pedidos.forEach(p => {
+        let estado = "";
+        let filaClass = "";
+
+        if (p.estado === "Listo para entrega") {
+          estado = `<span class="badge bg-primary">Listo</span>`;
+        } else if (p.estado === "Retrasado") {
+          estado = `<span class="badge bg-danger">⚠️ Retrasado</span>`;
+          filaClass = "table-warning";
+          reproducirAlerta(p);
+        } else if (p.estado === "En preparación") {
+          estado = `<span class="badge bg-success">En tiempo</span>`;
+        } else {
+          estado = `<span class="badge bg-secondary">${p.estado}</span>`;
+        }
+
+        tabla.innerHTML += `
+          <tr class="${filaClass}">
+            <td>#${p.id}</td>
+            <td>${p.cliente}</td>
+            <td>${p.plato}</td>
+            <td>${p.tiempo} min</td>
+            <td>${estado}</td>
+          </tr>`;
+      });
+    }
+
+    setInterval(actualizarTabla, 5000);
+    actualizarTabla();
+  </script>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

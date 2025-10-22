@@ -70,9 +70,14 @@
                 <input type="password" class="form-control" id="passwordLogin" placeholder="Tu contraseña" required>
               </div>
 
-              <div class="form-check mb-3">
-                <input class="form-check-input" type="checkbox" id="remember">
-                <label class="form-check-label" for="remember">Recordarme</label>
+              <div class="d-flex justify-content-between align-items-center mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" id="remember">
+                  <label class="form-check-label" for="remember">Recordarme</label>
+                </div>
+                <a href="reestablecer.html" class="small text-decoration-none text-primary">
+                  ¿Olvidaste tu contraseña?
+                </a>
               </div>
 
               <button type="submit" class="btn btn-primary w-100">Ingresar</button>
@@ -198,13 +203,11 @@
       const pass = document.getElementById("passwordRegister").value.trim();
       const confirm = document.getElementById("passwordConfirm").value.trim();
 
-      // Contraseñas distintas
       if (pass !== confirm) {
         mensaje.innerHTML = `<div class="alert alert-danger">❌ Las contraseñas no coinciden.</div>`;
         return;
       }
 
-      // Verificar si el correo es del personal
       const esCocinero = cuentas.cocineros.some(c => c.correo === correo);
       const esRepartidor = cuentas.repartidores.some(r => r.correo === correo);
       if (esCocinero || esRepartidor) {
@@ -212,14 +215,12 @@
         return;
       }
 
-      // Verificar si ya existe un cliente
       const clientes = JSON.parse(localStorage.getItem("clientes")) || [];
       if (clientes.some(c => c.correo === correo)) {
         mensaje.innerHTML = `<div class="alert alert-danger">❌ Este correo ya está registrado.</div>`;
         return;
       }
 
-      // Guardar cliente nuevo
       clientes.push({ correo, pass });
       localStorage.setItem("clientes", JSON.stringify(clientes));
       mensaje.innerHTML = `<div class="alert alert-success">✅ Registro exitoso. ¡Bienvenido!</div>`;
