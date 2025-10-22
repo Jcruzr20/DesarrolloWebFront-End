@@ -4,20 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Panel Repartidor - PolloAsado</title>
-  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Iconos -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
-
   <style>
-    body { background:#f8f9fa; }
-    .pedido-card { border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,.05); transition:transform .15s; }
-    .pedido-card:hover { transform:translateY(-4px); }
+    body { background: #f8f9fa; min-height: 100vh; display: flex; flex-direction: column; }
+    footer { background: #000; color: white; margin-top: auto; padding: 40px 0; }
+    footer h4 { color: #ffc107; }
+    .pedido-card { border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,.1); transition:transform .15s; }
+    .pedido-card:hover { transform: translateY(-4px); }
     .pedido-header { font-weight:600; }
     .estado-badge { min-width:100px; }
+    .progress { height: 10px; border-radius: 5px; }
   </style>
 </head>
-<body class="bg-light">
+<body>
 
   <!-- NAVBAR -->
   <nav class="navbar navbar-dark bg-dark">
@@ -26,7 +26,6 @@
         <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="45" height="40" class="me-2">
         <h2 class="mb-0">PolloAsado</h2>
       </a>
-
       <div class="d-flex">
         <a href="registroUsuario.html" class="nav-link text-white me-3">
           <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
@@ -40,103 +39,181 @@
 
   <!-- CONTENIDO -->
   <div class="container my-4">
-    <h3 class="text-center mb-4">📦 Panel del Repartidor</h3>
-    <p class="text-center text-muted mb-5">Aquí el repartidor podrá visualizar los pedidos asignados y actualizar su estado.</p>
+    <h3 class="text-center mb-3">📦 Panel del Repartidor</h3>
+    <p class="text-center text-muted mb-4">Gestiona tus pedidos asignados en tiempo real.</p>
 
-    <!-- Filtros y búsqueda (mock visual) -->
+    <!-- FILTROS -->
     <div class="row mb-4">
       <div class="col-md-6">
-        <select class="form-select">
-          <option>Todos los estados</option>
-          <option>Asignado</option>
-          <option>En camino</option>
-          <option>Entregado</option>
+        <select id="filtroEstado" class="form-select">
+          <option value="Todos">Todos los estados</option>
+          <option value="Asignado">Asignado</option>
+          <option value="En camino">En camino</option>
+          <option value="Entregado">Entregado</option>
         </select>
       </div>
       <div class="col-md-6 mt-2 mt-md-0">
-        <input type="text" class="form-control" placeholder="Buscar por ID o dirección...">
+        <input type="text" id="buscarPedido" class="form-control" placeholder="Buscar por ID o dirección...">
       </div>
     </div>
 
-    <!-- Pedidos -->
-    <div class="row g-4">
-      <!-- Pedido 1 -->
-      <div class="col-md-6">
-        <div class="card pedido-card">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start">
-              <div>
-                <h5 class="pedido-header mb-1">Pedido #R-1001</h5>
-                <span class="badge bg-secondary estado-badge">Asignado</span>
-              </div>
-              <div class="text-end">
-                <p class="mb-1 text-muted small">Av. Libertador 123, Santiago</p>
-                <p class="mb-1"><strong>$12.000</strong></p>
-                <p class="mb-0 text-muted small">ETA: 20 min</p>
-              </div>
-            </div>
-            <hr>
-            <p><i class="bi bi-list-ul me-2"></i>Pollo Asado + Papas + Bebida 1.5L</p>
-            <div class="d-flex gap-2 flex-wrap">
-              <button class="btn btn-sm btn-primary"><i class="bi bi-check2-circle me-1"></i>Aceptar</button>
-              <button class="btn btn-sm btn-warning text-dark"><i class="bi bi-truck me-1"></i>En camino</button>
-              <button class="btn btn-sm btn-success"><i class="bi bi-flag-checkered me-1"></i>Entregado</button>
-              <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-geo-alt me-1"></i>Ver mapa</button>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- LISTA DE PEDIDOS -->
+    <div id="listaPedidos" class="row g-4"></div>
 
-      <!-- Pedido 2 -->
-      <div class="col-md-6">
-        <div class="card pedido-card">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start">
-              <div>
-                <h5 class="pedido-header mb-1">Pedido #R-1002</h5>
-                <span class="badge bg-warning text-dark estado-badge">En camino</span>
-              </div>
-              <div class="text-end">
-                <p class="mb-1 text-muted small">Calle Los Robles 456</p>
-                <p class="mb-1"><strong>$23.000</strong></p>
-                <p class="mb-0 text-muted small">ETA: 10 min</p>
-              </div>
-            </div>
-            <hr>
-            <p><i class="bi bi-list-ul me-2"></i>Combo Familiar</p>
-            <div class="d-flex gap-2 flex-wrap">
-              <button class="btn btn-sm btn-success"><i class="bi bi-flag-checkered me-1"></i>Entregado</button>
-              <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-geo-alt me-1"></i>Ver mapa</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Pedido 3 -->
-      <div class="col-md-6">
-        <div class="card pedido-card">
-          <div class="card-body">
-            <div class="d-flex justify-content-between align-items-start">
-              <div>
-                <h5 class="pedido-header mb-1">Pedido #R-1003</h5>
-                <span class="badge bg-success estado-badge">Entregado</span>
-              </div>
-              <div class="text-end">
-                <p class="mb-1 text-muted small">Pasaje Luna 55</p>
-                <p class="mb-1"><strong>$8.000</strong></p>
-                <p class="mb-0 text-muted small">ETA: —</p>
-              </div>
-            </div>
-            <hr>
-            <p><i class="bi bi-list-ul me-2"></i>Burger Crispy x2</p>
-            <div class="d-flex gap-2 flex-wrap">
-              <button class="btn btn-sm btn-outline-secondary"><i class="bi bi-geo-alt me-1"></i>Ver mapa</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Botones inferiores -->
+    <!-- BOTONES INFERIORES -->
     <div class="text-center mt-5">
-      <a href="asignacion.html" class="btn btn-warning"><i class="bi bi-person-gear me-2"></i>Ir a asigna
+      <a href="asignacion.html" class="btn btn-warning me-2">
+        <i class="bi bi-person-gear me-2"></i> Ir a Asignación
+      </a>
+      <a href="panelCocina.html" class="btn btn-outline-secondary me-2">
+        <i class="bi bi-arrow-left-circle me-2"></i> Panel Cocina
+      </a>
+      <a href="index.html" class="btn btn-danger">
+        <i class="bi bi-box-arrow-right me-2"></i> Cerrar sesión
+      </a>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="row text-center text-md-start">
+        <div class="col-md-3 mb-3">
+          <h4>PolloFast</h4>
+          <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45">
+        </div>
+        <div class="col-md-3 mb-3">
+          <h6>Conócenos</h6>
+          <p>Teléfono</p>
+          <p>Mail de contacto</p>
+          <p>Términos y condiciones</p>
+          <p>Política de privacidad</p>
+        </div>
+        <div class="col-md-3 mb-3">
+          <h6>Redes sociales</h6>
+          <p><i class="bi bi-instagram"></i> Instagram</p>
+          <p><i class="bi bi-facebook"></i> Facebook</p>
+          <p><i class="bi bi-twitter-x"></i> X</p>
+        </div>
+        <div class="col-md-3 mb-3">
+          <h6>Mi cuenta</h6>
+          <p>Pedir</p>
+          <p>Iniciar sesión</p>
+        </div>
+      </div>
+      <div class="text-center mt-3">
+        <small><i class="bi bi-circle"></i></small>
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT -->
+  <script>
+    // 🔗 Leer pedidos desde la Asignación
+    let pedidosAsignados = JSON.parse(localStorage.getItem("pedidosAsignados")) || [];
+    let pedidos = JSON.parse(localStorage.getItem("pedidosRepartidor")) || [];
+
+    // Si hay nuevos pedidos asignados, agregarlos al panel del repartidor
+    if (pedidosAsignados.length > 0) {
+      pedidosAsignados.forEach(p => {
+        // Evitar duplicados
+        if (!pedidos.some(x => x.id === "R-" + p.id)) {
+          pedidos.push({
+            id: "R-" + p.id,
+            cliente: p.cliente,
+            direccion: p.direccion || "Dirección no registrada",
+            plato: p.plato || "",
+            precio: 10000 + Math.floor(Math.random() * 15000), // simula precios
+            estado: "Asignado",
+            eta: "20 min",
+            detalle: p.plato || "Pedido personalizado",
+            progreso: 0
+          });
+        }
+      });
+      localStorage.setItem("pedidosRepartidor", JSON.stringify(pedidos));
+    }
+
+    const lista = document.getElementById("listaPedidos");
+    const filtroEstado = document.getElementById("filtroEstado");
+    const buscarPedido = document.getElementById("buscarPedido");
+
+    function renderPedidos() {
+      lista.innerHTML = "";
+      let filtrados = pedidos.filter(p => {
+        const coincideFiltro = filtroEstado.value === "Todos" || p.estado === filtroEstado.value;
+        const coincideBusqueda = p.id.toLowerCase().includes(buscarPedido.value.toLowerCase()) ||
+                                 p.direccion.toLowerCase().includes(buscarPedido.value.toLowerCase());
+        return coincideFiltro && coincideBusqueda;
+      });
+
+      if (filtrados.length === 0) {
+        lista.innerHTML = `<p class="text-center text-muted">No se encontraron pedidos.</p>`;
+        return;
+      }
+
+      filtrados.forEach(p => {
+        let colorBadge = "bg-secondary";
+        if (p.estado === "En camino") colorBadge = "bg-warning text-dark";
+        if (p.estado === "Entregado") colorBadge = "bg-success";
+
+        lista.innerHTML += `
+        <div class="col-md-6">
+          <div class="card pedido-card">
+            <div class="card-body">
+              <div class="d-flex justify-content-between align-items-start">
+                <div>
+                  <h5 class="pedido-header mb-1">Pedido #${p.id}</h5>
+                  <span class="badge ${colorBadge} estado-badge">${p.estado}</span>
+                </div>
+                <div class="text-end">
+                  <p class="mb-1 text-muted small">${p.direccion}</p>
+                  <p class="mb-1"><strong>$${p.precio.toLocaleString()}</strong></p>
+                  <p class="mb-0 text-muted small">ETA: ${p.eta}</p>
+                </div>
+              </div>
+              <hr>
+              <p><i class="bi bi-list-ul me-2"></i>${p.detalle}</p>
+              <div class="progress mb-2">
+                <div class="progress-bar ${p.estado === "Entregado" ? "bg-success" : "bg-info"}"
+                     style="width:${p.progreso}%"></div>
+              </div>
+              <div class="d-flex gap-2 flex-wrap">
+                <button class="btn btn-sm btn-primary" onclick="actualizarEstado('${p.id}','En camino')">
+                  <i class="bi bi-truck me-1"></i> En camino
+                </button>
+                <button class="btn btn-sm btn-success" onclick="actualizarEstado('${p.id}','Entregado')">
+                  <i class="bi bi-flag-checkered me-1"></i> Entregado
+                </button>
+                <button class="btn btn-sm btn-outline-secondary" onclick="verMapa('${p.id}')">
+                  <i class="bi bi-geo-alt me-1"></i> Ver mapa
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>`;
+      });
+    }
+
+    function actualizarEstado(id, nuevoEstado) {
+      const pedido = pedidos.find(p => p.id === id);
+      if (!pedido) return;
+
+      pedido.estado = nuevoEstado;
+      if (nuevoEstado === "En camino") pedido.progreso = 50;
+      if (nuevoEstado === "Entregado") pedido.progreso = 100;
+      localStorage.setItem("pedidosRepartidor", JSON.stringify(pedidos));
+      renderPedidos();
+    }
+
+    function verMapa(id) {
+      alert(`🗺️ Mostrando la ruta del pedido ${id} (simulación).`);
+    }
+
+    filtroEstado.addEventListener("change", renderPedidos);
+    buscarPedido.addEventListener("input", renderPedidos);
+
+    renderPedidos();
+  </script>
+</body>
+</html>

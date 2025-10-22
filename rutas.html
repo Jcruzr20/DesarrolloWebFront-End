@@ -3,139 +3,106 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Planificación de Rutas</title>
-  <!-- Bootstrap -->
+  <title>Planificación de Rutas - PolloAsado</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Iconos -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <style>
-    .mapa-simulado {
-      width: 100%;
-      height: 300px;
-      background: url("https://i.imgur.com/6IUbEMu.png") center/cover no-repeat; 
-      border: 2px solid #ccc;
-      border-radius: 8px;
+    body {
+      background-color: #f8f9fa;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
+    footer {
+      background: #000;
+      color: #fff;
+      margin-top: auto;
+      padding: 40px 0;
+    }
+    footer h4 { color: #ffc107; font-weight: bold; }
+    footer h6 { font-weight: 600; }
+    .mapa-contenedor {
+      position: relative;
+      width: 100%;
+      max-width: 700px;
+      margin: 25px auto;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+    .mapa-contenedor img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .moto {
+      position: absolute;
+      width: 45px;
+      height: 45px;
+      transition: all 1s ease-in-out;
+      filter: drop-shadow(2px 2px 3px rgba(0,0,0,0.5));
+    }
+    .progress { height: 20px; border-radius: 10px; }
   </style>
 </head>
-<body class="bg-light">
+<body>
 
   <!-- NAVBAR -->
   <nav class="navbar navbar-dark bg-dark">
-  <div class="container-fluid">
-    <!-- Logo (vuelve al Home principal) -->
-    <a class="navbar-brand d-flex align-items-center" href="index.html">
-      <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
-      <h2 class="mb-0">PolloAsado</h2>
-    </a>
-
-    <!-- Menú de navegación -->
-    <div class="d-flex align-items-center">
-      <!-- Enlace Promociones -->
-      <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
-        <i class="bi bi-megaphone-fill me-1"></i> Promociones
-      </a>
-
-      <!-- Usuario -->
-      <a href="registroUsuario.html" class="nav-link text-white me-3">
-        <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
-      </a>
-
-      <!-- Carrito -->
-      <a href="Pedidos.html" class="nav-link text-white">
-        <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
+        <h2 class="mb-0">PolloAsado</h2>
       </a>
     </div>
-  </div>
   </nav>
 
   <!-- CONTENIDO -->
   <div class="container mt-4">
-    <h2 class="text-center">Planificación de Rutas</h2>
-    <p class="text-center text-muted">Ruta óptima y tiempos de entrega</p>
+    <h2 class="text-center mb-3">Planificación de Rutas</h2>
+    <p class="text-center text-muted">Seguimiento automático de los repartidores en tiempo real</p>
 
-    <!-- Mapa simulado -->
-    <!-- Mapa simulado -->
-    <div class="d-flex justify-content-center my-4">
-      <img src="https://img.freepik.com/vector-premium/mapa-ciudad-ruta-gps-plan-ruta-navegacion-callejera_152104-219.jpg" 
-          alt="Mapa simulado" 
-          class="img-fluid rounded shadow" 
-          style="max-width: 600px; height: auto;">
+    <!-- MAPA ANIMADO -->
+    <div class="mapa-contenedor" id="mapa">
+      <img src="https://img.freepik.com/vector-premium/mapa-ciudad-ruta-gps-plan-ruta-navegacion-callejera_152104-219.jpg" alt="Mapa">
     </div>
 
-    <!-- Lista de pedidos asignados -->
-    <div class="card mb-3">
-      <div class="card-body">
-        <h5 class="card-title">Pedido #3001</h5>
-        <p><strong>Dirección:</strong> Av. Principal 123</p>
-        <p><strong>Tiempo estimado:</strong> 20 min</p>
-        <span class="badge bg-success">En ruta</span>
-      </div>
-    </div>
+    <!-- LISTA DE PEDIDOS -->
+    <div id="listaRutas"></div>
 
-    <div class="card mb-3">
-      <div class="card-body">
-        <h5 class="card-title">Pedido #3002</h5>
-        <p><strong>Dirección:</strong> Calle Los Olivos 456</p>
-        <p><strong>Tiempo estimado:</strong> 35 min</p>
-        <span class="badge bg-warning text-dark">Pendiente</span>
-      </div>
-    </div>
-
-    <!-- Caso de error -->
-    <div class="alert alert-danger">
-      <i class="bi bi-exclamation-triangle-fill"></i> No se pudo calcular la ruta en este momento. Intenta más tarde.
+    <div class="text-center mt-4">
+      <a href="asignacion.html" class="btn btn-outline-secondary">
+        <i class="bi bi-arrow-left-circle me-2"></i> Volver a Asignación
+      </a>
     </div>
   </div>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+  <br><br><br><br><br><br><br><br>
+
   <!-- FOOTER -->
-  <footer class="bg-black text-white mt-auto">
-    <div class="container py-4">
-      <div class="row">
-        <!-- Logo -->
+  <footer>
+    <div class="container">
+      <div class="row text-center text-md-start">
         <div class="col-md-3 mb-3">
           <h4>PolloFast</h4>
-          <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" alt="logo" width="50" height="45" class="me-2">
+          <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45">
         </div>
-
-        <!-- Conócenos -->
         <div class="col-md-3 mb-3">
           <h6>Conócenos</h6>
-          <p class="mb-1">Teléfono</p>
-          <p class="mb-1">Mail de contacto</p>
-          <p class="mb-1">Términos y condiciones</p>
-          <p class="mb-0">Política de privacidad</p>
+          <p>Teléfono</p>
+          <p>Mail de contacto</p>
+          <p>Términos y condiciones</p>
+          <p>Política de privacidad</p>
         </div>
-
-        <!-- Redes sociales -->
         <div class="col-md-3 mb-3">
           <h6>Redes sociales</h6>
-          <p class="mb-1"><i class="bi bi-instagram"></i> Instagram</p>
-          <p class="mb-1"><i class="bi bi-facebook"></i> Facebook</p>
-          <p class="mb-0"><i class="bi bi-twitter-x"></i> X</p>
+          <p><i class="bi bi-instagram"></i> Instagram</p>
+          <p><i class="bi bi-facebook"></i> Facebook</p>
+          <p><i class="bi bi-twitter-x"></i> X</p>
         </div>
-
-        <!-- Mi cuenta -->
         <div class="col-md-3 mb-3">
           <h6>Mi cuenta</h6>
-          <p class="mb-1">Pedir</p>
-          <p class="mb-0">Iniciar sesión</p>
+          <p>Pedir</p>
+          <p>Iniciar sesión</p>
         </div>
       </div>
       <div class="text-center mt-3">
@@ -144,8 +111,103 @@
     </div>
   </footer>
 
-
-  <!-- Bootstrap JS -->
+  <!-- JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    const mapa = document.getElementById("mapa");
+    const contenedor = document.getElementById("listaRutas");
+
+    // Datos base (se podrían sincronizar desde asignación)
+    let pedidos = JSON.parse(localStorage.getItem("pedidosEntrega")) || [
+      { id: 103, cliente: "Juan Pérez", direccion: "Av. Los Leones 1234", estado: "En ruta", repartidor: "Repartidor 1", progreso: 20 },
+      { id: 104, cliente: "María López", direccion: "Av. Italia 876", estado: "Pendiente", repartidor: "Repartidor 2", progreso: 0 },
+      { id: 105, cliente: "Carlos Díaz", direccion: "San Martín 452", estado: "En ruta", repartidor: "Repartidor 3", progreso: 50 }
+    ];
+
+    // Crear los íconos de las motos
+    function crearIconos() {
+      mapa.querySelectorAll(".moto").forEach(m => m.remove());
+      pedidos.forEach((p, i) => {
+        const moto = document.createElement("img");
+        moto.src = "https://cdn-icons-png.flaticon.com/512/1048/1048311.png";
+        moto.className = "moto";
+        moto.id = `moto-${p.id}`;
+        moto.style.top = `${55 - i * 7}%`;
+        moto.style.left = `${5 + i * 3}%`;
+        mapa.appendChild(moto);
+        moverMoto(p.id, p.progreso);
+      });
+    }
+
+    // Renderizar tarjetas
+    function renderRutas() {
+      contenedor.innerHTML = "";
+      pedidos.forEach(p => {
+        let color = "bg-warning text-dark";
+        if (p.estado === "En ruta") color = "bg-info text-white";
+        if (p.estado === "Entregado") color = "bg-success text-white";
+
+        contenedor.innerHTML += `
+          <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Pedido #${p.id}</h5>
+              <p><strong>Cliente:</strong> ${p.cliente}</p>
+              <p><strong>Dirección:</strong> ${p.direccion}</p>
+              <p><strong>Repartidor:</strong> ${p.repartidor}</p>
+              <p><strong>Estado:</strong> <span class="badge ${color}">${p.estado}</span></p>
+              <div class="progress mb-2">
+                <div class="progress-bar ${p.estado === "Entregado" ? "bg-success" : "bg-info"}"
+                     style="width: ${p.progreso}%">${p.progreso}%</div>
+              </div>
+            </div>
+          </div>`;
+      });
+    }
+
+    // Mueve la moto según su progreso
+    function moverMoto(id, progreso) {
+      const moto = document.getElementById(`moto-${id}`);
+      if (!moto) return;
+
+      const left = 5 + (progreso * 0.75);
+      const topBase = parseFloat(moto.style.top) || 55;
+      const top = topBase - (Math.sin(progreso / 10) * 6);
+      moto.style.left = `${left}%`;
+      moto.style.top = `${top}%`;
+    }
+
+    // Movimiento automático
+    function actualizarRutas() {
+      pedidos.forEach(p => {
+        if (p.estado !== "Entregado") {
+          p.progreso += Math.random() * 8 + 3; // avanza entre 3% y 10%
+          if (p.progreso >= 100) {
+            p.progreso = 100;
+            p.estado = "Entregado";
+          } else {
+            p.estado = "En ruta";
+          }
+          moverMoto(p.id, p.progreso);
+        }
+      });
+
+      localStorage.setItem("pedidosEntrega", JSON.stringify(pedidos));
+      renderRutas();
+    }
+
+    // Inicialización
+    crearIconos();
+    renderRutas();
+
+    // Movimiento automático cada 3 segundos
+    setInterval(actualizarRutas, 3000);
+  </script>
 </body>
 </html>
+ 
+
+<!--Para reinicar abrir la página rutas.html. Presiona F12 → pestaña Consola.
+Escribir y ejecutar:
+localStorage.removeItem("pedidosEntrega");
+location.reload();-->

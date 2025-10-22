@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -13,36 +13,17 @@
       display: flex;
       flex-direction: column;
     }
-
     footer {
       background: #000;
       color: #fff;
       padding: 40px 0;
       margin-top: auto;
     }
-
-    footer h4 {
-      color: #ffc107;
-      font-weight: bold;
-    }
-
-    footer h6 {
-      font-weight: 600;
-      margin-bottom: 10px;
-    }
-
-    footer p {
-      margin-bottom: 6px;
-      font-size: 0.95em;
-    }
-
-    footer small {
-      color: #aaa;
-    }
-
-    .card-header {
-      font-weight: 600;
-    }
+    footer h4 { color: #ffc107; font-weight: bold; }
+    footer h6 { font-weight: 600; margin-bottom: 10px; }
+    footer p { margin-bottom: 6px; font-size: 0.95em; }
+    footer small { color: #aaa; }
+    .card-header { font-weight: 600; }
   </style>
 </head>
 <body>
@@ -54,7 +35,6 @@
         <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
         <h2 class="mb-0">PolloAsado</h2>
       </a>
-
       <div class="d-flex align-items-center">
         <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
           <i class="bi bi-megaphone-fill me-1"></i> Promociones
@@ -89,19 +69,16 @@
     <!-- Lista de pedidos -->
     <div id="listaPedidos" class="row g-3"></div>
   </div>
-  <br><br><br><br><br><br>
+  <br><br><br><br><br><br><br><br>
 
   <!-- FOOTER -->
   <footer>
     <div class="container">
       <div class="row text-center text-md-start">
-        <!-- Logo -->
         <div class="col-md-3 mb-3">
           <h4>PolloFast</h4>
-          <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" alt="logo" width="50" height="45" class="me-2">
+          <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45">
         </div>
-
-        <!-- Conócenos -->
         <div class="col-md-3 mb-3">
           <h6>Conócenos</h6>
           <p>Teléfono</p>
@@ -109,16 +86,12 @@
           <p>Términos y condiciones</p>
           <p>Política de privacidad</p>
         </div>
-
-        <!-- Redes sociales -->
         <div class="col-md-3 mb-3">
           <h6>Redes sociales</h6>
           <p><i class="bi bi-instagram"></i> Instagram</p>
           <p><i class="bi bi-facebook"></i> Facebook</p>
           <p><i class="bi bi-twitter-x"></i> X</p>
         </div>
-
-        <!-- Mi cuenta -->
         <div class="col-md-3 mb-3">
           <h6>Mi cuenta</h6>
           <p>Pedir</p>
@@ -144,6 +117,12 @@
 
     function guardar() {
       localStorage.setItem("pedidosCocina", JSON.stringify(pedidos));
+    }
+
+    // 🔗 NUEVA FUNCIÓN: sincroniza pedidos listos con Asignación
+    function sincronizarPedidosListos() {
+      const pedidosListos = pedidos.filter(p => p.estado === "Listo para entrega");
+      localStorage.setItem("pedidosListos", JSON.stringify(pedidosListos));
     }
 
     function renderPedidos() {
@@ -191,6 +170,7 @@
         pedido.estado = "Listo para entrega";
         pedido.tiempo = 0;
         guardar();
+        sincronizarPedidosListos(); // 🔗 sincroniza automáticamente
         renderPedidos();
       }
     }
@@ -198,11 +178,13 @@
     function eliminarPedido(id) {
       pedidos = pedidos.filter(p => p.id !== id);
       guardar();
+      sincronizarPedidosListos();
       renderPedidos();
     }
 
     function reiniciarPedidos() {
       localStorage.removeItem("pedidosCocina");
+      localStorage.removeItem("pedidosListos"); // también limpia los listos
       location.reload();
     }
 
@@ -217,6 +199,7 @@
         }
       });
       guardar();
+      sincronizarPedidosListos();
       renderPedidos();
     }, 60000); // cada minuto
 

@@ -3,44 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Asignación Automática de Repartidor</title>
-  <!-- Bootstrap -->
+  <title>Asignación Automática de Repartidor - PolloAsado</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Iconos -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+    body {
+      background-color: #f8f9fa;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    footer {
+      background: #000;
+      color: #fff;
+      padding: 40px 0;
+      margin-top: auto;
+    }
+    footer h4 { color: #ffc107; font-weight: bold; }
+    footer h6 { font-weight: 600; }
+    .badge { font-size: 0.9em; }
+  </style>
 </head>
-<body class="bg-light">
+<body>
 
   <!-- NAVBAR -->
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
-      <!-- Logo + Nombre -->
       <a class="navbar-brand d-flex align-items-center" href="index.html">
         <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
         <h2 class="mb-0">PolloAsado</h2>
       </a>
-
-      <!-- Íconos -->
-      <div class="d-flex">
-        <a href="registroUsuario.html" class="nav-link text-white me-3">
-          <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
-        </a>
-        <a href="Pedidos.html" class="nav-link text-white">
-          <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
-        </a>
-      </div>
     </div>
   </nav>
 
   <!-- CONTENIDO -->
-  <div class="container mt-5 mb-5">
+  <div class="container mt-5 mb-5 flex-grow-1">
     <h2 class="text-center mb-4">Asignación Automática de Repartidor</h2>
-    <p class="text-center text-muted">El sistema asigna automáticamente el repartidor más cercano o disponible.</p>
+    <p class="text-center text-muted">El sistema selecciona automáticamente el repartidor más cercano o disponible.</p>
 
-    <!-- Tabla de pedidos pendientes -->
+    <!-- Tabla -->
     <div class="card shadow-sm">
       <div class="card-header bg-dark text-white text-center">
-        <h5>Pedidos Pendientes de Asignación</h5>
+        <h5 class="mb-0">Pedidos Pendientes de Asignación</h5>
       </div>
       <div class="card-body">
         <table class="table table-hover align-middle text-center">
@@ -48,90 +52,74 @@
             <tr>
               <th>ID Pedido</th>
               <th>Cliente</th>
-              <th>Dirección</th>
+              <th>Plato</th>
               <th>Estado</th>
               <th>Acción</th>
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <td>#103</td>
-              <td>Juan Pérez</td>
-              <td>Av. Los Leones 1234</td>
-              <td><span class="badge bg-warning text-dark">Sin asignar</span></td>
-              <td>
-                <button class="btn btn-outline-primary btn-sm">
-                  <i class="bi bi-person-fill-gear me-1"></i> Asignar
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td>#104</td>
-              <td>María López</td>
-              <td>Av. Italia 876</td>
-              <td><span class="badge bg-success">Asignado</span></td>
-              <td>
-                <button class="btn btn-outline-secondary btn-sm" disabled>
-                  <i class="bi bi-check-circle me-1"></i> Completado
-                </button>
-              </td>
-            </tr>
+          <tbody id="tablaPedidos">
+            <tr><td colspan="5" class="text-muted">Cargando pedidos...</td></tr>
           </tbody>
         </table>
       </div>
     </div>
 
-    <!-- Botones de acción -->
+    <!-- Botones -->
     <div class="text-center mt-4">
-      <!-- Botón para simular asignación automática -->
-      <button class="btn btn-success me-2">
-        <i class="bi bi-cpu-fill me-2"></i> Asignación Automática
+      <button id="btnAsignarAuto" class="btn btn-success me-2">
+        <i class="bi bi-cpu-fill me-2"></i> Asignar Automáticamente
       </button>
-
-      <!-- 🔹 Botón para ir a planificación de rutas -->
       <a href="rutas.html" class="btn btn-primary">
         <i class="bi bi-map-fill me-2"></i> Ver planificación de rutas
       </a>
-
-      <!-- Botón volver al panel -->
-      <a href="panelCocina.html" class="btn btn-outline-secondary ms-2">
+      <a href="panelControl.html" class="btn btn-outline-secondary ms-2">
         <i class="bi bi-arrow-left-circle me-2"></i> Volver al Panel de Cocina
       </a>
     </div>
   </div>
 
+  <!-- MODAL DETALLE -->
+  <div class="modal fade" id="modalAsignacion" tabindex="-1" aria-labelledby="modalAsignacionLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header bg-success text-white">
+          <h5 class="modal-title" id="modalAsignacionLabel"><i class="bi bi-person-fill-gear me-2"></i>Asignación Exitosa</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body text-center">
+          <p id="detallePedido"></p>
+          <p id="detalleRepartidor" class="fw-bold"></p>
+          <div class="alert alert-success mt-3">Repartidor asignado correctamente ✅</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- FOOTER -->
-  <footer class="bg-black text-white mt-auto">
-    <div class="container py-4">
-      <div class="row">
-        <!-- Logo -->
+  <footer>
+    <div class="container">
+      <div class="row text-center text-md-start">
         <div class="col-md-3 mb-3">
           <h4>PolloFast</h4>
-          <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
+          <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45">
         </div>
-
-        <!-- Conócenos -->
         <div class="col-md-3 mb-3">
           <h6>Conócenos</h6>
-          <p class="mb-1">Teléfono</p>
-          <p class="mb-1">Mail de contacto</p>
-          <p class="mb-1">Términos y condiciones</p>
-          <p class="mb-0">Política de privacidad</p>
+          <p>Teléfono</p>
+          <p>Mail de contacto</p>
+          <p>Términos y condiciones</p>
+          <p>Política de privacidad</p>
         </div>
-
-        <!-- Redes sociales -->
         <div class="col-md-3 mb-3">
           <h6>Redes sociales</h6>
-          <p class="mb-1"><i class="bi bi-instagram"></i> Instagram</p>
-          <p class="mb-1"><i class="bi bi-facebook"></i> Facebook</p>
-          <p class="mb-0"><i class="bi bi-twitter-x"></i> X</p>
+          <p><i class="bi bi-instagram"></i> Instagram</p>
+          <p><i class="bi bi-facebook"></i> Facebook</p>
+          <p><i class="bi bi-twitter-x"></i> X</p>
         </div>
-
-        <!-- Mi cuenta -->
         <div class="col-md-3 mb-3">
           <h6>Mi cuenta</h6>
-          <p class="mb-1">Pedir</p>
-          <p class="mb-0">Iniciar sesión</p>
+          <p>Pedir</p>
+          <p>Iniciar sesión</p>
         </div>
       </div>
       <div class="text-center mt-3">
@@ -142,5 +130,97 @@
 
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Script funcional -->
+  <script>
+    const tabla = document.getElementById("tablaPedidos");
+    const modal = new bootstrap.Modal(document.getElementById("modalAsignacion"));
+    const detallePedido = document.getElementById("detallePedido");
+    const detalleRepartidor = document.getElementById("detalleRepartidor");
+
+    // 🔗 NUEVO: Leer pedidos listos desde panelCocina
+    const pedidosListos = JSON.parse(localStorage.getItem("pedidosListos")) || [];
+
+    // Convertir a estructura usada aquí
+    let pedidos = pedidosListos.map(p => ({
+      id: p.id,
+      cliente: p.cliente,
+      plato: p.plato,
+      estado: "Sin asignar"
+    }));
+
+    // Si no hay pedidos listos, cargar los guardados de entregas previas
+    if (pedidos.length === 0) {
+      pedidos = JSON.parse(localStorage.getItem("pedidosEntrega")) || [];
+    }
+
+    const repartidores = [
+      "Repartidor 1", "Repartidor 2", "Repartidor 3", "Repartidor 4", "Repartidor 5"
+    ];
+
+    function guardar() {
+      localStorage.setItem("pedidosEntrega", JSON.stringify(pedidos));
+      // 🔗 Además, guardar pedidos asignados para el panel del repartidor
+      const asignados = pedidos.filter(p => p.estado === "Asignado");
+      localStorage.setItem("pedidosAsignados", JSON.stringify(asignados));
+    }
+
+    function renderTabla() {
+      tabla.innerHTML = "";
+      if (pedidos.length === 0) {
+        tabla.innerHTML = `<tr><td colspan="5" class="text-muted">No hay pedidos disponibles.</td></tr>`;
+        return;
+      }
+
+      pedidos.forEach(p => {
+        const color =
+          p.estado === "Asignado" ? "bg-success text-white" :
+          p.estado === "En reparto" ? "bg-primary text-white" : "bg-warning text-dark";
+
+        tabla.innerHTML += `
+          <tr>
+            <td>#${p.id}</td>
+            <td>${p.cliente}</td>
+            <td>${p.plato}</td>
+            <td><span class="badge ${color}">${p.estado}</span></td>
+            <td>
+              ${
+                p.estado === "Sin asignar"
+                ? `<button class="btn btn-outline-primary btn-sm" onclick="asignarRepartidor(${p.id})">
+                    <i class='bi bi-person-fill-gear me-1'></i> Asignar
+                   </button>`
+                : `<button class="btn btn-outline-secondary btn-sm" disabled>
+                    <i class='bi bi-check-circle me-1'></i> ${p.estado}
+                   </button>`
+              }
+            </td>
+          </tr>`;
+      });
+    }
+
+    function asignarRepartidor(id) {
+      const pedido = pedidos.find(p => p.id === id);
+      const repartidor = repartidores[Math.floor(Math.random() * repartidores.length)];
+      pedido.repartidor = repartidor;
+      pedido.estado = "Asignado";
+      guardar();
+      renderTabla();
+
+      detallePedido.innerText = `Pedido #${pedido.id} - ${pedido.cliente}`;
+      detalleRepartidor.innerText = `Asignado a: ${repartidor}`;
+      modal.show();
+    }
+
+    document.getElementById("btnAsignarAuto").addEventListener("click", () => {
+      const sinAsignar = pedidos.filter(p => p.estado === "Sin asignar");
+      if (sinAsignar.length === 0) {
+        alert("✅ Todos los pedidos ya tienen repartidor asignado.");
+        return;
+      }
+      sinAsignar.forEach(p => asignarRepartidor(p.id));
+    });
+
+    renderTabla();
+  </script>
 </body>
 </html>
