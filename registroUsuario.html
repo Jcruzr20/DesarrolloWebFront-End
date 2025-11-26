@@ -154,101 +154,98 @@
     </div>
   </footer>
 
+
   <!-- SCRIPT -->
   <script>
-    const loginForm = document.getElementById('login-form');
-    const registerForm = document.getElementById('register-form');
-    const showRegister = document.getElementById('show-register');
-    const showLogin = document.getElementById('show-login');
-    const title = document.getElementById('form-title');
-    const mensaje = document.getElementById('mensaje');
+      const API_BASE = "http://127.0.0.1:8000/api/pollosabroso";
 
-    // ✅ Cuentas predefinidas
-    const cuentas = {
-      cocineros: [
-        { correo: "cocinero1@gmail.com", pass: "1234" },
-        { correo: "cocinero2@gmail.com", pass: "1234" },
-        { correo: "cocinero3@gmail.com", pass: "1234" },
-        { correo: "cocinero4@gmail.com", pass: "1234" },
-        { correo: "cocinero5@gmail.com", pass: "1234" }
-      ],
-      repartidores: [
-        { correo: "repartidor1@gmail.com", pass: "1234" },
-        { correo: "repartidor2@gmail.com", pass: "1234" },
-        { correo: "repartidor3@gmail.com", pass: "1234" },
-        { correo: "repartidor4@gmail.com", pass: "1234" },
-        { correo: "repartidor5@gmail.com", pass: "1234" }
-      ]
-    };
+      const loginForm = document.getElementById('login-form');
+      const registerForm = document.getElementById('register-form');
+      const showRegister = document.getElementById('show-register');
+      const showLogin = document.getElementById('show-login');
+      const title = document.getElementById('form-title');
+      const mensaje = document.getElementById('mensaje');
 
-    // Alternar entre login y registro
-    showRegister.addEventListener('click', () => {
-      loginForm.style.display = 'none';
-      registerForm.style.display = 'block';
-      title.textContent = 'Crear Cuenta';
-      mensaje.innerHTML = '';
-    });
+      // 🔁 Alternar entre login y registro (igual que antes)
+      showRegister.addEventListener('click', () => {
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
+        title.textContent = 'Crear Cuenta';
+        mensaje.innerHTML = '';
+      });
 
-    showLogin.addEventListener('click', () => {
-      registerForm.style.display = 'none';
-      loginForm.style.display = 'block';
-      title.textContent = 'Iniciar Sesión';
-      mensaje.innerHTML = '';
-    });
+      showLogin.addEventListener('click', () => {
+        registerForm.style.display = 'none';
+        loginForm.style.display = 'block';
+        title.textContent = 'Iniciar Sesión';
+        mensaje.innerHTML = '';
+      });
 
-    // ✅ REGISTRO
-    registerForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const correo = document.getElementById("emailRegister").value.trim();
-      const pass = document.getElementById("passwordRegister").value.trim();
-      const confirm = document.getElementById("passwordConfirm").value.trim();
+      // 📝 REGISTRO (por ahora solo mensaje, sin backend)
+      registerForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        mensaje.innerHTML = `
+          <div class="alert alert-info">
+            ℹ El registro real todavía no está conectado al backend.  
+            Puedes crear usuarios desde Swagger mientras practicas.
+          </div>`;
+      });
 
-      if (pass !== confirm) {
-        mensaje.innerHTML = `<div class="alert alert-danger">❌ Las contraseñas no coinciden.</div>`;
-        return;
-      }
+      // 🔐 LOGIN REAL contra FastAPI
+      loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-      const esCocinero = cuentas.cocineros.some(c => c.correo === correo);
-      const esRepartidor = cuentas.repartidores.some(r => r.correo === correo);
-      if (esCocinero || esRepartidor) {
-        mensaje.innerHTML = `<div class="alert alert-warning">⚠️ Este correo ya está registrado como cuenta del personal (${esCocinero ? 'Cocinero' : 'Repartidor'}).</div>`;
-        return;
-      }
+        const email = document.getElementById("emailLogin").value.trim();
+        const password = document.getElementById("passwordLogin").value.trim();
 
-      const clientes = JSON.parse(localStorage.getItem("clientes")) || [];
-      if (clientes.some(c => c.correo === correo)) {
-        mensaje.innerHTML = `<div class="alert alert-danger">❌ Este correo ya está registrado.</div>`;
-        return;
-      }
+        if (!email || !password) {
+          mensaje.innerHTML = `<div class="alert alert-warning">⚠ Completa correo y contraseña.</div>`;
+          return;
+        }
 
-      clientes.push({ correo, pass });
-      localStorage.setItem("clientes", JSON.stringify(clientes));
-      mensaje.innerHTML = `<div class="alert alert-success">✅ Registro exitoso. ¡Bienvenido!</div>`;
-      registerForm.reset();
-    });
+        mensaje.innerHTML = `<div class="alert alert-secondary">⏳ Iniciando sesión...</div>`;
 
-    // ✅ LOGIN
-    loginForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const correo = document.getElementById("emailLogin").value.trim();
-      const pass = document.getElementById("passwordLogin").value.trim();
+        try {
+          // OAuth2PasswordRequestForm espera username + password en x-www-form-urlencoded
+          const formData = new URLSearchParams();
+          formData.append("username", email);
+          formData.append("password", password);
 
-      const esCocinero = cuentas.cocineros.find(c => c.correo === correo && c.pass === pass);
-      const esRepartidor = cuentas.repartidores.find(r => r.correo === correo && r.pass === pass);
-      const clientes = JSON.parse(localStorage.getItem("clientes")) || [];
-      const esCliente = clientes.find(c => c.correo === correo && c.pass === pass);
+          const res = await fetch(`${API_BASE}/auth/login`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            body: formData
+          });
 
-      if (esCocinero) {
-        window.location.href = "panelControl.html";
-      } else if (esRepartidor) {
-        window.location.href = "panelRepartidor.html";
-      } else if (esCliente) {
-        window.location.href = "miCuenta.html";
-      } else {
-        mensaje.innerHTML = `<div class="alert alert-danger">❌ Credenciales incorrectas.</div>`;
-      }
-    });
+          const data = await res.json();
+
+          if (!res.ok) {
+            const msg = data.detail || "Error al iniciar sesión.";
+            mensaje.innerHTML = `<div class="alert alert-danger">❌ ${msg}</div>`;
+            return;
+          }
+
+          // ✅ Guardar token y correo para otras páginas
+          localStorage.setItem("token", data.access_token);
+          localStorage.setItem("userEmail", email);
+
+          mensaje.innerHTML = `<div class="alert alert-success">✅ Sesión iniciada correctamente.</div>`;
+
+          // 🔁 Redirigir después de un momento (por ahora, a la página de cuenta)
+          setTimeout(() => {
+            window.location.href = "sesionUsuario.html";
+          }, 800);
+
+        } catch (err) {
+          console.error(err);
+          mensaje.innerHTML = `<div class="alert alert-danger">❌ Error de conexión con el servidor.</div>`;
+        }
+      });
   </script>
+
+  
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
