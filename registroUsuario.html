@@ -181,15 +181,73 @@
         mensaje.innerHTML = '';
       });
 
-      // 📝 REGISTRO (por ahora solo mensaje, sin backend)
-      registerForm.addEventListener('submit', (e) => {
+      
+      // 📝 REGISTRO REAL contra FastAPI
+
+      registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        const email = document.getElementById("emailRegister").value.trim();
+        const password = document.getElementById("passwordRegister").value.trim();
+        const passwordConfirm = document.getElementById("passwordConfirm").value.trim();
+
+        // Validaciones básicas
+        if (!email || !password || !passwordConfirm) {
+          mensaje.innerHTML = `
+            <div class="alert alert-warning">⚠ Completa todos los campos.</div>`;
+          return;
+        }
+
+        if (password !== passwordConfirm) {
+          mensaje.innerHTML = `
+            <div class="alert alert-warning">⚠ Las contraseñas no coinciden.</div>`;
+          return;
+        }
+
         mensaje.innerHTML = `
-          <div class="alert alert-info">
-            ℹ El registro real todavía no está conectado al backend.  
-            Puedes crear usuarios desde Swagger mientras practicas.
-          </div>`;
-      });
+          <div class="alert alert-secondary">⏳ Creando tu cuenta...</div>`;
+
+        try {
+          const payload = {
+            name: email.split("@")[0],  // nombre temporal
+            email: email,
+            phone: "000000000",         // teléfono temporal
+            password: password
+          };
+
+          const res = await fetch(`${API_BASE}/clientes/registro`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+
+          const data = await res.json();
+          console.log("Respuesta registro:", data);
+
+          if (!res.ok) {
+            mensaje.innerHTML = `
+              <div class="alert alert-danger">❌ ${data.detail}</div>`;
+            return;
+          }
+
+          mensaje.innerHTML = `
+            <div class="alert alert-success">✅ Cuenta creada correctamente.</div>`;
+
+    // Cambiar a formulario de inicio de sesión
+    registerForm.style.display = "none";
+    loginForm.style.display = "block";
+    title.textContent = "Iniciar Sesión";
+
+    // Rellenar automáticamente para que el usuario solo ponga la contraseña
+    document.getElementById("emailLogin").value = email;
+
+  } catch (err) {
+    console.error(err);
+    mensaje.innerHTML = `
+      <div class="alert alert-danger">❌ Error de conexión con el servidor.</div>`;
+  }
+});
+
 
       // 🔐 LOGIN REAL contra FastAPI
       loginForm.addEventListener('submit', async (e) => {
