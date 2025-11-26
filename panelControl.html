@@ -205,6 +205,12 @@
 
     renderPedidos();
   </script>
+  <!-- Protección de rutas (primero) -->
+  <script src="js/protegerRutas.js"></script>
+  <script>
+    console.log("[promociones] Script inline cargado, llamando a requireAuth()");
+    const token = requireAuth();
+  </script>
 
 </body>
 </html>
