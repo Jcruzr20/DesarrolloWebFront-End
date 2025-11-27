@@ -83,9 +83,12 @@
         </div>
 
         <!-- Puntos acumulados -->
+       <!-- Puntos acumulados -->
         <div class="info-box mb-4 shadow-sm">
           <h5>Puntos acumulados</h5>
-          <p class="points">245 pts</p>
+          <p class="points">
+            <span id="user-points">0</span> pts
+          </p>
           <a href="canjearCupon.html" class="btn btn-success w-100 mb-2">
             <i class="bi bi-gift-fill me-2"></i> Canjear puntos
           </a>
@@ -93,6 +96,7 @@
             <i class="bi bi-plus-circle-fill me-2"></i> Acumular puntos
           </a>
         </div>
+
 
         <!-- Promociones y notificaciones -->
         <div class="info-box mb-4 shadow-sm">
@@ -153,70 +157,79 @@
   </footer>
 
   <!-- SCRIPT PERFIL -->
+
   <script>
-    const API_BASE = "http://127.0.0.1:8000/api/pollosabroso";
+    
+      const API_BASE = "http://127.0.0.1:8000/api/pollosabroso";
 
-    const nameSpan    = document.getElementById("user-name");
-    const emailSpan   = document.getElementById("user-email");
-    const emailStatus = document.getElementById("email-status");
-    const logoutBtn   = document.getElementById("btn-logout");
+      const nameSpan    = document.getElementById("user-name");
+      const emailSpan   = document.getElementById("user-email");
+      const emailStatus = document.getElementById("email-status");
+      const pointsSpan  = document.getElementById("user-points");   // 👈 NUEVO
+      const logoutBtn   = document.getElementById("btn-logout");
 
-    const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token");
 
-    // Si no hay token, redirigir al login
-    if (!token) {
-      window.location.href = "registroUsuario.html";
-    } else {
-      cargarPerfil();
-    }
-
-    async function cargarPerfil() {
-      try {
-        const res = await fetch(`${API_BASE}/clientes/me`, {
-          method: "GET",
-          headers: {
-            "Authorization": `Bearer ${token}`
-          }
-        });
-
-        if (!res.ok) {
-          emailStatus.textContent = "Error al cargar perfil. Inicia sesión nuevamente.";
-          emailStatus.classList.add("text-danger");
-          localStorage.removeItem("token");
-          localStorage.removeItem("userEmail");
-          setTimeout(() => {
-            window.location.href = "registroUsuario.html";
-          }, 1500);
-          return;
-        }
-
-        const data = await res.json();
-        console.log("Perfil cargado:", data);
-
-        // Rellenar datos
-        nameSpan.textContent  = data.name;
-        emailSpan.textContent = data.email;
-
-        if (data.emailVerified) {
-          emailStatus.innerHTML = 'Estado correo: <span class="text-success fw-bold">verificado ✅</span>';
-        } else {
-          emailStatus.innerHTML = 'Estado correo: <span class="text-danger fw-bold">NO verificado ❌</span>';
-        }
-
-      } catch (err) {
-        console.error(err);
-        emailStatus.textContent = "Error de conexión con el servidor.";
-        emailStatus.classList.add("text-danger");
+      // Si no hay token, redirigir al login
+      if (!token) {
+        window.location.href = "registroUsuario.html";
+      } else {
+        cargarPerfil();
       }
-    }
 
-    // Cerrar sesión
-    logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("token");
-      localStorage.removeItem("userEmail");
-      window.location.href = "registroUsuario.html";
-    });
+      async function cargarPerfil() {
+        try {
+          const res = await fetch(`${API_BASE}/clientes/me`, {
+            method: "GET",
+            headers: {
+              "Authorization": `Bearer ${token}`
+            }
+          });
+
+          if (!res.ok) {
+            emailStatus.textContent = "Error al cargar perfil. Inicia sesión nuevamente.";
+            emailStatus.classList.add("text-danger");
+            localStorage.removeItem("token");
+            localStorage.removeItem("userEmail");
+            setTimeout(() => {
+              window.location.href = "registroUsuario.html";
+            }, 1500);
+            return;
+          }
+
+          const data = await res.json();
+          console.log("Perfil cargado:", data);
+
+          // Rellenar datos
+          nameSpan.textContent  = data.name;
+          emailSpan.textContent = data.email;
+
+          if (data.emailVerified) {
+            emailStatus.innerHTML = 'Estado correo: <span class="text-success fw-bold">verificado ✅</span>';
+          } else {
+            emailStatus.innerHTML = 'Estado correo: <span class="text-danger fw-bold">NO verificado ❌</span>';
+          }
+
+          // 👇 NUEVO: mostrar puntos reales
+          if (pointsSpan) {
+            pointsSpan.textContent = data.points ?? 0;
+          }
+
+        } catch (err) {
+          console.error(err);
+          emailStatus.textContent = "Error de conexión con el servidor.";
+          emailStatus.classList.add("text-danger");
+        }
+      }
+
+      // Cerrar sesión
+      logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("userEmail");
+        window.location.href = "registroUsuario.html";
+      });
   </script>
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

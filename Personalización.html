@@ -301,7 +301,7 @@
           <div class="row g-0">
             <!-- Imagen -->
             <div class="col-md-6 d-flex align-items-center">
-              <img src="https://content-cocina.lecturas.com/medio/2018/07/19/muslitos-y-verduras-al-horno_6d0f298f_800x800.jpg" 
+              <img src="" 
                 class="img-fluid rounded-start producto-img" alt="Producto">
             </div>
             <!-- Personalización -->
@@ -383,7 +383,7 @@
         <div class="row g-0">
             <!-- Imagen -->
             <div class="col-md-6 d-flex align-items-center">
-              <img src="https://content-cocina.lecturas.com/medio/2018/07/19/muslitos-y-verduras-al-horno_6d0f298f_800x800.jpg" 
+              <img src="" 
               class="producto-img" alt="Muslitos y Verduras">
             </div>
 
@@ -436,19 +436,19 @@
 
                 <h6 class="text-center mb-2">Personalizar el pedido</h6>
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span>Papas Fritas</span>
+                  <span>Papas Fritas $1500</span>
                   <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span>Ensalada</span>
+                  <span>Ensalada $2000</span>
                   <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span>Salsa BBQ</span>
+                  <span>Salsa BBQ $1000</span>
                   <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                  <span>Bebida 2L</span>
+                  <span>Bebida 2L $1300</span>
                   <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
                 </div>
                 <button class="btn btn-success w-100">Confirmar Pedido</button>
@@ -477,19 +477,19 @@
 
                 <h6 class="text-center mb-2">Personalizar el pedido</h6>
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span>Papas Fritas</span>
+                  <span>Papas Fritas $1500</span>
                   <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span>Ensalada</span>
+                  <span>Ensalada $2000</span>
                   <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span>Salsa BBQ</span>
+                  <span>Salsa BBQ $1000</span>
                   <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                  <span>Bebida 2L</span>
+                  <span>Bebida 2L $1300 </span>
                   <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
                 </div>
                 <button class="btn btn-success w-100">Confirmar Pedido</button>
@@ -518,19 +518,19 @@
 
                 <h6 class="text-center mb-2">Personalizar el pedido</h6>
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span>Papas Fritas</span>
+                  <span>Papas Fritas $1500</span>
                   <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span>Ensalada</span>
+                  <span>Ensalada $2000</span>
                   <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-2">
-                  <span>Salsa BBQ</span>
+                  <span>Salsa BBQ $1000</span>
                   <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
                 </div>
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                  <span>Bebida 2L</span>
+                  <span>Bebida 2L $1300</span>
                   <input type="number" class="form-control form-control-sm w-25" min="0" max="10" value="0">
                 </div>
                 <button class="btn btn-success w-100">Confirmar Pedido</button>
@@ -706,9 +706,10 @@
 </script>
 
 <!-- SCRIPT: Carrito funcional con notificación -->
+<!-- SCRIPT: Carrito funcional con PRECIOS y TOTAL -->
 <script>
   document.addEventListener("DOMContentLoaded", () => {
-    const botones = document.querySelectorAll(".btn-success");
+    const botones = document.querySelectorAll(".card .btn-success");
     const toastEl = document.getElementById('toastCarrito');
     const toast = new bootstrap.Toast(toastEl, { delay: 2000 });
 
@@ -717,13 +718,34 @@
         const card = boton.closest(".card");
         const titulo = card.querySelector("h5.card-title")?.innerText || "Pedido personalizado";
         const inputs = card.querySelectorAll("input[type='number']");
+        
         const items = [];
+        let totalPedido = 0;
 
         inputs.forEach(input => {
           const cantidad = parseInt(input.value);
-          const nombre = input.parentElement.querySelector("span")?.innerText || "";
+          const span = input.parentElement.querySelector("span");
+          const nombre = span?.innerText || "";
+
+          // Buscar precio en el texto, ejemplo: "Pollo Asado $6500"
+          let precioUnitario = 0;
+          const match = nombre.match(/\$(\d+)/); // captura el número después del signo $
+          if (match) {
+            precioUnitario = parseInt(match[1], 10);
+          }
+
           if (cantidad > 0) {
-            items.push({ nombre, cantidad });
+            const subtotal = precioUnitario * cantidad;
+            totalPedido += subtotal;
+
+            items.push({
+              nombre: nombre,          // "Pollo Asado $6500"
+              cantidad: cantidad,
+              precioUnitario: precioUnitario,
+              subtotal: subtotal
+            });
+
+            // Reiniciar el input
             input.value = 0;
           }
         });
@@ -736,6 +758,7 @@
         const pedido = {
           plato: titulo,
           items: items,
+          total: totalPedido,                         // 👈 TOTAL DEL PEDIDO EN $$
           fecha: new Date().toLocaleString()
         };
 
@@ -743,12 +766,79 @@
         carrito.push(pedido);
         localStorage.setItem("carrito", JSON.stringify(carrito));
 
+        console.log("[carrito] Pedido agregado:", pedido);
+        // -------- ENVIAR PEDIDO REAL AL BACKEND --------
+        async function enviarPedido(pedido) {
+            const token = localStorage.getItem("token");
+
+            if (!token) {
+                alert("Debes iniciar sesión para realizar pedidos.");
+                return;
+            }
+
+            // 1) Calcular cantidad total a partir de los items del pedido
+            const cantidadTotal = (pedido.items || []).reduce(
+                (acc, item) => acc + (Number(item.cantidad) || 0),
+                0
+            );
+
+            console.log("[enviarPedido] cantidadTotal:", cantidadTotal);
+
+            if (cantidadTotal <= 0) {
+                alert("Debes seleccionar al menos 1 ítem para hacer el pedido.");
+                return;
+            }
+
+            // 2) Construir el cuerpo exactamente como lo probamos en Swagger
+            const body = {
+                items: [
+                    {
+                        productId: "11111111-1111-1111-1111-111111111111", // luego esto será el ID real del producto
+                        quantity: cantidadTotal
+                    }
+                ],
+                notes: `Pedido de ${pedido.plato} (total ${cantidadTotal} ítems)`
+            };
+
+            console.log("[enviarPedido] Body enviado:", body);
+
+            try {
+                const res = await fetch("http://127.0.0.1:8000/api/pollosabroso/pedidos/registro", {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${token}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                const data = await res.json();
+
+                if (!res.ok) {
+                    console.error("Error al registrar pedido:", data);
+                    alert(JSON.stringify(data, null, 2));  // 👈 ahora vemos el detalle real
+                    return;
+                }
+
+                console.log("[pedido] Registrado en backend:", data);
+                alert("¡Pedido realizado con éxito!");
+
+            } catch (error) {
+                console.error("Error de conexión:", error);
+                alert("Error de conexión con el servidor.");
+            }
+        }
+
+        enviarPedido(pedido);
+
+
         // ✅ Mostrar notificación flotante
         toast.show();
       });
     });
   });
 </script>
+
 <!-- SCRIPT: Contador dinámico del carrito -->
 <script>
   document.addEventListener("DOMContentLoaded", () => {

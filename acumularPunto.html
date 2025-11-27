@@ -13,31 +13,31 @@
 
   <!-- NAVBAR -->
   <nav class="navbar navbar-dark bg-dark">
-  <div class="container-fluid">
-    <!-- Logo (vuelve al Home principal) -->
-    <a class="navbar-brand d-flex align-items-center" href="index.html">
-      <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
-      <h2 class="mb-0">PolloAsado</h2>
-    </a>
-
-    <!-- Menú de navegación -->
-    <div class="d-flex align-items-center">
-      <!-- Enlace Promociones -->
-      <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
-        <i class="bi bi-megaphone-fill me-1"></i> Promociones
+    <div class="container-fluid">
+      <!-- Logo (vuelve al Home principal) -->
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
+        <h2 class="mb-0">PolloAsado</h2>
       </a>
 
-      <!-- Usuario -->
-      <a href="registroUsuario.html" class="nav-link text-white me-3">
-        <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
-      </a>
+      <!-- Menú de navegación -->
+      <div class="d-flex align-items-center">
+        <!-- Enlace Promociones -->
+        <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
+          <i class="bi bi-megaphone-fill me-1"></i> Promociones
+        </a>
 
-      <!-- Carrito -->
-      <a href="Pedidos.html" class="nav-link text-white">
-        <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
-      </a>
+        <!-- Usuario -->
+        <a href="registroUsuario.html" class="nav-link text-white me-3">
+          <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
+        </a>
+
+        <!-- Carrito -->
+        <a href="Pedidos.html" class="nav-link text-white">
+          <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
+        </a>
+      </div>
     </div>
-  </div>
   </nav>
 
   <!-- CONTENIDO -->
@@ -49,7 +49,10 @@
     <div class="card text-center mb-4 shadow">
       <div class="card-body">
         <h4><i class="bi bi-star-fill text-warning"></i> Mis Puntos</h4>
-        <p class="display-5 fw-bold">245</p>
+        <!-- 👇 AQUÍ VAN LOS PUNTOS REALES -->
+        <p class="display-5 fw-bold">
+          <span id="total-points">0</span>
+        </p>
         <p class="text-muted">Puntos acumulados hasta hoy</p>
       </div>
     </div>
@@ -65,45 +68,14 @@
           <th>Puntos ganados</th>
         </tr>
       </thead>
-      <tbody>
+      <tbody id="orders-body">
         <tr>
-          <td>20/10/2025</td>
-          <td>Pollo Familiar</td>
-          <td>$12.000</td>
-          <td><span class="badge bg-success">120</span></td>
-        </tr>
-        <tr>
-          <td>15/10/2025</td>
-          <td>Combo XL</td>
-          <td>$9.500</td>
-          <td><span class="badge bg-success">125</span></td>
-        </tr>
-        <tr>
-          <td>10/10/2025</td>
-          <td>Bebida 1.5L</td>
-          <td>$800</td>
-          <td><span class="badge bg-secondary">0 (no aplica)</span></td>
+          <td colspan="4" class="text-center text-muted">Cargando compras...</td>
         </tr>
       </tbody>
     </table>
   </div>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
+
   <!-- FOOTER -->
   <footer class="bg-black text-white mt-auto">
     <div class="container py-4">
@@ -144,14 +116,107 @@
     </div>
   </footer>
 
-
   <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Protección de rutas (primero) -->
+
+  <!-- Protección de rutas -->
   <script src="js/protegerRutas.js"></script>
+
   <script>
-    console.log("[promociones] Script inline cargado, llamando a requireAuth()");
-    const token = requireAuth();
+    const API_BASE = "http://127.0.0.1:8000/api/pollosabroso";
+
+    console.log("[puntos] Script cargado, llamando a requireAuth()");
+    const token = requireAuth();  // redirige al login si no hay sesión
+
+    const totalPointsSpan = document.getElementById("total-points");
+    const ordersBody = document.getElementById("orders-body");
+
+    async function cargarPuntos() {
+      try {
+        const res = await fetch(`${API_BASE}/clientes/me`, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        });
+
+        if (!res.ok) {
+          console.error("Error al obtener perfil/puntos");
+          totalPointsSpan.textContent = "0";
+          return;
+        }
+
+        const data = await res.json();
+        console.log("[puntos] Perfil recibido:", data);
+
+        // Mostrar puntos reales
+        totalPointsSpan.textContent = data.points ?? 0;
+
+      } catch (err) {
+        console.error("Error de conexión:", err);
+        totalPointsSpan.textContent = "0";
+      }
+    }
+
+    async function cargarCompras() {
+      try {
+        const res = await fetch(`${API_BASE}/clientes/me/pedidos`, {
+          method: "GET",
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        });
+
+        if (!res.ok) {
+          console.error("Error al obtener pedidos");
+          ordersBody.innerHTML = `
+            <tr>
+              <td colspan="4" class="text-center text-muted">Error al cargar las compras.</td>
+            </tr>`;
+          return;
+        }
+
+        const orders = await res.json();
+        console.log("[puntos] Pedidos recibidos:", orders);
+
+        if (!orders.length) {
+          ordersBody.innerHTML = `
+            <tr>
+              <td colspan="4" class="text-center text-muted">Aún no tienes compras registradas.</td>
+            </tr>`;
+          return;
+        }
+
+        // Limpiar tabla
+        ordersBody.innerHTML = "";
+
+        orders.forEach(order => {
+          const fecha = new Date(order.date).toLocaleDateString("es-CL");
+
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${fecha}</td>
+            <td>${order.description}</td>
+            <td>-</td>
+            <td><span class="badge bg-success">${order.pointsEarned}</span></td>
+          `;
+          ordersBody.appendChild(tr);
+        });
+
+      } catch (err) {
+        console.error("Error al traer pedidos:", err);
+        ordersBody.innerHTML = `
+          <tr>
+            <td colspan="4" class="text-center text-muted">Error de conexión al cargar compras.</td>
+          </tr>`;
+      }
+    }
+
+    // Cargar puntos + compras al entrar a la página
+    (async function initPuntosPage() {
+      await cargarPuntos();
+      await cargarCompras();
+    })();
   </script>
 </body>
 </html>
