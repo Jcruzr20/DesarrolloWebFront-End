@@ -197,7 +197,7 @@
           tr.innerHTML = `
             <td>${fecha}</td>
             <td>${order.description}</td>
-            <td>-</td>
+            <td>${formatearCLP(order.total)}</td>
             <td><span class="badge bg-success">${order.pointsEarned}</span></td>
           `;
           ordersBody.appendChild(tr);
@@ -211,6 +211,14 @@
           </tr>`;
       }
     }
+    function formatearCLP(monto) {
+      return new Intl.NumberFormat("es-CL", {
+        style: "currency",
+        currency: "CLP",
+        minimumFractionDigits: 0
+      }).format(monto);
+    }
+
 
     // Cargar puntos + compras al entrar a la página
     (async function initPuntosPage() {
