@@ -51,17 +51,16 @@
     <h3 class="text-center mb-4">🚚 Seguimiento de tu Pedido</h3>
     <p class="text-center text-muted mb-4">Observa en tiempo real el avance de tu orden.</p>
 
-
-     <!-- Información general -->
+    <!-- Información general -->
     <div class="eta-box mb-3">
-      <h5 class="mb-1">Pedido #<span id="pedido-id">R-1025</span></h5>
+      <h5 class="mb-1">Pedido #<span id="pedido-id">-</span></h5>
       <p class="mb-2 text-muted">
         Estado actual:
-        <span id="estado-actual" class="estado text-primary">En preparación</span>
+        <span id="estado-actual" class="estado text-primary">Cargando...</span>
       </p>
       <p class="mb-0">
         <i class="bi bi-clock me-2"></i>
-        Tiempo estimado de llegada: <span id="eta-min">25</span> min
+        Tiempo estimado de llegada: <span id="eta-min">20</span> min
       </p>
     </div>
 
@@ -77,7 +76,6 @@
         <span id="driver-phone">-</span>
       </p>
     </div>
-
 
     <!-- Progreso visual -->
     <div class="container">
@@ -150,61 +148,55 @@
 
   <!-- SCRIPTS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Protección de rutas (igual que en puntos y mis pedidos) -->
+  <!-- Protección de rutas -->
   <script src="js/protegerRutas.js"></script>
-  <!---->
+
   <script>
     const API_BASE = "http://127.0.0.1:8000/api/pollosabroso";
-
-    // Requiere estar logueado
-    const token = requireAuth();
+    const token = requireAuth(); // usa el mismo patrón que en mis pedidos / puntos
 
     // Tomar orderId de la URL: ?orderId=XXXX
     const params = new URLSearchParams(window.location.search);
     const orderId = params.get("orderId");
 
     if (!orderId) {
-      alert("Falta el ID del pedido en la URL");
+      alert("Falta el ID del pedido en la URL (ej: seguimientoPedido.html?orderId=...)");
     }
 
     // Elementos del DOM
-    const estadoTexto = document.getElementById("estado-actual");
-    const etaSpan = document.getElementById("eta-min");
-    const barra = document.getElementById("barra-progreso");
-    const driverCard = document.getElementById("driver-card");
-    const driverNameSpan = document.getElementById("driver-name");
+    const estadoTexto     = document.getElementById("estado-actual");
+    const etaSpan         = document.getElementById("eta-min");
+    const barra           = document.getElementById("barra-progreso");
+    const driverCard      = document.getElementById("driver-card");
+    const driverNameSpan  = document.getElementById("driver-name");
     const driverPhoneSpan = document.getElementById("driver-phone");
-    const pedidoIdSpan = document.getElementById("pedido-id"); // si quieres mostrar el id recortado
-
+    const pedidoIdSpan    = document.getElementById("pedido-id");
 
     const steps = {
-      prep: document.getElementById("step-prep"),
-      camino: document.getElementById("step-camino"),
+      prep:      document.getElementById("step-prep"),
+      camino:    document.getElementById("step-camino"),
       entregado: document.getElementById("step-entregado"),
     };
 
-    // Tiempo estimado (simulado)
-    let tiempoRestante = 20;
-
-    // IDs de los intervalos para poder detenerlos
+    // ETA decorativa
+    let tiempoRestante   = 20;
     let pollingIntervalId = null;
-    let etaIntervalId = null;
+    let etaIntervalId     = null;
 
-    // Normaliza los textos del backend a los 3 estados que usamos en la UI
+    // Normaliza el texto del backend a uno de los 3 estados
     function normalizarEstado(status) {
       const s = (status || "").toLowerCase();
 
-      if (s.includes("prep")) return "En preparación"; // "En preparación"
+      if (s.includes("prep"))   return "En preparación"; // "En preparación"
       if (s.includes("ruta") || s.includes("camino")) return "En camino"; // "En ruta", "En camino"
       if (s.includes("entreg")) return "Entregado"; // "Entregado"
 
-      // Por defecto
       return "En preparación";
     }
 
-    // Actualiza la UI según el estado normalizado
-    function actualizarUI(estadoNormalizado) {
-      // Reset clases
+    // Aplica el estado a los pasos + barra de progreso
+    function aplicarEstadoUI(estadoNormalizado) {
+      // reset clases
       Object.values(steps).forEach(step => {
         step.classList.remove("active", "completed");
       });
@@ -227,7 +219,6 @@
       }
     }
 
-    // Disminuir la ETA cada minuto (solo decorativo)
     function disminuirETA() {
       if (tiempoRestante > 0) {
         tiempoRestante--;
@@ -236,47 +227,50 @@
     }
 
     // Llamar al backend para obtener el tracking real
-    async function actualizarTracking() {
+    async function cargarTracking() {
+      if (!orderId) return;
+
       try {
-        const res = await fetch(`http://127.0.0.1:8000/api/pollosabroso/tracking/${orderId}`);
+        const res = await fetch(`${API_BASE}/tracking/${orderId}`, {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        });
+
         if (!res.ok) {
-          console.error("Error obteniendo tracking");
+          console.error("Error obteniendo tracking:", await res.text());
           return;
         }
 
         const data = await res.json();
         console.log("[tracking] data:", data);
 
-        // Mostrar id del pedido (recortado si quieres)
+        // Mostrar ID del pedido (recortado)
         if (pedidoIdSpan) {
-          pedidoIdSpan.textContent = data.orderId.slice(0, 8) + "...";
+          pedidoIdSpan.textContent = data.orderId
+            ? data.orderId.slice(0, 8) + "..."
+            : "-";
         }
 
         // 1) Actualizar estado visual
-        const status = (data.status || "").toLowerCase(); // ej: "en preparación"
-        estadoTexto.textContent = data.status;
+        const estadoNormalizado = normalizarEstado(data.status);
+        aplicarEstadoUI(estadoNormalizado);
 
-        if (status.includes("prepar")) {
-          // en preparación
-          barra.style.width = "33%";
-          // clases de steps como ya las tenías...
-        } else if (status.includes("camino")) {
-          // en camino
-          barra.style.width = "66%";
-          // ...
-        } else if (status.includes("entregado")) {
-          barra.style.width = "100%";
-          // ...
-        }
-
-        // 2) Actualizar info del repartidor (si existe)
+        // 2) Actualizar info del repartidor
         if (data.driver) {
           driverCard.classList.remove("d-none");
-          driverNameSpan.textContent = data.driver.name || "Repartidor asignado";
+          driverNameSpan.textContent  = data.driver.name  || "Repartidor asignado";
           driverPhoneSpan.textContent = data.driver.phone || "Teléfono no disponible";
         } else {
-          // Si no hay repartidor, ocultamos la tarjeta
           driverCard.classList.add("d-none");
+        }
+
+        // 3) Si está entregado, ponemos ETA 0 y dejamos de descontar / hacer polling
+        if (estadoNormalizado === "Entregado") {
+          tiempoRestante = 0;
+          etaSpan.textContent = "0";
+          if (etaIntervalId) clearInterval(etaIntervalId);
+          if (pollingIntervalId) clearInterval(pollingIntervalId);
         }
 
       } catch (err) {
@@ -284,13 +278,14 @@
       }
     }
 
-
-    // Inicialización al cargar la página
+    // Inicialización
     window.addEventListener("DOMContentLoaded", () => {
-      // Estado inicial
-      actualizarUI("En preparación");
+      if (!orderId) return;
 
-      // Iniciar ETA
+      // Estado inicial
+      aplicarEstadoUI("En preparación");
+
+      // ETA inicial
       etaSpan.textContent = tiempoRestante;
       etaIntervalId = setInterval(disminuirETA, 60000); // cada minuto
 
