@@ -69,7 +69,6 @@
     <!-- Lista de pedidos -->
     <div id="listaPedidos" class="row g-3"></div>
   </div>
-  <br><br><br><br><br><br><br><br>
 
   <!-- FOOTER -->
   <footer>
@@ -104,112 +103,126 @@
     </div>
   </footer>
 
-  <!-- SCRIPT -->
+  <!-- SCRIPT: Lógica del panel de cocina -->
   <script>
-    let pedidos = JSON.parse(localStorage.getItem("pedidosCocina")) || [
-      { id: 1201, cliente: "Ana Pérez", plato: "Pollo Asado con Papas", estado: "En preparación", tiempo: 15 },
-      { id: 1202, cliente: "Luis Torres", plato: "Combo Familiar", estado: "Listo para entrega", tiempo: 0 },
-      { id: 1203, cliente: "Carlos Díaz", plato: "Colación Ejecutiva", estado: "En preparación", tiempo: 8 },
-      { id: 1204, cliente: "María López", plato: "Pollo + Ensalada", estado: "En preparación", tiempo: 25 }
-    ];
+    const API = "http://127.0.0.1:8000/api/pollosabroso";
+    // OJO: 'token' se declara más abajo, aquí solo lo usamos dentro de funciones
 
-    const TIEMPO_MAX = parseInt(localStorage.getItem("tiempoMax")) || 20;
+    // --- 1) Obtener pedidos desde la API ---
+    async function cargarPedidos() {
+      try {
+        const res = await fetch(`${API}/cocina/panel-control`, {
+          headers: {
+            "Authorization": `Bearer ${token}`  // token viene del script final
+          }
+        });
 
-    function guardar() {
-      localStorage.setItem("pedidosCocina", JSON.stringify(pedidos));
+        if (!res.ok) {
+          console.error("Error al cargar pedidos:", res.status);
+          return;
+        }
+
+        const pedidos = await res.json();
+        renderPedidos(pedidos);
+      } catch (err) {
+        console.error("Error de red al cargar pedidos:", err);
+      }
     }
 
-    // 🔗 NUEVA FUNCIÓN: sincroniza pedidos listos con Asignación
-    function sincronizarPedidosListos() {
-      const pedidosListos = pedidos.filter(p => p.estado === "Listo para entrega");
-      localStorage.setItem("pedidosListos", JSON.stringify(pedidosListos));
-    }
+    // --- 2) Renderizar pedidos ---
+    function renderPedidos(lista) {
+      const cont = document.getElementById("listaPedidos");
+      cont.innerHTML = "";
 
-    function renderPedidos() {
-      const contenedor = document.getElementById("listaPedidos");
-      contenedor.innerHTML = "";
+      // 🔹 Nos quedamos solo con los pedidos de HOY
+      const hoyISO = new Date().toISOString().slice(0, 10); // "2025-11-28"
+      const pedidosHoy = lista.filter(p => p.createdAt.startsWith(hoyISO));
 
-      if (pedidos.length === 0) {
-        contenedor.innerHTML = `<p class="text-center text-muted">No hay pedidos activos.</p>`;
+      if (pedidosHoy.length === 0) {
+        cont.innerHTML = `<p class="text-center text-muted">
+          No hay pedidos activos para hoy.
+        </p>`;
         return;
       }
 
-      pedidos.forEach(p => {
-        let color = "bg-secondary";
-        if (p.estado === "Retrasado") color = "bg-danger text-white";
-        else if (p.estado === "En preparación") color = "bg-warning text-dark";
-        else if (p.estado === "Listo para entrega") color = "bg-success";
-        else if (p.estado === "En espera") color = "bg-light text-dark";
-
-        contenedor.innerHTML += `
+      pedidosHoy.forEach(p => {
+        cont.innerHTML += `
           <div class="col-md-4">
             <div class="card shadow-sm">
-              <div class="card-header ${color}">Pedido #${p.id}</div>
+              <div class="card-header bg-warning fw-bold">
+                Pedido #${p.id}
+              </div>
               <div class="card-body">
-                <p><strong>Cliente:</strong> ${p.cliente}</p>
-                <p><strong>Plato:</strong> ${p.plato}</p>
-                <p><strong>Estado:</strong> ${p.estado}</p>
-                <p>${p.tiempo > 0 ? `⏱ ${p.tiempo} min restantes` : ""}</p>
-                <div class="d-flex justify-content-between">
-                  <button class="btn btn-sm btn-success" onclick="marcarListo(${p.id})">
-                    <i class="bi bi-check-circle"></i> Marcar listo
-                  </button>
-                  <button class="btn btn-sm btn-danger" onclick="eliminarPedido(${p.id})">
-                    <i class="bi bi-trash"></i>
-                  </button>
-                </div>
+                <p><strong>Cliente:</strong> ${p.customerName}</p>
+                <p><strong>Total:</strong> $${p.total}</p>
+                <p><strong>Estado actual:</strong> ${p.status}</p>
+
+                <hr>
+                <p class="fw-bold">Items:</p>
+                ${p.items.map(i => `
+                  <p>- ${i.productName} x${i.quantity}</p>
+                `).join("")}
+
+                <hr>
+
+                <button class="btn btn-sm btn-primary mb-1"
+                        onclick="cambiarEstado('${p.id}', 'En cocina')">
+                  🔥 En cocina
+                </button>
+
+                <button class="btn btn-sm btn-warning mb-1"
+                        onclick="cambiarEstado('${p.id}', 'En preparación')">
+                  🍳 En preparación
+                </button>
+
+                <button class="btn btn-sm btn-success"
+                        onclick="cambiarEstado('${p.id}', 'Listo para retiro')">
+                  ✔ Listo para retiro
+                </button>
               </div>
             </div>
-          </div>`;
+          </div>
+        `;
       });
     }
 
-    function marcarListo(id) {
-      const pedido = pedidos.find(p => p.id === id);
-      if (pedido) {
-        pedido.estado = "Listo para entrega";
-        pedido.tiempo = 0;
-        guardar();
-        sincronizarPedidosListos(); // 🔗 sincroniza automáticamente
-        renderPedidos();
+    // --- 3) Cambiar estado ---
+    async function cambiarEstado(orderId, estado) {
+      try {
+        const res = await fetch(`${API}/cocina/estado/${orderId}`, {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify({ status: estado })
+        });
+
+        if (!res.ok) {
+          console.error("Error al cambiar estado:", res.status);
+        }
+
+        // Refrescar el panel siempre después del PATCH
+        cargarPedidos();
+      } catch (err) {
+        console.error("Error de red al cambiar estado:", err);
       }
     }
 
-    function eliminarPedido(id) {
-      pedidos = pedidos.filter(p => p.id !== id);
-      guardar();
-      sincronizarPedidosListos();
-      renderPedidos();
-    }
-
+    // --- 4) “Reiniciar pedidos” ahora es refrescar desde la API ---
     function reiniciarPedidos() {
-      localStorage.removeItem("pedidosCocina");
-      localStorage.removeItem("pedidosListos"); // también limpia los listos
-      location.reload();
+      cargarPedidos();
     }
-
-    // Simula el paso del tiempo y marca retrasos
-    setInterval(() => {
-      pedidos.forEach(p => {
-        if (p.estado === "En preparación") {
-          p.tiempo++;
-          if (p.tiempo > TIEMPO_MAX && p.estado !== "Retrasado") {
-            p.estado = "Retrasado";
-          }
-        }
-      });
-      guardar();
-      sincronizarPedidosListos();
-      renderPedidos();
-    }, 60000); // cada minuto
-
-    renderPedidos();
   </script>
-  <!-- Protección de rutas (primero) -->
+
+  <!-- Protección de rutas (define requireAuth) -->
   <script src="js/protegerRutas.js"></script>
+
+  <!-- Declarar el token UNA sola vez y arrancar el panel -->
   <script>
-    console.log("[promociones] Script inline cargado, llamando a requireAuth()");
-    const token = requireAuth();
+    console.log("[panel-cocina] cargando token...");
+    const token = requireAuth(); // obtiene el JWT del almacenamiento
+    cargarPedidos();            // carga los pedidos iniciales
   </script>
 
 </body>

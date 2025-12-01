@@ -10,198 +10,224 @@
 
   <style>
     body { background: #f8f9fa; }
-    .pedido-card { border-radius:8px; box-shadow:0 2px 6px rgba(0,0,0,.1); }
-    .estado-badge { min-width:110px; }
-    .progress { height:10px; border-radius:5px; }
+    .pedido-card { border-radius: 8px; box-shadow: 0 2px 6px rgba(0,0,0,.1); }
+    .estado-badge { min-width: 110px; }
+    .progress { height: 10px; border-radius: 5px; }
   </style>
 </head>
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand d-flex align-items-center" href="index.html">
-      <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="45" height="40" class="me-2">
-      <h2 class="mb-0">PolloAsado</h2>
-    </a>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-dark bg-dark">
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="45" height="40" class="me-2">
+        <h2 class="mb-0">PolloAsado</h2>
+      </a>
 
-    <div class="d-flex">
-      <a href="registroUsuario.html" class="nav-link text-white me-3">
-        <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
+      <div class="d-flex">
+        <a href="registroUsuario.html" class="nav-link text-white me-3">
+          <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- CONTENIDO -->
+  <div class="container mt-4">
+    <h3 class="text-center mb-3">📦 Panel del Repartidor</h3>
+    <p class="text-center text-muted mb-4">Gestiona tus pedidos asignados.</p>
+
+    <!-- FILTROS -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <select id="filtroEstado" class="form-select">
+          <option value="Todos">Todos los estados</option>
+          <option value="Asignado">Asignado</option>
+          <option value="En camino">En camino</option>
+          <option value="Entregado">Entregado</option>
+        </select>
+      </div>
+
+      <div class="col-md-6 mt-2 mt-md-0">
+        <input
+          type="text"
+          id="buscarPedido"
+          class="form-control"
+          placeholder="Buscar por ID o cliente..."
+        >
+      </div>
+    </div>
+
+    <!-- LISTA DE PEDIDOS -->
+    <div id="listaPedidos" class="row g-4"></div>
+
+    <!-- BOTONES INFERIORES -->
+    <div class="text-center my-5">
+      <a href="asignacion.html" class="btn btn-warning me-2">
+        <i class="bi bi-person-gear me-2"></i> Ir a Asignación
+      </a>
+      <a href="panelCocina.html" class="btn btn-outline-secondary me-2">
+        <i class="bi bi-arrow-left-circle me-2"></i> Panel Cocina
+      </a>
+      <a href="index.html" class="btn btn-danger">
+        <i class="bi bi-box-arrow-right me-2"></i> Cerrar sesión
       </a>
     </div>
   </div>
-</nav>
 
-<!-- CONTENIDO -->
-<div class="container mt-4">
-  <h3 class="text-center mb-3">📦 Panel del Repartidor</h3>
-  <p class="text-center text-muted mb-4">Gestiona tus pedidos asignados.</p>
+  <!-- PROTEGER RUTAS -->
+  <script src="js/protegerRutas.js"></script>
 
-  <!-- FILTROS -->
-  <div class="row mb-4">
-    <div class="col-md-6">
-      <select id="filtroEstado" class="form-select">
-        <option value="Todos">Todos los estados</option>
-        <option value="Asignado">Asignado</option>
-        <option value="En camino">En camino</option>
-        <option value="Entregado">Entregado</option>
-      </select>
-    </div>
+  <!-- SCRIPT PANEL REPARTIDOR -->
+  <script>
+    console.log("[panelRepartidor] Iniciando...");
 
-    <div class="col-md-6 mt-2 mt-md-0">
-      <input type="text" id="buscarPedido" class="form-control"
-             placeholder="Buscar por ID o cliente...">
-    </div>
-  </div>
+    // ✅ token declarado UNA sola vez (evitamos el error de 'Cannot redeclare...')
+    const token = requireAuth();
 
-  <!-- LISTA DE PEDIDOS -->
-  <div id="listaPedidos" class="row g-4"></div>
+    const API_BASE = "http://127.0.0.1:8000/api/pollosabroso";
 
-  <!-- BOTONES INFERIORES -->
-  <div class="text-center my-5">
-    <a href="asignacion.html" class="btn btn-warning me-2">
-      <i class="bi bi-person-gear me-2"></i> Ir a Asignación
-    </a>
-    <a href="panelCocina.html" class="btn btn-outline-secondary me-2">
-      <i class="bi bi-arrow-left-circle me-2"></i> Panel Cocina
-    </a>
-    <a href="index.html" class="btn btn-danger">
-      <i class="bi bi-box-arrow-right me-2"></i> Cerrar sesión
-    </a>
-  </div>
-</div>
+    // ⛔ CAMBIA este ID por el repartidor real de tu tabla delivery_person
+    const DRIVER_ID = "690bc94c-ca45-11f0-9d35-48ea629a6539"; // ej: Vicente Repartidor
 
-<!-- SCRIPT PANEL -->
-<script src="js/protegerRutas.js"></script>
-<script>
-  console.log("[panelRepartidor] Iniciando...");
-  const token = requireAuth();
+    const lista = document.getElementById("listaPedidos");
+    const filtroEstado = document.getElementById("filtroEstado");
+    const buscarPedido = document.getElementById("buscarPedido");
 
-  const API_BASE = "http://127.0.0.1:8000/api/pollosabroso";
-  const DRIVER_ID = "aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa"; // <- tu repartidor real
+    let pedidos = [];
 
-  const lista = document.getElementById("listaPedidos");
-  const filtroEstado = document.getElementById("filtroEstado");
-  const buscarPedido = document.getElementById("buscarPedido");
+    // --- 1) Obtener pedidos reales del backend ---
+    async function cargarPedidos() {
+      try {
+        const res = await fetch(`${API_BASE}/repartidores/${DRIVER_ID}/pedidos`, {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        });
 
-  let pedidos = [];
+        if (!res.ok) {
+          console.error("[panelRepartidor] Error HTTP:", res.status);
+          return;
+        }
 
-  // Obtener pedidos reales del backend
-  async function cargarPedidos() {
-    try {
-      const res = await fetch(`${API_BASE}/repartidores/${DRIVER_ID}/pedidos`, {
-        headers: { "Authorization": `Bearer ${token}` }
+        pedidos = await res.json();
+        console.log("[panelRepartidor] Pedidos recibidos:", pedidos);
+        renderPedidos();
+      } catch (err) {
+        console.error("[panelRepartidor] Error al traer pedidos:", err);
+      }
+    }
+
+    // --- 2) Cambiar estado real del pedido ---
+    async function actualizarEstado(orderId, nuevoEstado) {
+      try {
+        const res = await fetch(`${API_BASE}/repartidores/pedidos/${orderId}/status`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify({ status: nuevoEstado })
+        });
+
+        if (!res.ok) {
+          console.error("[panelRepartidor] Error al actualizar estado:", res.status);
+          return;
+        }
+
+        console.log(`[panelRepartidor] Estado actualizado (${orderId} → ${nuevoEstado})`);
+        await cargarPedidos(); // refresca la lista
+      } catch (err) {
+        console.error("Error al actualizar estado:", err);
+      }
+    }
+
+    // --- 3) Renderizar pedidos en pantalla ---
+    function renderPedidos() {
+      lista.innerHTML = "";
+
+      const filtrados = pedidos.filter(p => {
+        const coincideEstado =
+          filtroEstado.value === "Todos" || p.status === filtroEstado.value;
+
+        const texto = buscarPedido.value.toLowerCase();
+        const coincideBusqueda =
+          (p.orderId || "").toLowerCase().includes(texto) ||
+          (p.customerName || "").toLowerCase().includes(texto);
+
+        return coincideEstado && coincideBusqueda;
       });
 
-      pedidos = await res.json();
-      console.log("[panelRepartidor] Pedidos recibidos:", pedidos);
+      if (filtrados.length === 0) {
+        lista.innerHTML = `<p class="text-center text-muted">No se encontraron pedidos.</p>`;
+        return;
+      }
 
-      renderPedidos();
-    } catch (err) {
-      console.error("Error al traer pedidos:", err);
-    }
-  }
+      filtrados.forEach(p => {
+        lista.innerHTML += `
+          <div class="col-md-6">
+            <div class="card pedido-card">
+              <div class="card-body">
 
-  // Cambiar estado real
-  async function actualizarEstado(orderId, nuevoEstado) {
-    const res = await fetch(`${API_BASE}/repartidores/pedidos/${orderId}/status`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({ status: nuevoEstado })
-    });
+                <h5 class="mb-1">Pedido #${p.orderId}</h5>
+                <span class="badge bg-info estado-badge">${p.status}</span>
 
-    console.log(`[panelRepartidor] Estado actualizado (${orderId} → ${nuevoEstado})`);
+                <p class="mt-2 mb-1"><strong>Cliente:</strong> ${p.customerName || "N/A"}</p>
+                <p class="mb-1"><strong>Total:</strong> $${(p.total || 0).toLocaleString()}</p>
 
-    await cargarPedidos(); // refrescar lista en pantalla
-  }
+                <h6 class="mt-3">Items:</h6>
+                <ul>
+                  ${p.items.map(i => `
+                    <li>${i.productName} x${i.quantity} — $${i.price}</li>
+                  `).join("")}
+                </ul>
 
-  // Dibujar pedidos en pantalla
-  function renderPedidos() {
-    lista.innerHTML = "";
-
-    const filtrados = pedidos.filter(p => {
-      const coincideEstado =
-        filtroEstado.value === "Todos" || p.status === filtroEstado.value;
-
-      const texto = buscarPedido.value.toLowerCase();
-      const coincideBusqueda =
-        p.orderId.toLowerCase().includes(texto) ||
-        (p.customerName || "").toLowerCase().includes(texto);
-
-      return coincideEstado && coincideBusqueda;
-    });
-
-    if (filtrados.length === 0) {
-      lista.innerHTML = `<p class="text-center text-muted">No se encontraron pedidos.</p>`;
-      return;
-    }
-
-    filtrados.forEach(p => {
-      lista.innerHTML += `
-        <div class="col-md-6">
-          <div class="card pedido-card">
-            <div class="card-body">
-
-              <h5 class="mb-1">Pedido #${p.orderId}</h5>
-              <span class="badge bg-info estado-badge">${p.status}</span>
-
-              <p class="mt-2 mb-1"><strong>Cliente:</strong> ${p.customerName || "N/A"}</p>
-              <p class="mb-1"><strong>Total:</strong> $${p.total.toLocaleString()}</p>
-
-              <h6 class="mt-3">Items:</h6>
-              <ul>
-                ${p.items.map(i => `
-                  <li>${i.productName} x${i.quantity} — $${i.price}</li>
-                `).join("")}
-              </ul>
-
-              <div class="progress my-3">
-                <div class="progress-bar 
-                  ${p.status === "Entregado" ? "bg-success" : "bg-primary"}"
-                  style="width:${estadoAProgreso(p.status)}%">
+                <div class="progress my-3">
+                  <div
+                    class="progress-bar ${p.status === "Entregado" ? "bg-success" : "bg-primary"}"
+                    style="width:${estadoAProgreso(p.status)}%">
+                  </div>
                 </div>
+
+                <div class="d-flex gap-2">
+                  <button
+                    class="btn btn-sm btn-primary"
+                    onclick="actualizarEstado('${p.orderId}', 'En camino')">
+                    <i class="bi bi-truck"></i> En camino
+                  </button>
+
+                  <button
+                    class="btn btn-sm btn-success"
+                    onclick="actualizarEstado('${p.orderId}', 'Entregado')">
+                    <i class="bi bi-check-circle"></i> Entregado
+                  </button>
+                </div>
+
               </div>
-
-              <div class="d-flex gap-2">
-                <button class="btn btn-sm btn-primary"
-                        onclick="actualizarEstado('${p.orderId}', 'En camino')">
-                  <i class="bi bi-truck"></i> En camino
-                </button>
-
-                <button class="btn btn-sm btn-success"
-                        onclick="actualizarEstado('${p.orderId}', 'Entregado')">
-                  <i class="bi bi-check-circle"></i> Entregado
-                </button>
-              </div>
-
             </div>
           </div>
-        </div>
-      `;
-    });
-  }
-
-  // Convertir estado → porcentaje para la barra
-  function estadoAProgreso(status) {
-    switch (status) {
-      case "Asignado": return 20;
-      case "En camino": return 70;
-      case "Entregado": return 100;
-      default: return 10;
+        `;
+      });
     }
-  }
 
-  // Eventos para filtros
-  filtroEstado.addEventListener("change", renderPedidos);
-  buscarPedido.addEventListener("input", renderPedidos);
+    // --- 4) Convertir estado → porcentaje para la barra de progreso ---
+    function estadoAProgreso(status) {
+      switch (status) {
+        case "Asignado":   return 20;
+        case "En camino":  return 70;
+        case "Entregado":  return 100;
+        default:           return 10;
+      }
+    }
 
-  // Inicializar
-  cargarPedidos();
-</script>
+    // --- 5) Eventos para filtros ---
+    filtroEstado.addEventListener("change", renderPedidos);
+    buscarPedido.addEventListener("input", renderPedidos);
+
+    // --- 6) Inicializar ---
+    cargarPedidos();
+  </script>
 
 </body>
 </html>
