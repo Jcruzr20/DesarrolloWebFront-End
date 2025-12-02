@@ -78,7 +78,7 @@
         <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
           <i class="bi bi-megaphone-fill me-1"></i> Promociones
         </a>
-        <a href="registroUsuario.html" class="nav-link text-white me-3">
+        <a id="linkUsuario" href="registroUsuario.html" class="nav-link text-white me-3">
           <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
         </a>
         <a href="Pedidos.html" class="nav-link text-white position-relative">
@@ -153,7 +153,7 @@
             <div class="col-md-6">
               <div class="card-body">
                 <h5 class="card-title text-center">Colación + Verduras</h5>
-                <p class="text-muted text-center">Muslitos de pollo asados con mix de verduras y arroz blanco. Incluye bebida individual</p>
+                <p class="text-muted text-center">Muslitos de pollo asados con mix de verduras y arroz blanco.</p>
                 <h6 class="card-title text-center">Personalizar el pedido</h5>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Dúo de Muslos $8500</span>
@@ -194,7 +194,7 @@
             <div class="col-md-6">
               <div class="card-body">
                 <h5 class="card-title text-center">Colación + Verduras</h5>
-                <p class="text-muted text-center">Muslitos de pollo asados con mix de verduras y arroz blanco. Incluye bebida individual</p>
+                <p class="text-muted text-center">Pollo entero asado a la parrilla, acompañado de papas y aliños</p>
                 <h6 class="card-title text-center">Personalizar el pedido</h5>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Pollo Asado Entero $12500</span>
@@ -235,7 +235,7 @@
             <div class="col-md-6">
               <div class="card-body">
                 <h5 class="card-title text-center">Colación + Verduras</h5>
-                <p class="text-muted text-center">Muslitos de pollo asados con mix de verduras y arroz blanco. Incluye bebida individual</p>
+                <p class="text-muted text-center">Muslito de pollo clásico, con porción de papas fritas y arroz</p>
                 <h6 class="card-title text-center">Personalizar el pedido</h5>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Muslito Clásico $5500</span>
@@ -271,7 +271,7 @@
             <div class="col-md-6">
               <div class="card-body">
                 <h5 class="card-title text-center">Colación + Verduras</h5>
-                <p class="text-muted text-center">Muslitos de pollo asados con mix de verduras y arroz blanco. Incluye bebida individual</p>
+                <p class="text-muted text-center">Muslitos de pollo asados con mix de verduras y arroz blanco</p>
                 <h6 class="card-title text-center">Personalizar el pedido</h5>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Muslito Clásico $5500</span>
@@ -308,7 +308,7 @@
             <div class="col-md-6">
               <div class="card-body">
                 <h5 class="card-title text-center">Colación + Verduras</h5>
-                <p class="text-muted text-center">Muslitos de pollo asados con mix de verduras y arroz blanco. Incluye bebida individual</p>
+                <p class="text-muted text-center">Muslitos de pollo al horno sazonados con romero, acompañados de vegetales rostizados</p>
                 <h6 class="card-title text-center">Personalizar el pedido</h5>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Pollo Asado + verduras $9500</span>
@@ -344,7 +344,7 @@
             <div class="col-md-6">
               <div class="card-body">
                 <h5 class="card-title text-center">Colación + Verduras</h5>
-                <p class="text-muted text-center">Muslitos de pollo asados con mix de verduras y arroz blanco. Incluye bebida individual</p>
+                <p class="text-muted text-center">Pechuga de pollo a la plancha fileteada y glaseada, acompañada de mix de verduras salteadas</p>
                 <h6 class="card-title text-center">Personalizar el pedido</h5>
                 <div class="d-flex justify-content-between align-items-center mb-2">
                   <span>Pollo a la Plancha $8500</span>
@@ -391,7 +391,7 @@
             <div class="col-md-6">
               <div class="card-body">
                 <h5 class="card-title text-center">Colación + Verduras</h5>
-                <p class="text-muted text-center">Muslitos de pollo asados con mix de verduras y arroz blanco. Incluye bebida individual</p>
+                <p class="text-muted text-center">Muslo de pollo asado al jugo, acompañado de un puré de papas casero</p>
 
                 <h6 class="text-center mb-2">Personalizar el pedido</h6>
                 <div class="d-flex justify-content-between align-items-center mb-2">
@@ -562,7 +562,7 @@
         <div class="card-body">
           <!-- Descripción -->
           <p class="text-muted text-center">
-            Hamburguesa de pollo crujiente con papas fritas y bebida fría. Ideal para una comida rápida y deliciosa.
+            Hamburguesa de pechuga de pollo a la parrilla, con salsa BBQ, lechuga y tomate fresco en pan con sésamo
           </p>
 
           <!-- Personalización -->
@@ -904,6 +904,27 @@
     };
   });
 </script>
+<script>
+  // === SESIÓN INTELIGENTE PARA PERSONALIZACIÓN ===
+
+  const token = localStorage.getItem("token");
+  const email = localStorage.getItem("userEmail");
+  const linkUsuario = document.getElementById("linkUsuario");
+
+  // 🔗 Ajustar comportamiento del icono de usuario
+  if (token) {
+    if (email === "cocinero@gmail.com") {
+      linkUsuario.href = "panelControl.html";
+    } else if (email === "repartidor@gmail.com") {
+      linkUsuario.href = "panelRepartidor.html";
+    } else {
+      linkUsuario.href = "sesionUsuario.html";
+    }
+  } else {
+    linkUsuario.href = "registroUsuario.html";
+  }
+</script>
+
 </body>
 </html>
 

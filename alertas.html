@@ -3,13 +3,42 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alertas de Tiempos - PolloAsado</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <title>Alertas de tiempo de cocina - PolloAsado</title>
+
+  <!-- Bootstrap -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
+  >
+
   <style>
-    body { background-color: #f8f9fa; min-height: 100vh; display: flex; flex-direction: column; }
-    footer { margin-top: auto; background: #000; color: #fff; padding: 40px 0; }
-    .table-warning td { font-weight: 600; }
+    body {
+      background-color: #f8f9fa;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    footer {
+      background: #000;
+      color: #fff;
+      padding: 40px 0;
+      margin-top: auto;
+    }
+    footer h4 { color: #ffc107; font-weight: bold; }
+    footer h6 { font-weight: 600; margin-bottom: 10px; }
+    footer p  { margin-bottom: 6px; font-size: 0.95em; }
+    footer small { color: #aaa; }
+
+    .alert-card {
+      border-left: 5px solid #dc3545;
+    }
+    .badge-estado {
+      min-width: 120px;
+    }
   </style>
 </head>
 <body>
@@ -18,10 +47,10 @@
   <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid">
       <a class="navbar-brand d-flex align-items-center" href="index.html">
-        <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
+        <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png"
+             width="50" height="45" class="me-2">
         <h2 class="mb-0">PolloAsado</h2>
       </a>
-
       <div class="d-flex align-items-center">
         <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
           <i class="bi bi-megaphone-fill me-1"></i> Promociones
@@ -29,7 +58,7 @@
         <a href="registroUsuario.html" class="nav-link text-white me-3">
           <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
         </a>
-        <a href="Pedidos.html" class="nav-link text-white">
+        <a href="Pedidos.html" class="nav-link text-white position-relative">
           <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
         </a>
       </div>
@@ -37,76 +66,94 @@
   </nav>
 
   <!-- CONTENIDO -->
-  <div class="container mt-4">
-    <h2 class="text-center mb-3">Alertas de Tiempos de Cocción</h2>
-    <p class="text-center text-muted">Monitoreo en tiempo real de los pedidos en preparación</p>
+  <div class="container mt-4 mb-5 flex-grow-1">
+    <h2 class="text-center mb-3">⏱ Alertas de tiempo en cocina</h2>
+    <p class="text-center text-muted mb-4">
+      Aquí verás los pedidos que llevan demasiado tiempo en <strong>En cocina</strong> o
+      <strong>En preparación</strong>, según el límite configurado.
+    </p>
 
-    <table class="table table-hover align-middle text-center shadow-sm">
-      <thead class="table-dark">
-        <tr>
-          <th>ID Pedido</th>
-          <th>Cliente</th>
-          <th>Detalle</th>
-          <th>Tiempo</th>
-          <th>Estado</th>
-        </tr>
-      </thead>
-      <tbody id="tablaAlertas">
-        <tr><td colspan="5" class="text-muted">Cargando pedidos...</td></tr>
-      </tbody>
-    </table>
+    <!-- Controles -->
+    <div class="row mb-4 align-items-center">
+      <div class="col-md-6 mb-2">
+        <label for="inputLimite" class="form-label fw-semibold">
+          Límite de minutos para generar alerta:
+        </label>
+        <div class="input-group">
+          <input
+            type="number"
+            id="inputLimite"
+            class="form-control"
+            min="5"
+            step="5"
+          >
+          <span class="input-group-text">min</span>
+          <button class="btn btn-outline-primary" id="btnGuardarLimite">
+            Guardar
+          </button>
+        </div>
+        <small class="text-muted">
+          Se guarda en el navegador como configuración personal.
+        </small>
+      </div>
 
-    <div class="text-center mt-3">
-      <a href="panelControl.html" class="btn btn-outline-secondary me-2">
-        <i class="bi bi-arrow-left-circle"></i> Volver al Panel de Cocina
-      </a>
-      <a href="asignacion.html" class="btn btn-warning">
-        <i class="bi bi-person-gear me-2"></i> Asignar Repartidor
-      </a>
+      <div class="col-md-6 mb-2 text-md-end text-center">
+        <!-- NUEVO: botón para volver al panel -->
+        <a href="panelControl.html" class="btn btn-outline-dark me-2">
+          <i class="bi bi-arrow-left-circle me-1"></i> Volver a panel
+        </a>
+
+        <!-- Botón refrescar -->
+        <button class="btn btn-outline-secondary me-2" id="btnRefrescar">
+          <i class="bi bi-arrow-clockwise me-1"></i> Refrescar ahora
+        </button>
+
+        <!-- NUEVO: filtro de “solo hoy” -->
+        <div class="form-check d-inline-block mt-2">
+          <input class="form-check-input" type="checkbox" id="chkSoloHoy">
+          <label class="form-check-label text-muted" for="chkSoloHoy">
+            Mostrar solo pedidos de hoy
+          </label>
+        </div>
+
+        <span class="text-muted d-block mt-1">
+          Actualización automática cada 60&nbsp;s
+        </span>
+      </div>
     </div>
 
-    <div class="card mt-4 shadow-sm">
-      <div class="card-header bg-dark text-white">Configuración de Alertas</div>
-      <div class="card-body">
-        <label for="tiempoMax" class="form-label">Tiempo máximo permitido (minutos):</label>
-        <input type="number" id="tiempoMax" class="form-control w-25 d-inline-block" value="20">
-        <button class="btn btn-primary ms-2" id="guardarConfig"><i class="bi bi-save"></i> Guardar</button>
-        <span id="mensajeConfig" class="ms-3 text-success fw-semibold"></span>
-      </div>
+    <!-- Listado de alertas -->
+    <div id="contenedorAlertas" class="row g-3">
+      <p class="text-center text-muted">Cargando alertas...</p>
     </div>
   </div>
 
+  <!-- FOOTER -->
   <footer>
     <div class="container">
-      <div class="row">
-        <!-- Logo -->
+      <div class="row text-center text-md-start">
         <div class="col-md-3 mb-3">
           <h4>PolloFast</h4>
-          <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" alt="logo" width="50" height="45" class="me-2">
+          <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png"
+               width="50" height="45">
         </div>
-
-        <!-- Conócenos -->
         <div class="col-md-3 mb-3">
           <h6>Conócenos</h6>
-          <p class="mb-1">Teléfono</p>
-          <p class="mb-1">Mail de contacto</p>
-          <p class="mb-1">Términos y condiciones</p>
-          <p class="mb-0">Política de privacidad</p>
+          <p>Teléfono</p>
+          <p>Mail de contacto</p>
+          <p>Términos y condiciones</p>
+          <p>Política de privacidad</p>
         </div>
-
-        <!-- Redes sociales -->
         <div class="col-md-3 mb-3">
           <h6>Redes sociales</h6>
-          <p class="mb-1"><i class="bi bi-instagram"></i> Instagram</p>
-          <p class="mb-1"><i class="bi bi-facebook"></i> Facebook</p>
-          <p class="mb-0"><i class="bi bi-twitter-x"></i> X</p>
+          <p><i class="bi bi-instagram"></i> Instagram</p>
+          <p><i class="bi bi-facebook"></i> Facebook</p>
+          <p><i class="bi bi-twitter-x"></i> X</p>
         </div>
-
-        <!-- Mi cuenta -->
         <div class="col-md-3 mb-3">
           <h6>Mi cuenta</h6>
-          <p class="mb-1">Pedir</p>
-          <p class="mb-0">Iniciar sesión</p>
+          <p>Pedir</p>
+          <p>Iniciar sesión</p>
         </div>
       </div>
       <div class="text-center mt-3">
@@ -115,89 +162,209 @@
     </div>
   </footer>
 
-  <!-- SCRIPT -->
+  <!-- JS Bootstrap -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- LÓGICA DE ALERTAS -->
   <script>
-    const tabla = document.getElementById("tablaAlertas");
-    const inputTiempo = document.getElementById("tiempoMax");
-    const btnGuardar = document.getElementById("guardarConfig");
-    const mensajeConfig = document.getElementById("mensajeConfig");
+    const API = "http://127.0.0.1:8000/api/pollosabroso";
 
-    const tiempoMax = parseInt(localStorage.getItem("tiempoMax")) || 20;
-    inputTiempo.value = tiempoMax;
+    const contenedorAlertas = document.getElementById("contenedorAlertas");
+    const inputLimite      = document.getElementById("inputLimite");
+    const btnGuardarLimite = document.getElementById("btnGuardarLimite");
+    const btnRefrescar     = document.getElementById("btnRefrescar");
+    const chkSoloHoy       = document.getElementById("chkSoloHoy");
 
-    btnGuardar.addEventListener("click", () => {
-      localStorage.setItem("tiempoMax", inputTiempo.value);
-      mensajeConfig.textContent = "✅ Guardado correctamente";
-      setTimeout(() => mensajeConfig.textContent = "", 2000);
-    });
+    const LIMITE_DEFAULT = 20;
+    let limiteMinutos =
+      parseInt(localStorage.getItem("tiempoMaxCocina")) || LIMITE_DEFAULT;
 
-    let alertasSonadas = new Set();
+    // Mostrar el límite actual
+    inputLimite.value = limiteMinutos;
 
-    function reproducirAlerta(pedido) {
-      if (alertasSonadas.has(pedido.id)) return;
-      alertasSonadas.add(pedido.id);
+    function minutosDesde(fechaISO) {
+      if (!fechaISO) return 0;
+      const fecha = new Date(fechaISO);
+      const ahora = new Date();
+      const diffMs = ahora - fecha;
+      return Math.floor(diffMs / 60000); // ms → minutos
+    }
 
-      const alerta = new Audio("https://cdn.pixabay.com/audio/2022/03/15/audio_68c5b1b7e8.mp3");
-      alerta.play();
+    function esEstadoDeCocina(status) {
+      const s = (status || "").toLowerCase();
+      return s.includes("prepar") || s.includes("cocina");
+    }
 
-      if (Notification.permission === "granted") {
-        new Notification(`Pedido #${pedido.id} retrasado`, {
-          body: `${pedido.plato} lleva ${pedido.tiempo} min.`,
-          icon: "https://cdn-icons-png.flaticon.com/512/1206/1206237.png"
+    // NUEVO: verificar si el pedido es del día de hoy (fecha local)
+    function esDeHoy(fechaISO) {
+      if (!fechaISO) return false;
+      const f   = new Date(fechaISO);
+      const hoy = new Date();
+      return (
+        f.getFullYear() === hoy.getFullYear() &&
+        f.getMonth()    === hoy.getMonth() &&
+        f.getDate()     === hoy.getDate()
+      );
+    }
+
+    async function cargarAlertas(token) {
+      try {
+        contenedorAlertas.innerHTML =
+          '<p class="text-center text-muted">Cargando alertas...</p>';
+
+        const res = await fetch(`${API}/cocina/panel-control`, {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
         });
-      }
-    }
 
-    if (Notification.permission !== "granted") {
-      Notification.requestPermission();
-    }
-
-    function actualizarTabla() {
-      const pedidos = JSON.parse(localStorage.getItem("pedidosCocina")) || [];
-      tabla.innerHTML = "";
-
-      if (pedidos.length === 0) {
-        tabla.innerHTML = `<tr><td colspan="5" class="text-muted">No hay pedidos activos.</td></tr>`;
-        return;
-      }
-
-      pedidos.forEach(p => {
-        let estado = "";
-        let filaClass = "";
-
-        if (p.estado === "Listo para entrega") {
-          estado = `<span class="badge bg-primary">Listo</span>`;
-        } else if (p.estado === "Retrasado") {
-          estado = `<span class="badge bg-danger">⚠️ Retrasado</span>`;
-          filaClass = "table-warning";
-          reproducirAlerta(p);
-        } else if (p.estado === "En preparación") {
-          estado = `<span class="badge bg-success">En tiempo</span>`;
-        } else {
-          estado = `<span class="badge bg-secondary">${p.estado}</span>`;
+        if (!res.ok) {
+          contenedorAlertas.innerHTML = `
+            <p class="text-center text-muted">
+              Error al obtener datos de cocina.
+            </p>`;
+          console.error("[alertas] Error HTTP:", await res.text());
+          return;
         }
 
-        tabla.innerHTML += `
-          <tr class="${filaClass}">
-            <td>#${p.id}</td>
-            <td>${p.cliente}</td>
-            <td>${p.plato}</td>
-            <td>${p.tiempo} min</td>
-            <td>${estado}</td>
-          </tr>`;
-      });
+        const pedidos = await res.json();
+        console.log("[alertas] pedidos panel-control:", pedidos);
+
+        const soloHoy = chkSoloHoy.checked;
+
+        const alertas = pedidos
+          .map(p => {
+            const mins = minutosDesde(p.createdAt);
+            return { ...p, minutos: mins };
+          })
+          .filter(p => {
+            if (soloHoy && !esDeHoy(p.createdAt)) {
+              return false;
+            }
+            return esEstadoDeCocina(p.status) && p.minutos > limiteMinutos;
+          })
+          .sort((a, b) => b.minutos - a.minutos); // más críticos primero
+
+        if (!alertas.length) {
+          contenedorAlertas.innerHTML = `
+            <p class="text-center text-success">
+              ✅ No hay pedidos con retraso según el límite de ${limiteMinutos} minutos
+              ${soloHoy ? " para hoy." : "."}
+            </p>`;
+          return;
+        }
+
+        contenedorAlertas.innerHTML = "";
+
+        alertas.forEach(p => {
+          contenedorAlertas.innerHTML += `
+            <div class="col-md-6">
+              <div class="card alert-card shadow-sm">
+                <div class="card-body">
+                  <div class="d-flex justify-content-between align-items-start">
+                    <div>
+                      <h5 class="card-title mb-1">
+                        Pedido #${p.id.slice(0,8)}...
+                      </h5>
+                      <p class="mb-1">
+                        <strong>Cliente:</strong> ${p.customerName || "Cliente"}
+                      </p>
+                      <p class="mb-1">
+                        <strong>Total:</strong> $${p.total}
+                      </p>
+                      <p class="mb-1">
+                        <strong>Tiempo en cocina:</strong>
+                        ${p.minutos} min
+                        <span class="text-danger">
+                          (+${p.minutos - limiteMinutos} min sobre el límite)
+                        </span>
+                      </p>
+                      <p class="mb-0">
+                        <strong>Creado:</strong>
+                        ${new Date(p.createdAt).toLocaleString("es-CL")}
+                      </p>
+                    </div>
+                    <span class="badge bg-danger badge-estado">
+                      ${p.status}
+                    </span>
+                  </div>
+
+                  <hr class="my-2">
+
+                  <p class="fw-bold mb-1">Items:</p>
+                  <ul class="mb-0">
+                    ${p.items.map(i => `
+                      <li>${i.productName} x${i.quantity}</li>
+                    `).join("")}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+
+      } catch (err) {
+        console.error("[alertas] Error de conexión:", err);
+        contenedorAlertas.innerHTML = `
+          <p class="text-center text-muted">
+            Error de conexión al cargar alertas.
+          </p>`;
+      }
     }
 
-    setInterval(actualizarTabla, 5000);
-    actualizarTabla();
+    // Guardar nuevo límite
+    btnGuardarLimite.addEventListener("click", () => {
+      const nuevo = parseInt(inputLimite.value);
+      if (isNaN(nuevo) || nuevo <= 0) {
+        alert("Ingresa un número de minutos válido.");
+        inputLimite.value = limiteMinutos;
+        return;
+      }
+      limiteMinutos = nuevo;
+      localStorage.setItem("tiempoMaxCocina", limiteMinutos);
+      alert(`Límite actualizado a ${limiteMinutos} minutos ✅`);
+      if (window.token) {
+        cargarAlertas(window.token);
+      }
+    });
+
+    // Botón refrescar
+    btnRefrescar.addEventListener("click", () => {
+      if (window.token) {
+        cargarAlertas(window.token);
+      }
+    });
+
+    // Cuando cambie el filtro “solo hoy”, recargar
+    chkSoloHoy.addEventListener("change", () => {
+      if (window.token) {
+        cargarAlertas(window.token);
+      }
+    });
+
+    // Intervalo automático (60s)
+    let autoRefreshId = null;
+    function iniciarAutoRefresh() {
+      if (autoRefreshId) clearInterval(autoRefreshId);
+      autoRefreshId = setInterval(() => {
+        if (window.token) {
+          cargarAlertas(window.token);
+        }
+      }, 60000);
+    }
   </script>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Protección de rutas (primero) -->
+  <!-- Protección de rutas -->
   <script src="js/protegerRutas.js"></script>
   <script>
-    console.log("[promociones] Script inline cargado, llamando a requireAuth()");
-    const token = requireAuth();
+    console.log("[alertas] Obteniendo token...");
+    const token = requireAuth();    // 👈 se declara UNA sola vez
+    window.token = token;          // para usarlo en otros scripts
+
+    // Cargar alertas iniciales y activar refresco automático
+    cargarAlertas(token);
+    iniciarAutoRefresh();
   </script>
+
 </body>
 </html>

@@ -36,9 +36,10 @@
       </a>
 
       <!-- Usuario -->
-      <a href="registroUsuario.html" class="nav-link text-white me-3">
+      <a id="linkUsuario" href="registroUsuario.html" class="nav-link text-white me-3">
         <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
       </a>
+
 
       <!-- Carrito -->
       <a href="Pedidos.html" class="nav-link text-white">
@@ -69,7 +70,9 @@
           <div class="card-body text-center">
             <h5 class="card-title">Promo Pollo 20% OFF</h5>
             <p class="card-text">Oferta especial para clientes frecuentes de pollo.</p>
-            <button class="btn btn-primary">Aprovechar</button>
+            <button class="btn btn-primary" onclick="window.location.href='Personalización.html'">
+              Aprovechar
+            </button>
           </div>
         </div>
       </div>
@@ -81,7 +84,9 @@
           <div class="card-body text-center">
             <h5 class="card-title">2x1 en Bebidas</h5>
             <p class="card-text">Lleva dos bebidas al precio de una.</p>
-            <button class="btn btn-primary">Aprovechar</button>
+            <button class="btn btn-primary" onclick="window.location.href='Personalización.html'">
+              Aprovechar
+            </button>
           </div>
         </div>
       </div>
@@ -93,7 +98,9 @@
           <div class="card-body text-center">
             <h5 class="card-title">Cupón $3.000</h5>
             <p class="card-text">Canjea este cupón en tu próximo pedido.</p>
-            <button class="btn btn-primary">Canjear</button>
+            <button class="btn btn-primary" onclick="window.location.href='canjearCupon.html'">
+              Canjear
+            </button>
           </div>
         </div>
       </div>
@@ -156,6 +163,50 @@
       </div>
     </div>
   </footer>
+  <script>
+    // === Preferencia de promociones personalizadas ===
+    const PROMOS_KEY = "promosPersonalizadasActivas";
+    const switchPromos = document.getElementById("switchPromos");
+
+    // Al cargar la página, leer preferencia guardada
+    const savedPref = localStorage.getItem(PROMOS_KEY);
+    if (savedPref !== null) {
+      switchPromos.checked = savedPref === "true";
+    }
+
+    switchPromos.addEventListener("change", () => {
+      const activa = switchPromos.checked;
+      localStorage.setItem(PROMOS_KEY, activa);
+
+      if (activa) {
+        alert("✅ Activaste las promociones personalizadas. Te mostraremos ofertas según tus compras.");
+      } else {
+        alert("⚠ Desactivaste las promociones personalizadas. Verás solo promos generales.");
+      }
+    });
+  </script>
+  <script>
+    // === Sesión inteligente en promoPersonalizada ===
+    const token = localStorage.getItem("token");
+    const email = localStorage.getItem("userEmail");
+    const linkUsuario = document.getElementById("linkUsuario");
+
+    if (linkUsuario) {
+      if (token) {
+        if (email === "cocinero@gmail.com") {
+          linkUsuario.href = "panelControl.html";
+        } else if (email === "repartidor@gmail.com") {
+          linkUsuario.href = "panelRepartidor.html";
+        } else {
+          linkUsuario.href = "sesionUsuario.html";
+        }
+      } else {
+        linkUsuario.href = "registroUsuario.html";
+      }
+    }
+  </script>
+
+
   
 
   <!-- Bootstrap JS -->

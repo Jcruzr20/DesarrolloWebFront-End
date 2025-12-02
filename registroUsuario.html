@@ -27,24 +27,29 @@
 
   <!-- NAVBAR -->
   <nav class="navbar navbar-dark bg-dark">
-  <div class="container-fluid">
-    <a class="navbar-brand d-flex align-items-center" href="index.html">
-      <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
-      <h2 class="mb-0">PolloAsado</h2>
-    </a>
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
+        <h2 class="mb-0">PolloAsado</h2>
+      </a>
 
-    <div class="d-flex align-items-center">
-      <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
-        <i class="bi bi-megaphone-fill me-1"></i> Promociones
-      </a>
-      <a href="registroUsuario.html" class="nav-link text-white me-3">
-        <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
-      </a>
-      <a href="Pedidos.html" class="nav-link text-white">
-        <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
-      </a>
+      <div class="d-flex align-items-center">
+        <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
+          <i class="bi bi-megaphone-fill me-1"></i> Promociones
+        </a>
+        <!-- NUEVO: Ver Menú -->
+        <a href="Personalización.html" class="nav-link text-white me-4 fw-semibold">
+          <i class="bi bi-egg-fried me-1"></i> Ver Menú
+        </a>
+        <!-- Icono usuario con id para manejarlo por JS -->
+        <a id="linkUsuario" href="registroUsuario.html" class="nav-link text-white me-3">
+          <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
+        </a>
+        <a href="Pedidos.html" class="nav-link text-white">
+          <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
+        </a>
+      </div>
     </div>
-  </div>
   </nav>
 
   <!-- CONTENIDO -->
@@ -165,8 +170,39 @@
       const showLogin = document.getElementById('show-login');
       const title = document.getElementById('form-title');
       const mensaje = document.getElementById('mensaje');
+      const linkUsuario = document.getElementById('linkUsuario');
 
-      // 🔁 Alternar entre login y registro (igual que antes)
+      // 🔐 Leer sesión guardada (si existe)
+      const storedToken = localStorage.getItem("token");
+      const storedEmail = localStorage.getItem("userEmail");
+
+      // 🔗 Ajustar comportamiento del icono de usuario según sesión
+      if (linkUsuario) {
+        if (storedToken) {
+          if (storedEmail === "cocinero@gmail.com") {
+            linkUsuario.href = "panelControl.html";
+          } else if (storedEmail === "repartidor@gmail.com") {
+            linkUsuario.href = "panelRepartidor.html";
+          } else {
+            linkUsuario.href = "sesionUsuario.html";
+          }
+        } else {
+          linkUsuario.href = "registroUsuario.html";
+        }
+      }
+
+      // 🎯 Si ya hay sesión, no tiene sentido mostrar login/registro → redirigimos
+      if (storedToken) {
+        if (storedEmail === "cocinero@gmail.com") {
+          window.location.href = "panelControl.html";
+        } else if (storedEmail === "repartidor@gmail.com") {
+          window.location.href = "panelRepartidor.html";
+        } else {
+          window.location.href = "sesionUsuario.html";
+        }
+      }
+
+      // 🔁 Alternar entre login y registro
       showRegister.addEventListener('click', () => {
         loginForm.style.display = 'none';
         registerForm.style.display = 'block';
@@ -181,9 +217,7 @@
         mensaje.innerHTML = '';
       });
 
-      
       // 📝 REGISTRO REAL contra FastAPI
-
       registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
 
@@ -233,21 +267,20 @@
           mensaje.innerHTML = `
             <div class="alert alert-success">✅ Cuenta creada correctamente.</div>`;
 
-    // Cambiar a formulario de inicio de sesión
-    registerForm.style.display = "none";
-    loginForm.style.display = "block";
-    title.textContent = "Iniciar Sesión";
+          // Cambiar a formulario de inicio de sesión
+          registerForm.style.display = "none";
+          loginForm.style.display = "block";
+          title.textContent = "Iniciar Sesión";
 
-    // Rellenar automáticamente para que el usuario solo ponga la contraseña
-    document.getElementById("emailLogin").value = email;
+          // Rellenar automáticamente el correo
+          document.getElementById("emailLogin").value = email;
 
-  } catch (err) {
-    console.error(err);
-    mensaje.innerHTML = `
-      <div class="alert alert-danger">❌ Error de conexión con el servidor.</div>`;
-  }
-});
-
+        } catch (err) {
+          console.error(err);
+          mensaje.innerHTML = `
+            <div class="alert alert-danger">❌ Error de conexión con el servidor.</div>`;
+        }
+      });
 
       // 🔐 LOGIN REAL contra FastAPI
       loginForm.addEventListener('submit', async (e) => {
@@ -291,9 +324,18 @@
 
           mensaje.innerHTML = `<div class="alert alert-success">✅ Sesión iniciada correctamente.</div>`;
 
-          // 🔁 Redirigir después de un momento (por ahora, a la página de cuenta)
+          // 🔁 Elegir a dónde redirigir según el correo
+          let redirectUrl = "sesionUsuario.html"; // cliente normal
+
+          if (email === "cocinero@gmail.com") {
+            redirectUrl = "panelControl.html";          // panel de cocina
+          } else if (email === "repartidor@gmail.com") {
+            redirectUrl = "panelRepartidor.html";       // panel repartidor
+          }
+
+          // Redirigir después de un momento
           setTimeout(() => {
-            window.location.href = "sesionUsuario.html";
+            window.location.href = redirectUrl;
           }, 800);
 
         } catch (err) {
@@ -302,8 +344,6 @@
         }
       });
   </script>
-
-  
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>

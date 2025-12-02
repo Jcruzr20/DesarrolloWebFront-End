@@ -3,133 +3,136 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Canjear Cupones</title>
-  <!-- Bootstrap -->
+  <title>Canjear puntos - PolloAsado</title>
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Iconos -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    footer {
+      background: #000;
+      color: #fff;
+      padding: 40px 0;
+      margin-top: auto;
+    }
+    footer h4 { color: #ffc107; font-weight: bold; }
+    footer h6 { font-weight: 600; margin-bottom: 10px; }
+    footer p  { margin-bottom: 6px; font-size: 0.95em; }
+    footer small { color: #aaa; }
+  </style>
 </head>
-<body class="bg-light">
+<body>
 
   <!-- NAVBAR -->
   <nav class="navbar navbar-dark bg-dark">
-  <div class="container-fluid">
-    <!-- Logo (vuelve al Home principal) -->
-    <a class="navbar-brand d-flex align-items-center" href="index.html">
-      <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" width="50" height="45" class="me-2">
-      <h2 class="mb-0">PolloAsado</h2>
-    </a>
-
-    <!-- Menú de navegación -->
-    <div class="d-flex align-items-center">
-      <!-- Enlace Promociones -->
-      <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
-        <i class="bi bi-megaphone-fill me-1"></i> Promociones
+    <div class="container-fluid">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+        <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png"
+             width="50" height="45" class="me-2">
+        <h2 class="mb-0">PolloAsado</h2>
       </a>
-
-      <!-- Usuario -->
-      <a href="registroUsuario.html" class="nav-link text-white me-3">
-        <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
-      </a>
-
-      <!-- Carrito -->
-      <a href="Pedidos.html" class="nav-link text-white">
-        <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
-      </a>
+      <div class="d-flex align-items-center">
+        <a href="promociones.html" class="nav-link text-white me-4 fw-semibold">
+          <i class="bi bi-megaphone-fill me-1"></i> Promociones
+        </a>
+        <a href="registroUsuario.html" class="nav-link text-white me-3">
+          <i class="bi bi-person-circle" style="font-size:1.5rem;"></i>
+        </a>
+        <a href="Pedidos.html" class="nav-link text-white position-relative">
+          <i class="bi bi-cart3" style="font-size:1.5rem;"></i>
+        </a>
+      </div>
     </div>
-  </div>
   </nav>
 
   <!-- CONTENIDO -->
-  <div class="container mt-5">
-    <h2 class="text-center">Canjear Cupón de Descuento</h2>
-    <p class="text-center text-muted">Ingresa tu cupón y obtén tu descuento</p>
+  <div class="container mt-4 mb-5 flex-grow-1">
+    <h2 class="text-center mb-3">🎁 Canje de puntos</h2>
+    <p class="text-center text-muted mb-4">
+      Por cada <strong>300 puntos</strong> puedes generar un <strong>cupón de 15% de descuento</strong>
+      para usar en tus compras.
+    </p>
 
-    <!-- Sección de cupón -->
     <div class="row justify-content-center">
       <div class="col-md-6">
-        <div class="card shadow">
+        <div class="card shadow-sm">
           <div class="card-body">
-            <form>
-              <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="Código de cupón" aria-label="Cupón">
-                <button class="btn btn-primary" type="button">Aplicar</button>
-              </div>
-            </form>
+            <h4 class="card-title mb-3">Mi saldo</h4>
 
-            <!-- Resultado del cupón -->
-            <div class="alert alert-success d-flex align-items-center" role="alert">
-              <i class="bi bi-check-circle-fill me-2"></i>
-              Cupón válido: 10% de descuento aplicado.
-            </div>
+            <p class="mb-1">
+              <strong>Puntos disponibles:</strong>
+              <span id="lblPuntos" class="fw-bold">-</span>
+            </p>
+            <p class="mb-3 text-muted">
+              Regla: 300 puntos = cupón de 15% de descuento.
+            </p>
 
-            <div class="alert alert-danger d-flex align-items-center" role="alert">
-              <i class="bi bi-x-circle-fill me-2"></i>
-              Cupón inválido o vencido.
-            </div>
-
-            <!-- Resumen de pedido -->
             <hr>
-            <h5>Resumen del Pedido</h5>
-            <p>Subtotal: <strong>$20.000</strong></p>
-            <p>Descuento: <strong>-$2.000</strong></p>
-            <p>Total a pagar: <strong>$18.000</strong></p>
 
-            <a href="pagos.html" class="btn btn-success w-100">Confirmar Pedido</a>
+            <h5 class="mb-3">Generar cupón</h5>
+
+            <div class="mb-3">
+              <button class="btn btn-primary w-100" id="btnCanjear">
+                <i class="bi bi-gift-fill me-1"></i>
+                Canjear 300 puntos por cupón 15%
+              </button>
+            </div>
+
+            <div id="mensajeResultado" class="alert d-none" role="alert"></div>
+
+            <div id="contenedorCupon" class="mt-3 d-none">
+              <h6>Cupón generado:</h6>
+              <p class="mb-1">
+                <strong>Código:</strong>
+                <span id="lblCodigoCupon" class="fw-bold"></span>
+              </p>
+              <p class="mb-0">
+                <strong>Descuento:</strong> <span id="lblDescuento">15%</span>
+              </p>
+            </div>
+
+            <p class="text-muted mt-3 mb-0">
+              *Este cupón lo puedes usar en el flujo de compra donde se pidan códigos
+              de descuento (Diagrama 22).
+            </p>
           </div>
         </div>
       </div>
     </div>
   </div>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <!-- FOOTER -->
-  <footer class="bg-black text-white mt-auto">
-    <div class="container py-4">
-      <div class="row">
-        <!-- Logo -->
+
+  <!-- FOOTER igual al resto -->
+  <footer>
+    <div class="container">
+      <div class="row text-center text-md-start">
         <div class="col-md-3 mb-3">
           <h4>PolloFast</h4>
-          <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png" alt="logo" width="50" height="45" class="me-2">
+          <img src="https://cdn-icons-png.flaticon.com/512/1206/1206237.png"
+               width="50" height="45">
         </div>
-
-        <!-- Conócenos -->
         <div class="col-md-3 mb-3">
           <h6>Conócenos</h6>
-          <p class="mb-1">Teléfono</p>
-          <p class="mb-1">Mail de contacto</p>
-          <p class="mb-1">Términos y condiciones</p>
-          <p class="mb-0">Política de privacidad</p>
+          <p>Teléfono</p>
+          <p>Mail de contacto</p>
+          <p>Términos y condiciones</p>
+          <p>Política de privacidad</p>
         </div>
-
-        <!-- Redes sociales -->
         <div class="col-md-3 mb-3">
           <h6>Redes sociales</h6>
-          <p class="mb-1"><i class="bi bi-instagram"></i> Instagram</p>
-          <p class="mb-1"><i class="bi bi-facebook"></i> Facebook</p>
-          <p class="mb-0"><i class="bi bi-twitter-x"></i> X</p>
+          <p><i class="bi bi-instagram"></i> Instagram</p>
+          <p><i class="bi bi-facebook"></i> Facebook</p>
+          <p><i class="bi bi-twitter-x"></i> X</p>
         </div>
-
-        <!-- Mi cuenta -->
         <div class="col-md-3 mb-3">
           <h6>Mi cuenta</h6>
-          <p class="mb-1">Pedir</p>
-          <p class="mb-0">Iniciar sesión</p>
+          <p>Pedir</p>
+          <p>Iniciar sesión</p>
         </div>
       </div>
       <div class="text-center mt-3">
@@ -138,24 +141,100 @@
     </div>
   </footer>
 
-
-  <!-- Bootstrap JS -->
+  <!-- JS Bootstrap -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Protección de rutas -->
   <script src="js/protegerRutas.js"></script>
 
+  <!-- Lógica de puntos -->
   <script>
-    // Esta línea obliga a tener sesión para ver la página
-    const token = requireAuth();
+    const API = "http://127.0.0.1:8000/api/pollosabroso";
 
-    // Si quieres usar el token en fetchs:
-    // if (token) {
-    //   fetch( ... , {
-    //     headers: {
-    //       "Authorization": `Bearer ${token}`
-    //     }
-    //   });
-    // }
+    const lblPuntos        = document.getElementById("lblPuntos");
+    const btnCanjear       = document.getElementById("btnCanjear");
+    const mensajeResultado = document.getElementById("mensajeResultado");
+    const contenedorCupon  = document.getElementById("contenedorCupon");
+    const lblCodigoCupon   = document.getElementById("lblCodigoCupon");
+    const lblDescuento     = document.getElementById("lblDescuento");
+
+    const token = requireAuth(); // obtiene el JWT del cliente logueado
+
+    async function cargarPuntos() {
+      try {
+        const res = await fetch(`${API}/clientes/me`, {
+          headers: {
+            "Authorization": `Bearer ${token}`
+          }
+        });
+
+        if (!res.ok) {
+          console.error("[puntos] Error HTTP:", await res.text());
+          lblPuntos.textContent = "-";
+          return;
+        }
+
+        const data = await res.json();
+        console.log("[puntos] perfil:", data);
+
+        lblPuntos.textContent = data.points ?? 0;
+      } catch (err) {
+        console.error("[puntos] Error de conexión:", err);
+      }
+    }
+
+    async function canjearPuntos() {
+      try {
+        const res = await fetch(`${API}/clientes/me/puntos/canjear`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          // Enviamos amount pero el backend lo ignora (regla fija 300 puntos)
+          body: JSON.stringify({ amount: 300 })
+        });
+
+        const data = await res.json();
+        console.log("[puntos] canje:", data);
+
+        if (!res.ok) {
+          mensajeResultado.className = "alert alert-danger";
+          mensajeResultado.textContent = data.detail || "Error al canjear puntos.";
+          mensajeResultado.classList.remove("d-none");
+          contenedorCupon.classList.add("d-none");
+          return;
+        }
+
+        mensajeResultado.className = "alert alert-success";
+        mensajeResultado.textContent = data.message;
+        mensajeResultado.classList.remove("d-none");
+
+        // actualizar saldo mostrado
+        lblPuntos.textContent = data.points ?? 0;
+
+        // mostrar cupón generado
+        if (data.couponCode) {
+          lblCodigoCupon.textContent = data.couponCode;
+          lblDescuento.textContent = (data.discountPct || 15) + "%";
+          contenedorCupon.classList.remove("d-none");
+        } else {
+          contenedorCupon.classList.add("d-none");
+        }
+
+      } catch (err) {
+        console.error("[puntos] Error de conexión al canjear:", err);
+        mensajeResultado.className = "alert alert-danger";
+        mensajeResultado.textContent = "Error de conexión al canjear puntos.";
+        mensajeResultado.classList.remove("d-none");
+        contenedorCupon.classList.add("d-none");
+      }
+    }
+
+    btnCanjear.addEventListener("click", canjearPuntos);
+
+    // cargar puntos al entrar
+    cargarPuntos();
   </script>
-
 </body>
 </html>
