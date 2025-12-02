@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Recuperar Contraseña - PolloAsado</title>
+  <title>Recuperar / Cambiar Contraseña - PolloAsado</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
   <style>
@@ -15,11 +15,6 @@
     }
     .recover-box h2 { text-align: center; color: #212529; margin-bottom: 25px; }
     .info-text { font-size: 0.9em; color: #6c757d; }
-    .valid-feedback, .invalid-feedback {
-      font-size: 0.85em;
-      text-align: left;
-      margin-top: 4px;
-    }
   </style>
 </head>
 <body>
@@ -34,59 +29,55 @@
     </div>
   </nav>
 
-  <!-- FORMULARIO DE RECUPERACIÓN -->
-  <div class="recover-box" id="seccionRecuperar">
-    <h2><i class="bi bi-shield-lock-fill me-2"></i>Recuperar contraseña</h2>
+  <!-- CAJA PRINCIPAL -->
+  <div class="recover-box">
+    <h2 id="tituloRecuperar">
+      <i class="bi bi-key-fill me-2"></i>Cambiar contraseña
+    </h2>
 
-    <p class="text-muted text-center mb-4">
-      Ingresa tu correo electrónico y te enviaremos un enlace para restablecer tu contraseña.
+    <p id="textoRecuperar" class="text-muted text-center mb-4">
+      Actualiza tu contraseña de manera segura para tu cuenta de PolloAsado.
     </p>
 
-    <form id="formRecuperar">
-      <div class="mb-3">
-        <label for="correo" class="form-label">Correo electrónico registrado</label>
-        <input type="email" class="form-control" id="correo" placeholder="nombre@ejemplo.com" required>
-      </div>
-
-      <div class="d-grid mt-4">
-        <button type="submit" class="btn btn-success">
-          <i class="bi bi-envelope-check-fill me-2"></i>Enviar enlace de recuperación
-        </button>
-      </div>
-
-      <div id="mensaje" class="text-center mt-4 fw-semibold"></div>
-
-      <p class="info-text text-center mt-4">
-        📧 El enlace será válido por <strong>30 minutos</strong>.<br>
-        🔒 La nueva contraseña debe contener al menos 8 caracteres, una mayúscula, un número y un símbolo.
-      </p>
-
-      <div class="text-center mt-3">
-        <a href="registroUsuario.html" class="text-decoration-none">
-          <i class="bi bi-arrow-left-circle"></i> Volver al inicio de sesión
-        </a>
-      </div>
-    </form>
-  </div>
-
-  <!-- FORMULARIO NUEVA CONTRASEÑA -->
-  <div class="recover-box d-none" id="seccionNuevaPass">
-    <h2><i class="bi bi-key-fill me-2"></i>Establecer nueva contraseña</h2>
-
-    <p class="text-muted text-center mb-4">
-      Ingresa tu nueva contraseña para la cuenta <strong id="correoMostrar"></strong>.
-    </p>
-
+    <!-- FORMULARIO CAMBIO DE CONTRASEÑA (requiere sesión / token) -->
     <form id="formNuevaPass">
       <div class="mb-3">
+        <label for="actual" class="form-label">Contraseña actual</label>
+        <div class="input-group">
+          <input type="password" class="form-control" id="actual" required>
+          <span class="input-group-text" style="cursor:pointer;" onclick="togglePassword('actual', this)">
+            <i class="bi bi-eye-fill"></i>
+          </span>
+        </div>
+      </div>
+
+      <div class="mb-3">
         <label for="nueva" class="form-label">Nueva contraseña</label>
-        <input type="password" class="form-control" id="nueva" required>
+        <div class="input-group">
+          <input type="password" class="form-control" id="nueva" required>
+          <span class="input-group-text" style="cursor:pointer;" onclick="togglePassword('nueva', this)">
+            <i class="bi bi-eye-fill"></i>
+          </span>
+        </div>
         <div id="validacionPass" class="mt-2 small"></div>
       </div>
 
-      <div class="mb-3">
-        <label for="confirmar" class="form-label">Confirmar contraseña</label>
-        <input type="password" class="form-control" id="confirmar" required>
+      <div class="mb-1">
+        <label for="confirmar" class="form-label">Confirmar nueva contraseña</label>
+        <div class="input-group">
+          <input type="password" class="form-control" id="confirmar" required>
+          <span class="input-group-text" style="cursor:pointer;" onclick="togglePassword('confirmar', this)">
+            <i class="bi bi-eye-fill"></i>
+          </span>
+        </div>
+      </div>
+
+      <!-- Texto que mencionabas: abajo de confirmar -->
+      <div class="text-end mt-1">
+        <small class="text-muted">
+          ¿Olvidaste tu contraseña actual? Puedes usar el modo
+          <strong>“Olvidé mi contraseña”</strong> más abajo.
+        </small>
       </div>
 
       <div class="d-grid mt-4">
@@ -96,8 +87,47 @@
       </div>
 
       <div id="mensajePass" class="text-center mt-4 fw-semibold"></div>
+
+      <div class="text-center mt-3">
+        <a href="sesionUsuario.html" class="text-decoration-none">
+          <i class="bi bi-arrow-left-circle"></i> Volver a mi cuenta
+        </a>
+      </div>
     </form>
+
+    <!-- BLOQUE “OLVIDÉ MI CONTRASEÑA” (modo sin sesión, simulado) -->
+    <div id="seccionOlvide" class="mt-4 d-none">
+      <hr class="my-4">
+      <h5 class="text-center mb-3">¿Olvidaste tu contraseña?</h5>
+      <p class="text-muted small text-center mb-3">
+        Ingresa tu correo electrónico y simularemos el envío de un enlace de recuperación,
+        tal como lo haría un sistema real.
+      </p>
+
+      <form id="formOlvide">
+        <div class="mb-3">
+          <label for="emailOlvide" class="form-label">Correo electrónico registrado</label>
+          <input type="email" class="form-control" id="emailOlvide" placeholder="nombre@ejemplo.com">
+        </div>
+
+        <div class="d-grid">
+          <button type="submit" class="btn btn-outline-secondary">
+            <i class="bi bi-envelope-check me-2"></i>Enviar enlace (simulado)
+          </button>
+        </div>
+
+        <div id="mensajeOlvide" class="text-center mt-3 fw-semibold"></div>
+
+        <div class="text-center mt-3">
+          <a href="registroUsuario.html" class="text-decoration-none small">
+            <i class="bi bi-box-arrow-in-left"></i> Volver al inicio de sesión
+          </a>
+        </div>
+      </form>
+    </div>
+
   </div>
+
   <br><br><br><br><br><br><br><br><br><br>
 
   <!-- FOOTER -->
@@ -127,116 +157,182 @@
 
   <!-- SCRIPT -->
   <script>
-    const form = document.getElementById("formRecuperar");
-    const mensaje = document.getElementById("mensaje");
-    const seccionRecuperar = document.getElementById("seccionRecuperar");
-    const seccionNuevaPass = document.getElementById("seccionNuevaPass");
-    const correoMostrar = document.getElementById("correoMostrar");
+    const API_BASE = "http://127.0.0.1:8000/api/pollosabroso";
 
-    const cuentas = {
-      cocineros: [
-        { correo: "cocinero1@gmail.com" },
-        { correo: "cocinero2@gmail.com" },
-        { correo: "cocinero3@gmail.com" },
-        { correo: "cocinero4@gmail.com" },
-        { correo: "cocinero5@gmail.com" }
-      ],
-      repartidores: [
-        { correo: "repartidor1@gmail.com" },
-        { correo: "repartidor2@gmail.com" },
-        { correo: "repartidor3@gmail.com" },
-        { correo: "repartidor4@gmail.com" },
-        { correo: "repartidor5@gmail.com" }
-      ]
-    };
+    const formNuevaPass   = document.getElementById("formNuevaPass");
+    const inputActual     = document.getElementById("actual");
+    const inputNueva      = document.getElementById("nueva");
+    const inputConfirmar  = document.getElementById("confirmar");
+    const validacionPass  = document.getElementById("validacionPass");
+    const mensajePass     = document.getElementById("mensajePass");
 
-    // Enviar enlace de recuperación
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const correo = document.getElementById("correo").value.trim();
-      const clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+    const seccionOlvide   = document.getElementById("seccionOlvide");
+    const formOlvide      = document.getElementById("formOlvide");
+    const emailOlvide     = document.getElementById("emailOlvide");
+    const mensajeOlvide   = document.getElementById("mensajeOlvide");
 
-      const existeCocinero = cuentas.cocineros.some(c => c.correo === correo);
-      const existeRepartidor = cuentas.repartidores.some(r => r.correo === correo);
-      const existeCliente = clientes.some(c => c.correo === correo);
+    const tituloRecuperar = document.getElementById("tituloRecuperar");
+    const textoRecuperar  = document.getElementById("textoRecuperar");
 
-      if (existeCocinero || existeRepartidor || existeCliente) {
-        mensaje.innerHTML = `
-          <div class="alert alert-success">
-            ✅ Se ha enviado un enlace de recuperación al correo <strong>${correo}</strong>.
-            <br><br>🔗 <a href="#" id="simularEnlace">Simular enlace de recuperación</a>
-          </div>
-        `;
-        localStorage.setItem("recuperacionCorreo", correo);
+    // 👁️ Mostrar / ocultar contraseña
+    function togglePassword(inputId, iconSpan) {
+      const input = document.getElementById(inputId);
+      const isPassword = input.type === "password";
+      input.type = isPassword ? "text" : "password";
+      iconSpan.innerHTML = isPassword
+        ? '<i class="bi bi-eye-slash-fill"></i>'
+        : '<i class="bi bi-eye-fill"></i>';
+    }
 
-        document.getElementById("simularEnlace").addEventListener("click", () => {
-          seccionRecuperar.classList.add("d-none");
-          seccionNuevaPass.classList.remove("d-none");
-          correoMostrar.textContent = correo;
-        });
-      } else {
-        mensaje.innerHTML = `<div class="alert alert-danger"> No existe ninguna cuenta registrada con ese correo.</div>`;
-      }
-      form.reset();
-    });
+    // 🔐 Token (si existe, es porque vino desde sesión iniciada)
+    const token = localStorage.getItem("token");
 
-    // Validación de contraseña en tiempo real
-    const nueva = document.getElementById("nueva");
-    const validacionPass = document.getElementById("validacionPass");
+    if (!token) {
+      // MODO: "OLVIDÉ MI CONTRASEÑA" (usuario viene desde el login, sin sesión)
+      tituloRecuperar.innerHTML = '<i class="bi bi-shield-lock-fill me-2"></i>Recuperar contraseña';
+      textoRecuperar.textContent =
+        "Ingresa tu correo electrónico para simular el envío de un enlace de recuperación.";
 
-    nueva.addEventListener("input", () => {
-      const valor = nueva.value;
+      // Ocultamos el formulario de cambio real (porque requiere contraseña actual)
+      formNuevaPass.classList.add("d-none");
+
+      // Mostramos solo el bloque de 'olvidé mi contraseña'
+      seccionOlvide.classList.remove("d-none");
+    } else {
+      // MODO: "CAMBIAR CONTRASEÑA" (usuario logueado)
+      seccionOlvide.classList.remove("d-none"); // también se ve el bloque de info extra
+    }
+
+    // ✅ Validación de contraseña en tiempo real (solo si el formulario está visible)
+    inputNueva.addEventListener("input", () => {
+      const valor = inputNueva.value;
       const esValida = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/.test(valor);
+
       if (valor === "") {
         validacionPass.innerHTML = "";
       } else if (esValida) {
-        validacionPass.innerHTML = `<div class="text-success"><i class="bi bi-check-circle-fill"></i> Contraseña segura.</div>`;
+        validacionPass.innerHTML = `
+          <div class="text-success">
+            <i class="bi bi-check-circle-fill"></i> Contraseña segura.
+          </div>`;
       } else {
-        validacionPass.innerHTML = `<div class="text-danger"><i class="bi bi-x-circle-fill"></i> Debe tener al menos 8 caracteres, una mayúscula, un número y un símbolo.</div>`;
+        validacionPass.innerHTML = `
+          <div class="text-danger">
+            <i class="bi bi-x-circle-fill"></i>
+            Debe tener al menos 8 caracteres, una mayúscula, un número y un símbolo.
+          </div>`;
       }
     });
 
-    // Establecer nueva contraseña
-    const formNuevaPass = document.getElementById("formNuevaPass");
-    const mensajePass = document.getElementById("mensajePass");
-
-    formNuevaPass.addEventListener("submit", (e) => {
+    // 📝 Enviar cambio de contraseña a FastAPI (solo tiene sentido si hay token)
+    formNuevaPass.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const nuevaPass = nueva.value.trim();
-      const confirmar = document.getElementById("confirmar").value.trim();
-      const correo = localStorage.getItem("recuperacionCorreo");
-      const clientes = JSON.parse(localStorage.getItem("clientes")) || [];
+      mensajePass.innerHTML = "";
+
+      if (!token) {
+        // Seguridad por si alguien fuerza el submit sin token
+        mensajePass.innerHTML = `
+          <div class="alert alert-warning">
+            Debes iniciar sesión para cambiar tu contraseña desde aquí.
+          </div>`;
+        return;
+      }
+
+      const actual    = inputActual.value.trim();
+      const nuevaPass = inputNueva.value.trim();
+      const confirmar = inputConfirmar.value.trim();
 
       const esValida = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/.test(nuevaPass);
       if (!esValida) {
-        mensajePass.innerHTML = `<div class="alert alert-warning"> La contraseña no cumple los requisitos de seguridad.</div>`;
+        mensajePass.innerHTML = `
+          <div class="alert alert-warning">
+            La nueva contraseña no cumple los requisitos de seguridad.
+          </div>`;
         return;
       }
 
       if (nuevaPass !== confirmar) {
-        mensajePass.innerHTML = `<div class="alert alert-danger"> Las contraseñas no coinciden.</div>`;
+        mensajePass.innerHTML = `
+          <div class="alert alert-danger">
+            Las contraseñas no coinciden.
+          </div>`;
         return;
       }
 
-      const cliente = clientes.find(c => c.correo === correo);
-      if (cliente) {
-        cliente.pass = nuevaPass;
-        localStorage.setItem("clientes", JSON.stringify(clientes));
-        localStorage.removeItem("recuperacionCorreo");
-        mensajePass.innerHTML = `<div class="alert alert-success"> Contraseña actualizada correctamente. Redirigiendo...</div>`;
-        setTimeout(() => window.location.href = "registroUsuario.html", 2000);
-      } else {
-        mensajePass.innerHTML = `<div class="alert alert-danger"> Error al actualizar contraseña.</div>`;
+      try {
+        mensajePass.innerHTML = `
+          <div class="alert alert-secondary">
+            ⏳ Actualizando contraseña...
+          </div>`;
+
+        const res = await fetch(`${API_BASE}/clientes/me/password`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            currentPassword: actual,
+            newPassword: nuevaPass
+          })
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          const msg = data.detail || "No se pudo actualizar la contraseña.";
+          mensajePass.innerHTML = `
+            <div class="alert alert-danger">
+              ❌ ${msg}
+            </div>`;
+          return;
+        }
+
+        mensajePass.innerHTML = `
+          <div class="alert alert-success">
+            ✅ Contraseña actualizada correctamente. Se cerrará la sesión por seguridad...
+          </div>`;
+
+        setTimeout(() => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("userEmail");
+          window.location.href = "registroUsuario.html";
+        }, 2000);
+
+      } catch (err) {
+        console.error(err);
+        mensajePass.innerHTML = `
+          <div class="alert alert-danger">
+            ❌ Error de conexión con el servidor.
+          </div>`;
       }
+    });
+
+    // 💌 Flujo “Olvidé mi contraseña” (simulado, sin backend)
+    formOlvide.addEventListener("submit", (e) => {
+      e.preventDefault();
+      mensajeOlvide.innerHTML = "";
+
+      const correo = emailOlvide.value.trim();
+
+      if (!correo) {
+        mensajeOlvide.innerHTML = `
+          <div class="alert alert-warning">
+            Por favor, ingresa un correo electrónico.
+          </div>`;
+        return;
+      }
+
+      mensajeOlvide.innerHTML = `
+        <div class="alert alert-success">
+          ✅ Simulación: se ha enviado un enlace de recuperación a
+          <strong>${correo}</strong>.<br>
+          En un sistema real, deberías abrir ese enlace para definir una nueva contraseña.
+        </div>`;
     });
   </script>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Protección de rutas (primero) -->
-  <script src="js/protegerRutas.js"></script>
-  <script>
-    console.log("[promociones] Script inline cargado, llamando a requireAuth()");
-    const token = requireAuth();
-  </script>
+
 </body>
 </html>

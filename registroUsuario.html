@@ -70,9 +70,15 @@
                 <label for="emailLogin" class="form-label">Correo electrónico</label>
                 <input type="email" class="form-control" id="emailLogin" placeholder="Ej: usuario@gmail.com" required>
               </div>
+
               <div class="mb-3">
                 <label for="passwordLogin" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="passwordLogin" placeholder="Tu contraseña" required>
+                <div class="input-group">
+                  <input type="password" class="form-control" id="passwordLogin" placeholder="Tu contraseña" required>
+                  <span class="input-group-text" style="cursor:pointer;" onclick="togglePassword('passwordLogin', this)">
+                    <i class="bi bi-eye-fill"></i>
+                  </span>
+                </div>
               </div>
 
               <div class="d-flex justify-content-between align-items-center mb-3">
@@ -100,13 +106,25 @@
                 <label for="emailRegister" class="form-label">Correo electrónico</label>
                 <input type="email" class="form-control" id="emailRegister" placeholder="Ej: usuario@gmail.com" required>
               </div>
+
               <div class="mb-3">
                 <label for="passwordRegister" class="form-label">Contraseña</label>
-                <input type="password" class="form-control" id="passwordRegister" placeholder="Crea una contraseña" required>
+                <div class="input-group">
+                  <input type="password" class="form-control" id="passwordRegister" placeholder="Crea una contraseña" required>
+                  <span class="input-group-text" style="cursor:pointer;" onclick="togglePassword('passwordRegister', this)">
+                    <i class="bi bi-eye-fill"></i>
+                  </span>
+                </div>
               </div>
+
               <div class="mb-3">
                 <label for="passwordConfirm" class="form-label">Confirmar contraseña</label>
-                <input type="password" class="form-control" id="passwordConfirm" placeholder="Repite tu contraseña" required>
+                <div class="input-group">
+                  <input type="password" class="form-control" id="passwordConfirm" placeholder="Repite tu contraseña" required>
+                  <span class="input-group-text" style="cursor:pointer;" onclick="togglePassword('passwordConfirm', this)">
+                    <i class="bi bi-eye-fill"></i>
+                  </span>
+                </div>
               </div>
 
               <button type="submit" class="btn btn-success w-100">Crear Cuenta</button>
@@ -172,6 +190,16 @@
       const mensaje = document.getElementById('mensaje');
       const linkUsuario = document.getElementById('linkUsuario');
 
+      // 👁️ Función reutilizable para mostrar/ocultar contraseña
+      function togglePassword(inputId, iconSpan) {
+        const input = document.getElementById(inputId);
+        const isPassword = input.type === "password";
+        input.type = isPassword ? "text" : "password";
+        iconSpan.innerHTML = isPassword
+          ? '<i class="bi bi-eye-slash-fill"></i>'
+          : '<i class="bi bi-eye-fill"></i>';
+      }
+
       // 🔐 Leer sesión guardada (si existe)
       const storedToken = localStorage.getItem("token");
       const storedEmail = localStorage.getItem("userEmail");
@@ -191,7 +219,7 @@
         }
       }
 
-      // 🎯 Si ya hay sesión, no tiene sentido mostrar login/registro → redirigimos
+      // 🎯 Si ya hay sesión, redirigimos
       if (storedToken) {
         if (storedEmail === "cocinero@gmail.com") {
           window.location.href = "panelControl.html";
@@ -243,9 +271,9 @@
 
         try {
           const payload = {
-            name: email.split("@")[0],  // nombre temporal
+            name: email.split("@")[0],
             email: email,
-            phone: "000000000",         // teléfono temporal
+            phone: "000000000",
             password: password
           };
 
@@ -297,7 +325,6 @@
         mensaje.innerHTML = `<div class="alert alert-secondary">⏳ Iniciando sesión...</div>`;
 
         try {
-          // OAuth2PasswordRequestForm espera username + password en x-www-form-urlencoded
           const formData = new URLSearchParams();
           formData.append("username", email);
           formData.append("password", password);
@@ -318,22 +345,21 @@
             return;
           }
 
-          // ✅ Guardar token y correo para otras páginas
+          // ✅ Guardar token y correo
           localStorage.setItem("token", data.access_token);
           localStorage.setItem("userEmail", email);
 
           mensaje.innerHTML = `<div class="alert alert-success">✅ Sesión iniciada correctamente.</div>`;
 
           // 🔁 Elegir a dónde redirigir según el correo
-          let redirectUrl = "sesionUsuario.html"; // cliente normal
+          let redirectUrl = "sesionUsuario.html";
 
           if (email === "cocinero@gmail.com") {
-            redirectUrl = "panelControl.html";          // panel de cocina
+            redirectUrl = "panelControl.html";
           } else if (email === "repartidor@gmail.com") {
-            redirectUrl = "panelRepartidor.html";       // panel repartidor
+            redirectUrl = "panelRepartidor.html";
           }
 
-          // Redirigir después de un momento
           setTimeout(() => {
             window.location.href = redirectUrl;
           }, 800);
