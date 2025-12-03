@@ -101,15 +101,24 @@
       </div>
     </div>
 
-    <!-- Mapa simulado -->
+    <!-- Mapa / enlace a rutas -->
     <div class="text-center mt-5">
       <div class="mapa-placeholder mx-auto"
            style="height:250px; width:100%; max-width:600px;
                   background:linear-gradient(90deg,#e9ecef,#f8f9fa);
                   border-radius:10px; display:flex;
+                  flex-direction:column;
                   align-items:center; justify-content:center;
-                  color:#6c757d;">
-        <i class="bi bi-map"></i> Mapa de ruta (simulado)
+                  color:#6c757d; padding:20px;">
+        <div>
+          <i class="bi bi-map"></i>
+          <p class="mb-2 mt-2">Mapa de ruta (simulado)</p>
+          <!-- 🔗 Nuevo enlace a rutas.html -->
+          <a id="link-ruta-detallada"
+             class="btn btn-outline-primary btn-sm">
+            Ver ruta en tiempo real
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -171,12 +180,20 @@
     const driverNameSpan  = document.getElementById("driver-name");
     const driverPhoneSpan = document.getElementById("driver-phone");
     const pedidoIdSpan    = document.getElementById("pedido-id");
+    const linkRutaDetallada = document.getElementById("link-ruta-detallada");
 
     const steps = {
       prep:      document.getElementById("step-prep"),
       camino:    document.getElementById("step-camino"),
       entregado: document.getElementById("step-entregado"),
     };
+
+    // Configurar el link hacia rutas.html con el mismo orderId
+    if (orderId && linkRutaDetallada) {
+      linkRutaDetallada.href = `rutas.html?orderId=${encodeURIComponent(orderId)}`;
+    } else if (linkRutaDetallada) {
+      linkRutaDetallada.classList.add("disabled");
+    }
 
     // ETA decorativa
     let tiempoRestante   = 20;

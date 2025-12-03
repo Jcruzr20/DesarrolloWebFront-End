@@ -55,15 +55,24 @@
 
     <!-- Botones de control -->
     <div class="d-flex justify-content-center mb-4 flex-wrap gap-2">
+      <!-- NUEVO BOTÓN ASIGNAR -->
+      <a href="asignacion.html" class="btn btn-info">
+        <i class="bi bi-people"></i> Asignar
+      </a>
+
+      <!-- REINICIAR PEDIDOS (ahora limpia los 'Listo para retiro') -->
       <button class="btn btn-secondary" onclick="reiniciarPedidos()">
         <i class="bi bi-arrow-clockwise"></i> Reiniciar pedidos
       </button>
+
       <a href="alertas.html" class="btn btn-warning">
         <i class="bi bi-alarm"></i> Ver alertas de tiempo
       </a>
-      <a href="registroUsuario.html" class="btn btn-danger">
+
+      <!-- CERRAR SESIÓN REAL -->
+      <button class="btn btn-danger" onclick="cerrarSesion()">
         <i class="bi bi-box-arrow-right"></i> Cerrar sesión
-      </a>
+      </button>
     </div>
 
     <!-- Lista de pedidos -->
@@ -106,7 +115,7 @@
   <!-- SCRIPT: Lógica del panel de cocina -->
   <script>
     const API = "http://127.0.0.1:8000/api/pollosabroso";
-    // OJO: 'token' se declara más abajo, aquí solo lo usamos dentro de funciones
+    let pedidosActuales = []; // cache local de pedidos
 
     // --- 1) Obtener pedidos desde la API ---
     async function cargarPedidos() {
@@ -123,6 +132,7 @@
         }
 
         const pedidos = await res.json();
+        pedidosActuales = pedidos; // guardamos todo lo que viene de la API
         renderPedidos(pedidos);
       } catch (err) {
         console.error("Error de red al cargar pedidos:", err);
@@ -209,9 +219,39 @@
       }
     }
 
-    // --- 4) “Reiniciar pedidos” ahora es refrescar desde la API ---
+    // --- 4) “Reiniciar pedidos”:
+    // Limpia de la vista los pedidos que ya están "Listo para retiro"
     function reiniciarPedidos() {
-      cargarPedidos();
+      if (!pedidosActuales || pedidosActuales.length === 0) {
+        // Si por alguna razón no hay cache, recargamos normal
+        cargarPedidos();
+        return;
+      }
+
+      const confirmar = confirm(
+        "¿Quieres limpiar del panel los pedidos que ya están 'Listo para retiro'?"
+      );
+      if (!confirmar) return;
+
+      const pedidosFiltrados = pedidosActuales.filter(
+        p => p.status !== "Listo para retiro"
+      );
+
+      // Solo afectamos la vista; el backend sigue igual.
+      renderPedidos(pedidosFiltrados);
+    }
+
+    // --- 5) Cerrar sesión real ---
+    function cerrarSesion() {
+      // Limpiamos token y cualquier otra info de sesión
+      try {
+        localStorage.clear();
+        sessionStorage.clear();
+      } catch (e) {
+        console.warn("No se pudo limpiar el storage:", e);
+      }
+      // Redirigimos a registro
+      window.location.href = "registroUsuario.html";
     }
   </script>
 

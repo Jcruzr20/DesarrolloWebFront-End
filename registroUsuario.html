@@ -207,9 +207,9 @@
       // 🔗 Ajustar comportamiento del icono de usuario según sesión
       if (linkUsuario) {
         if (storedToken) {
-          if (storedEmail === "cocinero@gmail.com") {
-            linkUsuario.href = "panelControl.html";
-          } else if (storedEmail === "repartidor@gmail.com") {
+          if (storedEmail === "cocinero@gmail.com") { //contraseña: cocina123
+            linkUsuario.href = "panelControl.html"; 
+          } else if (storedEmail === "repartidor@gmail.com") { //contraseña: repartidor123
             linkUsuario.href = "panelRepartidor.html";
           } else {
             linkUsuario.href = "sesionUsuario.html";
