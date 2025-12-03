@@ -184,26 +184,34 @@
         : '<i class="bi bi-eye-fill"></i>';
     }
 
-    // 🔐 Token (si existe, es porque vino desde sesión iniciada)
-    const token = localStorage.getItem("token");
+    // 🔐 Obtener token y validar que tenga pinta de JWT (tres partes con puntos)
+    let token = localStorage.getItem("token");
 
-    if (!token) {
-      // MODO: "OLVIDÉ MI CONTRASEÑA" (usuario viene desde el login, sin sesión)
+    if (token && token.startsWith('"') && token.endsWith('"')) {
+      // Por si en algún momento se guardó con comillas
+      token = token.slice(1, -1);
+    }
+
+    const tokenPareceJWT = token && token.split(".").length === 3;
+
+    if (!tokenPareceJWT) {
+      // MODO: "OLVIDÉ MI CONTRASEÑA" (sin sesión válida)
+      token = null;
       tituloRecuperar.innerHTML = '<i class="bi bi-shield-lock-fill me-2"></i>Recuperar contraseña';
       textoRecuperar.textContent =
         "Ingresa tu correo electrónico para simular el envío de un enlace de recuperación.";
 
-      // Ocultamos el formulario de cambio real (porque requiere contraseña actual)
+      // Ocultamos el formulario de cambio real (requiere sesión y token válido)
       formNuevaPass.classList.add("d-none");
 
       // Mostramos solo el bloque de 'olvidé mi contraseña'
       seccionOlvide.classList.remove("d-none");
     } else {
-      // MODO: "CAMBIAR CONTRASEÑA" (usuario logueado)
-      seccionOlvide.classList.remove("d-none"); // también se ve el bloque de info extra
+      // MODO: "CAMBIAR CONTRASEÑA" (usuario logueado con token válido)
+      seccionOlvide.classList.remove("d-none"); // se muestra como info extra
     }
 
-    // ✅ Validación de contraseña en tiempo real (solo si el formulario está visible)
+    // ✅ Validación de contraseña en tiempo real
     inputNueva.addEventListener("input", () => {
       const valor = inputNueva.value;
       const esValida = /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*]).{8,}$/.test(valor);
@@ -224,13 +232,12 @@
       }
     });
 
-    // 📝 Enviar cambio de contraseña a FastAPI (solo tiene sentido si hay token)
+    // 📝 Enviar cambio de contraseña a FastAPI
     formNuevaPass.addEventListener("submit", async (e) => {
       e.preventDefault();
       mensajePass.innerHTML = "";
 
       if (!token) {
-        // Seguridad por si alguien fuerza el submit sin token
         mensajePass.innerHTML = `
           <div class="alert alert-warning">
             Debes iniciar sesión para cambiar tu contraseña desde aquí.
@@ -331,6 +338,7 @@
         </div>`;
     });
   </script>
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 

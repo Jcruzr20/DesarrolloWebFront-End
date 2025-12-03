@@ -200,7 +200,7 @@
       row.innerHTML = `
         <td>#${p.id.slice(0, 8)}...</td>
         <td>${p.customerName || "cliente"}</td>
-        <td>${p.items[0]?.product_name || "-"}</td>
+        <td>${p.items[0]?.productName || "-"}</td>
         <td>
           <span class="badge bg-success">Listo para retiro</span>
         </td>
@@ -216,14 +216,51 @@
     });
   }
 
-  function asignarRepartidor(orderId) {
-    const repartidor = "Repartidor automático";
+  async function asignarRepartidor(orderId) {
+    try {
+      const res = await fetch(
+        `${API_BASE}/repartidores/asignar-automatico/${orderId}`,
+        {
+          method: "POST",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Accept": "application/json"
+          }
+        }
+      );
 
-    detallePedido.textContent = `Pedido #${orderId}`;
-    detalleRepartidor.textContent = `Asignado a: ${repartidor}`;
+      if (!res.ok) {
+        console.error("[asignacion] Error HTTP", res.status);
+        alert("No se pudo asignar el repartidor. Revisa la consola.");
+        return;
+      }
 
-    modal.show();
+      const data = await res.json();
+      console.log("[asignacion] Respuesta asignar:", data);
+
+      // data es AssignedOrderResponse:
+      //  { id, userId, total, status, createdAt, driver: { id, name, phone } }
+
+      detallePedido.textContent = `Pedido #${data.id}`;
+      if (data.driver) {
+        detalleRepartidor.textContent =
+          `Asignado a: ${data.driver.name} (${data.driver.phone})`;
+      } else {
+        detalleRepartidor.textContent = "No se devolvió información del repartidor.";
+      }
+
+      // Mostrar modal
+      modal.show();
+
+      // Volver a cargar la tabla para que desaparezca el pedido si ya cambió de estado
+      cargarPedidos();
+
+    } catch (err) {
+      console.error("[asignacion] Error en fetch:", err);
+      alert("Error de conexión con el servidor al asignar repartidor.");
+    }
   }
+
 
   document.addEventListener("DOMContentLoaded", cargarPedidos);
   </script>
