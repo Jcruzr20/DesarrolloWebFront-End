@@ -127,15 +127,19 @@
         });
 
         if (!res.ok) {
-          console.error("Error al cargar pedidos:", res.status);
+          const txt = await res.text();
+          console.error("Error al cargar pedidos:", res.status, txt);
+          alert("No se pudieron cargar los pedidos de cocina (revisa si el usuario tiene sesión válida y permisos).");
           return;
         }
 
         const pedidos = await res.json();
+        console.log("[panel-cocina] pedidos recibidos:", pedidos);
         pedidosActuales = pedidos; // guardamos todo lo que viene de la API
         renderPedidos(pedidos);
       } catch (err) {
         console.error("Error de red al cargar pedidos:", err);
+        alert("Error de red al cargar los pedidos. Revisa que el backend esté levantado.");
       }
     }
 
@@ -144,18 +148,22 @@
       const cont = document.getElementById("listaPedidos");
       cont.innerHTML = "";
 
-      // 🔹 Nos quedamos solo con los pedidos de HOY
-      const hoyISO = new Date().toISOString().slice(0, 10); // "2025-11-28"
-      const pedidosHoy = lista.filter(p => p.createdAt.startsWith(hoyISO));
+      // 🔹 En vez de filtrar por fecha, mostramos solo pedidos no entregados
+      const pedidosActivos = lista.filter(p => {
+        const estado = (p.status || "").toLowerCase();
+        return !estado.includes("entregado");   // mostramos todo lo que NO está entregado
+      });
 
-      if (pedidosHoy.length === 0) {
+      console.log("[panel-cocina] pedidos activos a mostrar:", pedidosActivos);
+
+      if (pedidosActivos.length === 0) {
         cont.innerHTML = `<p class="text-center text-muted">
-          No hay pedidos activos para hoy.
+          No hay pedidos activos para la cocina.
         </p>`;
         return;
       }
 
-      pedidosHoy.forEach(p => {
+      pedidosActivos.forEach(p => {
         cont.innerHTML += `
           <div class="col-md-4">
             <div class="card shadow-sm">
@@ -163,13 +171,13 @@
                 Pedido #${p.id}
               </div>
               <div class="card-body">
-                <p><strong>Cliente:</strong> ${p.customerName}</p>
-                <p><strong>Total:</strong> $${p.total}</p>
-                <p><strong>Estado actual:</strong> ${p.status}</p>
+                <p><strong>Cliente:</strong> ${p.customerName || "-"}</p>
+                <p><strong>Total:</strong> $${p.total ?? "-"}</p>
+                <p><strong>Estado actual:</strong> ${p.status || "-"}</p>
 
                 <hr>
                 <p class="fw-bold">Items:</p>
-                ${p.items.map(i => `
+                ${(p.items || []).map(i => `
                   <p>- ${i.productName} x${i.quantity}</p>
                 `).join("")}
 
@@ -196,6 +204,7 @@
       });
     }
 
+
     // --- 3) Cambiar estado ---
     async function cambiarEstado(orderId, estado) {
       try {
@@ -209,13 +218,16 @@
         });
 
         if (!res.ok) {
-          console.error("Error al cambiar estado:", res.status);
+          const txt = await res.text();
+          console.error("Error al cambiar estado:", res.status, txt);
+          alert("No se pudo cambiar el estado del pedido.");
         }
 
         // Refrescar el panel siempre después del PATCH
         cargarPedidos();
       } catch (err) {
         console.error("Error de red al cambiar estado:", err);
+        alert("Error de red al cambiar estado.");
       }
     }
 
@@ -243,14 +255,12 @@
 
     // --- 5) Cerrar sesión real ---
     function cerrarSesion() {
-      // Limpiamos token y cualquier otra info de sesión
       try {
         localStorage.clear();
         sessionStorage.clear();
       } catch (e) {
         console.warn("No se pudo limpiar el storage:", e);
       }
-      // Redirigimos a registro
       window.location.href = "registroUsuario.html";
     }
   </script>
@@ -264,6 +274,7 @@
     const token = requireAuth(); // obtiene el JWT del almacenamiento
     cargarPedidos();            // carga los pedidos iniciales
   </script>
+
 
 </body>
 </html>
