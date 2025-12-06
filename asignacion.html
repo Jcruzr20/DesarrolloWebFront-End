@@ -141,15 +141,21 @@
   <script src="js/protegerRutas.js"></script>
 
   <!-- Script funcional conectado a la API -->
+   <!-- Script funcional conectado a la API -->
   <script>
   const API_BASE = "http://127.0.0.1:8000/api/pollosabroso";
-  const token = requireAuth();
+  const token = requireAuth(); // viene de protegerRutas.js
 
   const tabla = document.getElementById("tablaPedidos");
-  const modal = new bootstrap.Modal(document.getElementById("modalAsignacion"));
+  const modalElement = document.getElementById("modalAsignacion");
+  const modal = new bootstrap.Modal(modalElement);
   const detallePedido = document.getElementById("detallePedido");
   const detalleRepartidor = document.getElementById("detalleRepartidor");
+  const btnAsignarAuto = document.getElementById("btnAsignarAuto");
 
+  // ------------------------------------------------------
+  // 1) Cargar pedidos "Listo para retiro" desde la API
+  // ------------------------------------------------------
   async function cargarPedidos() {
     try {
       const res = await fetch(
@@ -184,6 +190,9 @@
     }
   }
 
+  // ------------------------------------------------------
+  // 2) Pintar tabla
+  // ------------------------------------------------------
   function renderTabla(pedidos) {
     tabla.innerHTML = "";
 
@@ -211,12 +220,19 @@
         </td>
       `;
 
-      row.querySelector("button").addEventListener("click", () => asignarRepartidor(p.id));
+      const btn = row.querySelector("button");
+      btn.addEventListener("click", () => asignarRepartidor(p.id));
+
       tabla.appendChild(row);
     });
   }
 
-  async function asignarRepartidor(orderId) {
+  // ------------------------------------------------------
+  // 3) Asignar repartidor a UN pedido
+  //    mostrarModal: si true, abre el modal de éxito
+  //    recargarDespues: si true, vuelve a cargar la tabla al final
+  // ------------------------------------------------------
+  async function asignarRepartidor(orderId, mostrarModal = true, recargarDespues = true) {
     try {
       const res = await fetch(
         `${API_BASE}/repartidores/asignar-automatico/${orderId}`,
@@ -230,8 +246,14 @@
       );
 
       if (!res.ok) {
-        console.error("[asignacion] Error HTTP", res.status);
-        alert("No se pudo asignar el repartidor. Revisa la consola.");
+        let body = null;
+        try {
+          body = await res.json();
+        } catch (e) {
+          /* ignore */
+        }
+        console.error("[asignacion] Error HTTP", res.status, body);
+        alert(body?.detail || "No se pudo asignar el repartidor. Revisa la consola.");
         return;
       }
 
@@ -239,21 +261,22 @@
       console.log("[asignacion] Respuesta asignar:", data);
 
       // data es AssignedOrderResponse:
-      //  { id, userId, total, status, createdAt, driver: { id, name, phone } }
+      // { id, userId, total, status, createdAt, driver: { id, name, phone } }
 
-      detallePedido.textContent = `Pedido #${data.id}`;
-      if (data.driver) {
-        detalleRepartidor.textContent =
-          `Asignado a: ${data.driver.name} (${data.driver.phone})`;
-      } else {
-        detalleRepartidor.textContent = "No se devolvió información del repartidor.";
+      if (mostrarModal) {
+        detallePedido.textContent = `Pedido #${data.id}`;
+        if (data.driver) {
+          detalleRepartidor.textContent =
+            `Asignado a: ${data.driver.name} (${data.driver.phone})`;
+        } else {
+          detalleRepartidor.textContent = "No se devolvió información del repartidor.";
+        }
+        modal.show();
       }
 
-      // Mostrar modal
-      modal.show();
-
-      // Volver a cargar la tabla para que desaparezca el pedido si ya cambió de estado
-      cargarPedidos();
+      if (recargarDespues) {
+        await cargarPedidos();
+      }
 
     } catch (err) {
       console.error("[asignacion] Error en fetch:", err);
@@ -261,9 +284,44 @@
     }
   }
 
+  // ------------------------------------------------------
+  // 4) Asignar repartidor automáticamente a TODOS los pedidos
+  // ------------------------------------------------------
+  btnAsignarAuto.addEventListener("click", async () => {
+    // Tomamos los pedidos que están actualmente en la tabla
+    const botones = tabla.querySelectorAll("button[data-order-id]");
+    if (!botones.length) {
+      alert("No hay pedidos listos para retiro.");
+      return;
+    }
 
+    if (!confirm("¿Asignar repartidor automáticamente a todos los pedidos listos para retiro?")) {
+      return;
+    }
+
+    try {
+      for (const btn of botones) {
+        const id = btn.getAttribute("data-order-id");
+        // Asignamos sin mostrar modal y sin recargar tabla en cada iteración
+        await asignarRepartidor(id, false, false);
+      }
+
+      // Una sola recarga al final
+      await cargarPedidos();
+      alert("Se asignaron automáticamente todos los pedidos disponibles.");
+
+    } catch (e) {
+      console.error("[asignacion] Error asignando todos:", e);
+      alert("Ocurrió un error al asignar todos los pedidos.");
+    }
+  });
+
+  // ------------------------------------------------------
+  // 5) Cargar pedidos al entrar a la página
+  // ------------------------------------------------------
   document.addEventListener("DOMContentLoaded", cargarPedidos);
   </script>
+
 
 
 </body>
